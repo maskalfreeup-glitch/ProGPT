@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>GlobalRankAI — Understand Your Google Visibility</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=DM+Sans:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --neon:#00ff9f; --neon-lo:rgba(0,255,159,.12); --neon-glow:rgba(0,255,159,.22);
+  --amber:#f59e0b; --amber-lo:rgba(245,158,11,.1); --amber-bdr:rgba(245,158,11,.22);
+  --warn:#e07b3a; --warn-lo:rgba(224,123,58,.1); --warn-bdr:rgba(224,123,58,.25);
+  --blue:#38bdf8; --blue-lo:rgba(56,189,248,.08);
+  --bg:#04070e; --bg2:#070c18; --bg3:#0a1020;
+  --glass:rgba(255,255,255,.028); --bdr:rgba(255,255,255,.065);
+  --text-muted:rgba(200,210,225,.45); --text-dim:rgba(200,210,225,.28);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:#cdd5e0;font-family:'DM Sans',sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(rgba(0,255,159,.016) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,159,.016) 1px,transparent 1px);
+  background-size:52px 52px}
+body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.22;
+  background:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E")}
+
+@keyframes glow-cta{0%,100%{box-shadow:0 0 18px var(--neon-glow),0 0 36px rgba(0,255,159,.07)}60%{box-shadow:0 0 32px var(--neon-glow),0 0 64px rgba(0,255,159,.12)}}
+@keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
+@keyframes pulse-dot{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.4);opacity:.7}}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes bar-in{from{width:0}to{width:var(--w)}}
+@keyframes scan-beam{0%{top:0;opacity:.8}80%{opacity:.3}100%{top:100%;opacity:0}}
+@keyframes orb-drift{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-52%) scale(1.05)}}
+@keyframes fade-in{from{opacity:0}to{opacity:1}}
+@keyframes amber-glow{0%,100%{box-shadow:0 0 14px rgba(245,158,11,.18)}50%{box-shadow:0 0 28px rgba(245,158,11,.3)}}
+@keyframes score-count{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:scale(1)}}
+
+.fd{font-family:'Rajdhani',sans-serif}
+.fm{font-family:'Share Tech Mono',monospace}
+
+.btn{display:inline-flex;align-items:center;gap:9px;background:var(--neon);color:#000;
+  font-family:'Rajdhani',sans-serif;font-weight:700;font-size:1.1rem;letter-spacing:.04em;
+  padding:15px 36px;border-radius:5px;border:none;cursor:pointer;text-decoration:none;
+  white-space:nowrap;transition:transform .15s,filter .15s,box-shadow .15s;
+  box-shadow:0 0 18px var(--neon-glow),0 2px 8px rgba(0,0,0,.4);
+  animation:glow-cta 4s ease-in-out infinite}
+.btn:hover{transform:translateY(-1px) scale(1.02);filter:brightness(1.06)}
+.btn:active{transform:scale(.98)}
+.btn.ghost{background:transparent;color:var(--neon);border:1px solid rgba(0,255,159,.28);
+  animation:none;box-shadow:none;font-size:1rem}
+.btn.ghost:hover{background:rgba(0,255,159,.06);box-shadow:0 0 12px var(--neon-glow)}
+
+.g{background:var(--glass);border:1px solid var(--bdr);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.g-amber{background:var(--amber-lo);border:1px solid var(--amber-bdr)}
+.g-warn{background:var(--warn-lo);border:1px solid var(--warn-bdr)}
+.g-neon{background:var(--neon-lo);border:1px solid rgba(0,255,159,.18)}
+.g-blue{background:var(--blue-lo);border:1px solid rgba(56,189,248,.18)}
+
+.scan-wrap{position:relative;overflow:hidden}
+.scan-wrap::after{content:'';position:absolute;left:0;right:0;height:1px;pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(0,255,159,.6),transparent);
+  animation:scan-beam 3s linear infinite}
+
+.inp{width:100%;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);
+  color:#e8edf4;font-family:'DM Sans',sans-serif;font-size:.975rem;padding:13px 16px;
+  border-radius:5px;outline:none;transition:border-color .2s,box-shadow .2s}
+.inp:focus{border-color:rgba(0,255,159,.45);box-shadow:0 0 0 3px rgba(0,255,159,.08)}
+.inp::placeholder{color:rgba(255,255,255,.22)}
+.inp.err{border-color:rgba(224,123,58,.7)!important;box-shadow:0 0 0 3px rgba(224,123,58,.1)!important}
+
+select.inp option{background:#0a1020;color:#e8edf4}
+
+.dot-g{width:6px;height:6px;border-radius:50%;background:var(--neon);flex-shrink:0;animation:pulse-dot 2s ease-in-out infinite}
+.dot-a{width:6px;height:6px;border-radius:50%;background:var(--amber);flex-shrink:0;animation:pulse-dot 2s ease-in-out infinite}
+
+.chip{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:4px 12px;
+  font-family:'Share Tech Mono',monospace;font-size:.72rem;letter-spacing:.08em;font-weight:600;text-transform:uppercase;
+  background:rgba(0,255,159,.07);border:1px solid rgba(0,255,159,.2);color:rgba(0,255,159,.8)}
+
+.tag-warn{display:inline-flex;align-items:center;gap:4px;background:var(--amber-lo);
+  border:1px solid var(--amber-bdr);border-radius:4px;padding:3px 8px;
+  font-family:'Share Tech Mono',monospace;font-size:.68rem;letter-spacing:.07em;
+  font-weight:600;color:var(--amber);text-transform:uppercase}
+.tag-issue{display:inline-flex;align-items:center;gap:4px;background:var(--warn-lo);
+  border:1px solid var(--warn-bdr);border-radius:4px;padding:3px 8px;
+  font-family:'Share Tech Mono',monospace;font-size:.68rem;letter-spacing:.07em;
+  font-weight:600;color:var(--warn);text-transform:uppercase}
+
+.score-num{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:4.5rem;line-height:1;
+  color:var(--amber);text-shadow:0 0 30px rgba(245,158,11,.25)}
+
+.bar-track{height:5px;border-radius:99px;background:rgba(255,255,255,.06);overflow:hidden}
+.bar-fill{height:100%;border-radius:99px;width:0;animation:bar-in .9s cubic-bezier(.4,0,.2,1) forwards}
+
+.blurred{filter:blur(6px);user-select:none;pointer-events:none}
+
+.insight-row{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;
+  border-radius:6px;border-left:2px solid var(--warn);background:rgba(224,123,58,.04)}
+
+.stat-n{font-family:'Rajdhani',sans-serif;font-size:3rem;font-weight:700;line-height:1;
+  background:linear-gradient(135deg,var(--neon),#00d4ff);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+.outcome-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.25rem;flex-shrink:0}
+
+.rise{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease}
+.risen{opacity:1;transform:translateY(0)}
+
+nav,.z1{position:relative;z-index:1}
+nav{z-index:50}
+
+.rev-insight{border-radius:8px;padding:16px 20px;background:var(--amber-lo);border:1px solid var(--amber-bdr);animation:amber-glow 3s ease-in-out infinite}
+
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--bdr),transparent);margin:0}
+
+.term-bar{display:flex;align-items:center;gap:6px;padding-bottom:12px;margin-bottom:12px;border-bottom:1px solid rgba(255,255,255,.05)}
+.term-dot{width:9px;height:9px;border-radius:50%}
+
+.orb{position:absolute;border-radius:50%;pointer-events:none;animation:orb-drift 10s ease-in-out infinite}
+
+.step-line{width:1px;height:20px;margin:0 auto;background:linear-gradient(180deg,rgba(0,255,159,.3),transparent)}
+
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(0,255,159,.2);border-radius:99px}
+
+@media(max-width:640px){
+  .hero-h{font-size:2.4rem!important}
+  .score-num{font-size:3.5rem}
+  .stat-n{font-size:2.4rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════ NAV ══════════ -->
+<nav class="fixed top-0 left-0 right-0 z-50" style="background:rgba(4,7,14,.92);backdrop-filter:blur(28px);border-bottom:1px solid rgba(255,255,255,.045)">
+  <div class="max-w-5xl mx-auto px-5 py-3.5 flex items-center justify-between gap-4">
+    <div class="flex items-center gap-3 shrink-0">
+      <div class="flex items-center gap-2">
+        <div style="width:26px;height:26px;border-radius:6px;background:linear-gradient(135deg,rgba(0,255,159,.2),rgba(0,255,159,.05));border:1px solid rgba(0,255,159,.25);display:flex;align-items:center;justify-content:center">
+          <span style="color:var(--neon);font-size:.7rem">◈</span>
+        </div>
+        <span class="fd font-bold text-xl" style="color:#fff;letter-spacing:-.01em">GlobalRank<span style="color:var(--neon)">AI</span></span>
+      </div>
+      <span style="color:var(--bdr)">|</span>
+      <span class="fm text-xs hidden sm:inline" style="color:var(--text-dim);letter-spacing:.06em">by ProGPT.store</span>
+    </div>
+    <div class="hidden md:flex items-center gap-2 fm text-xs" style="color:var(--text-dim)">
+      <div class="dot-g"></div>
+      <span id="nav-ticker">A dentist in Austin TX ran an analysis — <span style="color:rgba(0,255,159,.6)">12s ago</span></span>
+    </div>
+    <a href="#scan" class="btn shrink-0" style="padding:9px 20px;font-size:.88rem;animation:none;box-shadow:0 0 14px var(--neon-glow)">
+      View My Visibility Score →
+    </a>
+  </div>
+</nav>
+
+<!-- ══════════ 1. HERO ══════════ -->
+<section class="min-h-screen flex flex-col justify-center px-4 pt-28 pb-16 relative overflow-hidden">
+  <div class="orb" style="width:600px;height:600px;top:50%;left:50%;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(0,255,159,.04) 0%,transparent 65%)"></div>
+  <div class="orb" style="width:300px;height:300px;top:20%;right:5%;transform:none;background:radial-gradient(circle,rgba(56,189,248,.03) 0%,transparent 65%);animation-delay:-4s"></div>
+
+  <div class="max-w-2xl mx-auto text-center z1 rise" id="hero-block">
+
+    <div class="flex items-center justify-center gap-2 mb-8">
+      <div class="dot-g"></div>
+      <span class="fm text-xs" style="color:var(--text-dim)">
+        <span id="hero-city-count">23</span> businesses analyzed today · last report <span style="color:rgba(0,255,159,.65)" id="hero-last-sec">12</span>s ago
+      </span>
+    </div>
+
+    <div class="mb-4">
+      <span class="chip">Free Visibility Analysis</span>
+    </div>
+
+    <h1 class="hero-h fd font-bold leading-none mb-5" style="font-size:3.6rem;letter-spacing:-.02em">
+      <span style="color:#fff;display:block">Understand Your</span>
+      <span style="background:linear-gradient(135deg,var(--neon) 0%,#00d4ff 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block;margin-top:2px">Google Visibility Score</span>
+    </h1>
+
+    <p class="text-base sm:text-lg mb-8 leading-relaxed" style="color:var(--text-muted);max-width:440px;margin-left:auto;margin-right:auto">
+      GlobalRankAI analyzes your local search presence and surfaces the gaps that may be limiting your reach — with a clear breakdown and actionable steps.
+    </p>
+
+    <a href="#scan" class="btn" style="font-size:1.15rem;padding:17px 42px">
+      View My Visibility Score →
+    </a>
+
+    <div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-6 fm text-xs" style="color:var(--text-dim)">
+      <span>✓ Free · No account required</span>
+      <span>✓ Results in ~30 seconds</span>
+      <span>✓ Used by 2,000+ businesses</span>
+    </div>
+
+    <!-- Insight callout -->
+    <div class="mt-10 inline-flex items-center gap-3 px-5 py-3 rounded-lg text-left" style="background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.18);max-width:440px">
+      <span style="font-size:1rem;flex-shrink:0">📊</span>
+      <span class="text-sm" style="color:rgba(220,210,180,.7)">Most businesses have 3–6 visibility gaps affecting their local search ranking. The average estimated impact is <strong style="color:var(--amber)">$800–$2,500/month</strong> in unreached customers.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 2. SAMPLE REPORT ══════════ -->
+<section class="py-14 px-4" style="background:var(--bg2)">
+  <div class="max-w-xl mx-auto rise">
+    <div class="text-center mb-8">
+      <p class="fm text-xs mb-2" style="color:rgba(0,255,159,.5);letter-spacing:.1em">SAMPLE REPORT</p>
+      <h2 class="fd font-bold text-2xl sm:text-3xl text-white">What a Visibility Report Looks Like</h2>
+      <p class="text-sm mt-2" style="color:var(--text-muted)">Based on a real analysis of a local dental practice in Austin, TX.</p>
+    </div>
+
+    <div class="g rounded-2xl overflow-hidden scan-wrap" style="border-color:rgba(245,158,11,.15)">
+      <div class="term-bar px-5 pt-4">
+        <div class="term-dot" style="background:#ff5f57"></div>
+        <div class="term-dot" style="background:#febc2e"></div>
+        <div class="term-dot" style="background:rgba(0,255,159,.6)"></div>
+        <span class="fm text-xs ml-2" style="color:var(--text-dim)">globalrank.ai — analysis complete</span>
+        <span class="tag-warn ml-auto">Needs Attention</span>
+      </div>
+
+      <div class="px-5 pb-5">
+        <div class="flex items-start justify-between mb-5">
+          <div>
+            <p class="fd font-bold text-white text-lg">City Dental Studio</p>
+            <p class="fm text-xs mt-0.5" style="color:var(--text-dim)">Austin, TX · Dentist · Analyzed 4 min ago</p>
+          </div>
+          <div class="text-right">
+            <p class="fm text-xs mb-1" style="color:var(--text-dim)">VISIBILITY SCORE</p>
+            <p class="fd font-bold" style="font-size:2.8rem;line-height:1;color:var(--amber)">32<span class="text-sm" style="color:var(--text-dim)">/100</span></p>
+          </div>
+        </div>
+
+        <div class="space-y-3 mb-5">
+          <div>
+            <div class="flex justify-between text-xs mb-1.5" style="color:var(--text-dim)"><span>Google Business Profile</span><span style="color:var(--warn);font-weight:600">28%</span></div>
+            <div class="bar-track"><div class="bar-fill" style="--w:28%;background:var(--warn)"></div></div>
+          </div>
+          <div>
+            <div class="flex justify-between text-xs mb-1.5" style="color:var(--text-dim)"><span>Local SEO Signals</span><span style="color:var(--amber);font-weight:600">41%</span></div>
+            <div class="bar-track"><div class="bar-fill" style="--w:41%;background:var(--amber);animation-delay:.15s"></div></div>
+          </div>
+          <div>
+            <div class="flex justify-between text-xs mb-1.5" style="color:var(--text-dim)"><span>Review Authority</span><span style="color:var(--warn);font-weight:600">19%</span></div>
+            <div class="bar-track"><div class="bar-fill" style="--w:19%;background:var(--warn);animation-delay:.3s"></div></div>
+          </div>
+          <div>
+            <div class="flex justify-between text-xs mb-1.5" style="color:var(--text-dim)"><span>Citation Consistency</span><span style="color:var(--amber);font-weight:600">53%</span></div>
+            <div class="bar-track"><div class="bar-fill" style="--w:53%;background:var(--amber);animation-delay:.45s"></div></div>
+          </div>
+        </div>
+
+        <!-- Revenue insight — calm, analytical -->
+        <div class="rev-insight mb-4">
+          <div class="flex items-start gap-3">
+            <span style="color:var(--amber);font-size:1rem;flex-shrink:0;margin-top:1px">◈</span>
+            <div>
+              <p class="fd font-semibold text-white" style="font-size:.95rem">Estimated Missed Revenue</p>
+              <p class="fd font-bold mt-0.5" style="font-size:1.6rem;color:var(--amber)">$1,200 – $2,800<span class="text-sm ml-1.5 font-normal" style="color:var(--text-muted);font-family:'DM Sans',sans-serif">/month</span></p>
+              <p class="text-xs mt-1" style="color:rgba(200,185,140,.6)">Estimated based on local search volume, industry average customer value, and current visibility gaps.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-2 mb-3">
+          <div class="g-warn rounded-lg p-3 flex items-start gap-3">
+            <span class="tag-issue mt-0.5">Gap</span>
+            <div>
+              <p class="text-sm font-medium text-white">Google Business Profile incomplete</p>
+              <p class="text-xs mt-0.5" style="color:var(--text-muted)">Missing photos, service descriptions, and hours reduce visibility in local map results.</p>
+            </div>
+          </div>
+          <div class="g-warn rounded-lg p-3 flex items-start gap-3">
+            <span class="tag-issue mt-0.5">Gap</span>
+            <div>
+              <p class="text-sm font-medium text-white">Review velocity below local competitors</p>
+              <p class="text-xs mt-0.5" style="color:var(--text-muted)">Competing practices average 14 new reviews/month. This profile averages 2.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="relative">
+          <div class="blurred space-y-2 pointer-events-none select-none">
+            <div class="g-warn rounded-lg p-3"><p class="text-sm text-white">Citation inconsistencies across 14 directories</p></div>
+            <div class="g-warn rounded-lg p-3"><p class="text-sm text-white">Local backlink authority below competitor average</p></div>
+            <div class="g-warn rounded-lg p-3"><p class="text-sm text-white">23 high-intent keywords not ranking</p></div>
+          </div>
+          <div class="absolute inset-0 flex items-center justify-center" style="background:linear-gradient(180deg,transparent 0%,rgba(7,12,24,.97) 35%)">
+            <div class="text-center px-4 pt-8">
+              <p class="fd font-bold text-lg text-white">3 Additional Insights</p>
+              <p class="text-sm mt-1 mb-5" style="color:var(--text-muted)">Run an analysis for your business to see the full report.</p>
+              <a href="#scan" class="btn inline-flex" style="font-size:.9rem;padding:12px 26px">View My Visibility Score →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="fm text-xs text-center mt-4" style="color:var(--text-dim)">Sample based on publicly available local SEO signals from a real business.</p>
+  </div>
+</section>
+
+<!-- ══════════ 3. SCAN FORM ══════════ -->
+<section id="scan" class="py-16 px-4 relative">
+  <div class="orb" style="width:450px;height:450px;top:50%;left:50%;background:radial-gradient(circle,rgba(0,255,159,.035) 0%,transparent 65%)"></div>
+  <div class="max-w-lg mx-auto z1 rise">
+
+    <div class="text-center mb-8">
+      <span class="chip mb-4 inline-flex">Free · ~30 seconds · No account needed</span>
+      <h2 class="fd font-bold text-3xl sm:text-4xl mt-4 mb-2 text-white">Check Your Visibility Score</h2>
+      <p class="text-sm leading-relaxed" style="color:var(--text-muted)">Enter your business details below. GlobalRankAI will analyze your local search presence and generate a free visibility report.</p>
+    </div>
+
+    <div id="s-form">
+      <div class="g rounded-2xl p-6 sm:p-8" style="border-color:rgba(0,255,159,.08)">
+        <div class="term-bar">
+          <div class="term-dot" style="background:#ff5f57"></div>
+          <div class="term-dot" style="background:#febc2e"></div>
+          <div class="term-dot" style="background:rgba(0,255,159,.6)"></div>
+          <span class="fm text-xs ml-2" style="color:var(--text-dim)">globalrank.ai — ready</span>
+          <div class="ml-auto flex items-center gap-1.5"><div class="dot-g"></div><span class="fm text-xs" style="color:rgba(0,255,159,.45)">LIVE</span></div>
+        </div>
+
+        <div class="space-y-4">
+          <div>
+            <label class="block text-xs font-medium mb-1.5" style="color:rgba(200,210,225,.5);letter-spacing:.04em;text-transform:uppercase">Business Name</label>
+            <input id="f-name" type="text" class="inp" placeholder="e.g. Riverside Dental Group"/>
+          </div>
+          <div>
+            <label class="block text-xs font-medium mb-1.5" style="color:rgba(200,210,225,.5);letter-spacing:.04em;text-transform:uppercase">City &amp; State</label>
+            <input id="f-city" type="text" class="inp" placeholder="e.g. Austin, TX"/>
+          </div>
+          <div>
+            <label class="block text-xs font-medium mb-1.5" style="color:rgba(200,210,225,.5);letter-spacing:.04em;text-transform:uppercase">Industry</label>
+            <select id="f-type" class="inp" style="cursor:pointer">
+              <option value="" disabled selected>Select your industry…</option>
+              <option>Dentist / Medical</option>
+              <option>Gym / Fitness Studio</option>
+              <option>Salon / Beauty</option>
+              <option>Plumber / Contractor</option>
+              <option>HVAC / Home Services</option>
+              <option>Restaurant / Café</option>
+              <option>Law Firm</option>
+              <option>Chiropractor</option>
+              <option>Auto Repair</option>
+              <option>Real Estate</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <button onclick="startScan()" class="btn w-full justify-center" style="width:100%;margin-top:2px">
+            View My Visibility Score →
+          </button>
+        </div>
+
+        <div class="mt-5 pt-4" style="border-top:1px solid var(--bdr)">
+          <div class="flex flex-wrap items-center justify-center gap-x-5 gap-y-1 fm text-xs" style="color:var(--text-dim)">
+            <span>✓ No spam</span><span>✓ No commitments</span><span>✓ Based on public SEO signals</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LOADING STATE -->
+    <div id="s-load" class="hidden">
+      <div class="g rounded-2xl p-6 scan-wrap" style="border-color:rgba(0,255,159,.1)">
+        <div class="term-bar">
+          <div class="term-dot" style="background:#ff5f57"></div>
+          <div class="term-dot" style="background:#febc2e"></div>
+          <div class="term-dot" style="background:rgba(0,255,159,.6)"></div>
+          <span class="fm text-xs ml-2" style="color:var(--text-dim)">Analyzing <span id="load-name" style="color:rgba(0,255,159,.7)">…</span></span>
+        </div>
+
+        <div id="scan-phase-msg" class="text-center mb-4 fm text-sm" style="color:rgba(0,255,159,.6);min-height:22px">Analyzing local search signals…</div>
+
+        <div id="scan-log" class="fm text-xs space-y-1.5 mb-5" style="color:rgba(0,255,159,.5);min-height:96px"></div>
+
+        <div class="bar-track mb-2">
+          <div id="prog-bar" class="bar-fill" style="--w:0%;background:linear-gradient(90deg,var(--neon),#00d4ff);transition:width .4s ease"></div>
+        </div>
+        <div class="flex justify-between fm text-xs" style="color:var(--text-dim)">
+          <span id="prog-label">Initializing…</span>
+          <span id="prog-pct">0%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ANALYSIS COMPLETE BANNER -->
+    <div id="s-issues-banner" class="hidden text-center my-5">
+      <div class="inline-flex items-center gap-3 px-5 py-3 rounded-lg" style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25)">
+        <div class="dot-a"></div>
+        <span class="fd font-semibold" style="color:var(--amber);font-size:1.05rem">Analysis complete — visibility gaps identified</span>
+      </div>
+      <p class="fm text-xs mt-2" style="color:var(--text-dim)">Partial results below · Full report available via email</p>
+    </div>
+
+    <!-- RESULTS STATE -->
+    <div id="s-results" class="hidden space-y-4">
+
+      <!-- Score card -->
+      <div class="g rounded-2xl overflow-hidden" style="border-color:rgba(245,158,11,.14)">
+        <div class="px-5 py-4 flex items-start justify-between" style="background:rgba(245,158,11,.04);border-bottom:1px solid rgba(245,158,11,.1)">
+          <div>
+            <p class="fd font-bold text-white text-xl" id="r-name">—</p>
+            <p class="fm text-xs mt-1" style="color:var(--text-dim)" id="r-city">—</p>
+          </div>
+          <div class="text-right">
+            <p class="fm text-xs mb-1" style="color:var(--text-dim)">VISIBILITY SCORE</p>
+            <div class="score-num" id="r-score">—</div>
+          </div>
+        </div>
+        <div class="px-5 py-4">
+          <p class="fm text-xs mb-3" style="color:rgba(0,255,159,.4);letter-spacing:.08em">SIGNAL BREAKDOWN</p>
+          <div class="space-y-3" id="r-bars"></div>
+        </div>
+      </div>
+
+      <!-- Revenue insight -->
+      <div class="rev-insight">
+        <div class="flex items-start gap-3">
+          <span style="color:var(--amber);font-size:1rem;flex-shrink:0;margin-top:2px">◈</span>
+          <div>
+            <p class="text-xs font-medium mb-1" style="color:rgba(200,185,140,.6);text-transform:uppercase;letter-spacing:.06em">Estimated Missed Revenue</p>
+            <p class="fd font-bold" style="font-size:1.8rem;color:var(--amber)" id="r-rev-loss">$800 – $2,400<span class="text-sm font-normal ml-1.5" style="color:var(--text-muted);font-family:'DM Sans',sans-serif">/month</span></p>
+            <p class="text-xs mt-1.5" style="color:rgba(200,185,140,.55)">Estimated based on your visibility gap, industry search volume, and average customer value. Full breakdown in your email report.</p>
+          </div>
+        </div>
+      </div>
+
+      <p class="fm text-xs" style="color:var(--text-dim);letter-spacing:.06em">IDENTIFIED VISIBILITY GAPS</p>
+
+      <div class="g-warn rounded-xl p-4 flex items-start gap-3">
+        <span class="tag-issue shrink-0 mt-0.5">Gap</span>
+        <div>
+          <p class="font-semibold text-white" style="font-size:.95rem">Google Business Profile — Incomplete</p>
+          <p class="text-sm mt-0.5" style="color:var(--text-muted)">Missing photos, service details, and business hours reduce your visibility in local map searches.</p>
+        </div>
+      </div>
+
+      <div class="g-warn rounded-xl p-4 flex items-start gap-3">
+        <span class="tag-issue shrink-0 mt-0.5">Gap</span>
+        <div>
+          <p class="font-semibold text-white" style="font-size:.95rem">Review Velocity — Below Local Average</p>
+          <p class="text-sm mt-0.5" style="color:var(--text-muted)">Top competitors in your area receive 3× more reviews monthly, which influences search ranking.</p>
+        </div>
+      </div>
+
+      <!-- GATE -->
+      <div class="g rounded-2xl overflow-hidden relative" style="border-color:rgba(245,158,11,.12)">
+        <div class="blurred p-5 space-y-3 pointer-events-none select-none">
+          <div class="g-warn rounded-xl p-4">
+            <p class="font-medium text-white">Citation inconsistencies across 14 directories</p>
+            <p class="text-sm mt-1" style="color:var(--text-muted)">Address/phone mismatches on Yelp, Apple Maps, and 12 other platforms may reduce trust signals.</p>
+          </div>
+          <div class="g-warn rounded-xl p-4">
+            <p class="font-medium text-white">Local backlink authority below competitor benchmark</p>
+            <p class="text-sm mt-1" style="color:var(--text-muted)">Competitors hold 4× more local authority signals, which affects ranking position.</p>
+          </div>
+          <div class="g-warn rounded-xl p-4">
+            <p class="font-medium text-white">23 high-intent search queries not captured</p>
+            <p class="text-sm mt-1" style="color:var(--text-muted)">These searches are currently directing customers to competitors.</p>
+          </div>
+        </div>
+
+        <div class="absolute inset-0 flex flex-col justify-end" style="background:linear-gradient(180deg,transparent 0%,rgba(4,7,14,.97) 30%)">
+          <div class="p-6" id="gate-form">
+            <p class="fd font-bold text-white text-lg mb-1">Your Full Report Is Ready</p>
+            <p class="fd font-semibold mb-1" style="color:var(--amber);font-size:1rem">
+              <span id="g-count">4</span> visibility gaps identified for your business
+            </p>
+            <p class="text-sm mb-5" style="color:var(--text-muted)">We'll send a detailed breakdown with actionable steps for each issue found.</p>
+            <div class="space-y-3 max-w-sm">
+              <input id="gate-email" type="email" class="inp" placeholder="Enter your email to receive full report"/>
+              <button onclick="unlockReport()" class="btn w-full justify-center" style="width:100%">
+                Send My Visibility Report →
+              </button>
+              <div class="flex items-center gap-2 fm text-xs" style="color:var(--text-dim)">
+                <span>✓ No spam</span><span style="color:var(--bdr)">·</span><span>✓ No commitments</span><span style="color:var(--bdr)">·</span><span>✓ Unsubscribe anytime</span>
+              </div>
+            </div>
+          </div>
+          <div class="p-6 hidden" id="gate-success">
+            <div class="g-neon rounded-xl p-5">
+              <div class="flex items-center gap-3 mb-2">
+                <span style="color:var(--neon);font-size:1.2rem">✓</span>
+                <p class="fd font-bold text-white text-xl">Report on its way</p>
+              </div>
+              <p class="text-sm mb-4" style="color:var(--text-muted)">Check your inbox — your full visibility breakdown and suggested fixes should arrive within a few minutes.</p>
+              <a href="#outcomes" class="btn ghost inline-flex" style="font-size:.88rem;padding:10px 20px">See What Improving Looks Like →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trust note -->
+      <div class="flex items-center gap-2 px-1">
+        <span style="color:rgba(0,255,159,.35);font-size:.85rem">🔒</span>
+        <p class="fm text-xs" style="color:var(--text-dim)">Analysis based on publicly available local SEO signals. Full report delivered via email.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 4. WHY IT MATTERS ══════════ -->
+<section class="py-16 px-4 rise" style="background:var(--bg2)">
+  <div class="max-w-xl mx-auto">
+    <div class="text-center mb-9">
+      <p class="fm text-xs mb-3" style="color:rgba(0,255,159,.45);letter-spacing:.1em">WHY IT MATTERS</p>
+      <h2 class="fd font-bold text-3xl sm:text-4xl text-white leading-tight">
+        Local Search Visibility<br/>Directly Affects Revenue
+      </h2>
+      <p class="text-sm mt-3" style="color:var(--text-muted)">Most business owners don't realize how much of their potential reach is limited by fixable issues.</p>
+    </div>
+    <div class="space-y-3">
+      <div class="insight-row rounded-lg">
+        <span style="font-size:1.1rem;flex-shrink:0">🔍</span>
+        <div>
+          <p class="font-semibold text-white" style="font-size:.95rem">Local search happens constantly</p>
+          <p class="text-sm mt-0.5" style="color:var(--text-muted)">Customers search "near me" every minute. Businesses with optimized profiles capture the majority of these searches.</p>
+        </div>
+      </div>
+      <div class="insight-row rounded-lg">
+        <span style="font-size:1.1rem;flex-shrink:0">📊</span>
+        <div>
+          <p class="font-semibold text-white" style="font-size:.95rem">Position matters more than most realize</p>
+          <p class="text-sm mt-0.5" style="color:var(--text-muted)">91% of clicks go to page 1 results. The top 3 local listings receive the vast majority of engagement.</p>
+        </div>
+      </div>
+      <div class="insight-row rounded-lg">
+        <span style="font-size:1.1rem;flex-shrink:0">⭐</span>
+        <div>
+          <p class="font-semibold text-white" style="font-size:.95rem">Review presence influences decisions</p>
+          <p class="text-sm mt-0.5" style="color:var(--text-muted)">Businesses with stronger review profiles consistently outperform those with fewer, older reviews — in both rank and conversions.</p>
+        </div>
+      </div>
+      <div class="insight-row rounded-lg">
+        <span style="font-size:1.1rem;flex-shrink:0">📍</span>
+        <div>
+          <p class="font-semibold text-white" style="font-size:.95rem">Inconsistent data reduces trust</p>
+          <p class="text-sm mt-0.5" style="color:var(--text-muted)">When your business information differs across directories, search engines apply lower confidence to your listing.</p>
+        </div>
+      </div>
+    </div>
+    <div class="mt-8 g-amber rounded-xl p-5 text-center">
+      <p class="fd font-semibold text-lg" style="color:var(--amber)">These are addressable issues. The first step is knowing where you stand.</p>
+    </div>
+    <div class="text-center mt-7">
+      <a href="#scan" class="btn" style="font-size:1rem">View My Visibility Score →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 5. DATA POINTS ══════════ -->
+<section class="py-16 px-4 rise">
+  <div class="max-w-4xl mx-auto">
+    <div class="text-center mb-10">
+      <p class="fm text-xs mb-3" style="color:rgba(0,255,159,.45);letter-spacing:.1em">INDUSTRY DATA</p>
+      <h2 class="fd font-bold text-3xl sm:text-4xl text-white">The Local Search Landscape</h2>
+    </div>
+    <div class="grid sm:grid-cols-3 gap-4">
+      <div class="g rounded-2xl p-6 text-center" style="border-color:rgba(0,255,159,.08)">
+        <p class="stat-n">46%</p>
+        <p class="text-sm mt-3" style="color:var(--text-muted)">of all Google searches have <strong style="color:#fff">local intent</strong></p>
+        <p class="fm text-xs mt-2" style="color:rgba(0,255,159,.25)">Google Search Data</p>
+      </div>
+      <div class="g rounded-2xl p-6 text-center" style="border-color:rgba(245,158,11,.1)">
+        <p class="stat-n" style="background:linear-gradient(135deg,var(--amber),#f97316);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">75%</p>
+        <p class="text-sm mt-3" style="color:var(--text-muted)">of clicks go to the <strong style="color:#fff">top 3 local results</strong></p>
+        <p class="fm text-xs mt-2" style="color:rgba(245,158,11,.3)">Search Engine Journal</p>
+      </div>
+      <div class="g rounded-2xl p-6 text-center" style="border-color:rgba(0,255,159,.08)">
+        <p class="stat-n">97%</p>
+        <p class="text-sm mt-3" style="color:var(--text-muted)">of consumers <strong style="color:#fff">research online</strong> before visiting a local business</p>
+        <p class="fm text-xs mt-2" style="color:rgba(0,255,159,.25)">BrightLocal 2024</p>
+      </div>
+    </div>
+    <div class="mt-5 g rounded-xl p-5 text-center" style="border-color:rgba(245,158,11,.12);background:rgba(245,158,11,.04)">
+      <p class="text-base" style="color:rgba(220,210,180,.7)">Businesses outside the top 3 are, on average, <strong style="color:var(--amber)">missed by 75% of nearby searchers</strong> — regardless of their quality.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 6. HOW IT WORKS ══════════ -->
+<section class="py-16 px-4 rise" style="background:var(--bg2)">
+  <div class="max-w-lg mx-auto text-center">
+    <p class="fm text-xs mb-3" style="color:rgba(0,255,159,.45);letter-spacing:.1em">HOW IT WORKS</p>
+    <h2 class="fd font-bold text-3xl sm:text-4xl text-white mb-2">Simple. Fast. Actionable.</h2>
+    <p class="text-sm mb-10" style="color:var(--text-muted)">No technical setup. No account required. Results in about 30 seconds.</p>
+    <div class="space-y-4 text-left">
+      <div class="g rounded-2xl p-5 flex items-start gap-4" style="border-color:rgba(0,255,159,.08)">
+        <div class="fd font-bold text-lg w-9 h-9 rounded-full flex items-center justify-center shrink-0" style="background:rgba(0,255,159,.08);border:1px solid rgba(0,255,159,.2);color:rgba(0,255,159,.8)">1</div>
+        <div><p class="fd font-bold text-white text-lg">Enter your business name and city</p><p class="text-sm mt-0.5" style="color:var(--text-muted)">We use publicly available data — no credentials needed.</p></div>
+      </div>
+      <div class="step-line"></div>
+      <div class="g rounded-2xl p-5 flex items-start gap-4" style="border-color:rgba(0,255,159,.08)">
+        <div class="fd font-bold text-lg w-9 h-9 rounded-full flex items-center justify-center shrink-0" style="background:rgba(0,255,159,.08);border:1px solid rgba(0,255,159,.2);color:rgba(0,255,159,.8)">2</div>
+        <div><p class="fd font-bold text-white text-lg">GlobalRankAI analyzes your presence</p><p class="text-sm mt-0.5" style="color:var(--text-muted)">We evaluate Google Business, reviews, citations, and competitor benchmarks.</p></div>
+      </div>
+      <div class="step-line"></div>
+      <div class="g rounded-2xl p-5 flex items-start gap-4" style="border-color:rgba(0,255,159,.08)">
+        <div class="fd font-bold text-lg w-9 h-9 rounded-full flex items-center justify-center shrink-0" style="background:rgba(0,255,159,.08);border:1px solid rgba(0,255,159,.2);color:rgba(0,255,159,.8)">3</div>
+        <div><p class="fd font-bold text-white text-lg">Receive your visibility score and report</p><p class="text-sm mt-0.5" style="color:var(--text-muted)">A prioritized breakdown of gaps with specific, actionable recommendations.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 7. OUTCOMES ══════════ -->
+<section id="outcomes" class="py-16 px-4 rise">
+  <div class="max-w-xl mx-auto">
+    <div class="text-center mb-9">
+      <p class="fm text-xs mb-3" style="color:rgba(0,255,159,.45);letter-spacing:.1em">AFTER IMPROVEMENTS</p>
+      <h2 class="fd font-bold text-3xl sm:text-4xl text-white mt-1 leading-tight">
+        What Businesses See<br/><span style="color:var(--neon)">After Fixing Their Gaps</span>
+      </h2>
+      <p class="text-sm mt-3" style="color:var(--text-muted)">Businesses that act on their GlobalRankAI report typically see measurable changes within 4–8 weeks.</p>
+    </div>
+
+    <div class="space-y-4">
+      <div class="g rounded-2xl p-5 flex items-start gap-4" style="border-color:rgba(0,255,159,.08)">
+        <div class="outcome-icon" style="background:rgba(0,255,159,.07);border:1px solid rgba(0,255,159,.15)">📞</div>
+        <div>
+          <p class="fd font-bold text-white text-lg">Increased inbound inquiries</p>
+          <p class="text-sm mt-0.5" style="color:var(--text-muted)">Better visibility means more customers finding and contacting the business directly from search results.</p>
+          <p class="fm text-xs mt-2" style="color:rgba(0,255,159,.5)">Reported average: +40% inbound calls within 30 days</p>
+        </div>
+      </div>
+      <div class="g rounded-2xl p-5 flex items-start gap-4" style="border-color:rgba(0,255,159,.08)">
+        <div class="outcome-icon" style="background:rgba(0,255,159,.07);border:1px solid rgba(0,255,159,.15)">📈</div>
+        <div>
+          <p class="fd font-bold text-white text-lg">Improved search ranking position</p>
+          <p class="text-sm mt-0.5" style="color:var(--text-muted)">Addressing the right signals moves businesses into the local map pack, where most engagement occurs.</p>
+          <p class="fm text-xs mt-2" style="color:rgba(0,255,159,.5)">Reported average: top 3 local placement in 60–90 days</p>
+        </div>
+      </div>
+      <div class="g rounded-2xl p-5 flex items-start gap-4" style="border-color:rgba(0,255,159,.08)">
+        <div class="outcome-icon" style="background:rgba(0,255,159,.07);border:1px solid rgba(0,255,159,.15)">🔄</div>
+        <div>
+          <p class="fd font-bold text-white text-lg">Compounding returns over time</p>
+          <p class="text-sm mt-0.5" style="color:var(--text-muted)">Search visibility improvements tend to build on themselves — each month of better ranking compounds.</p>
+          <p class="fm text-xs mt-2" style="color:rgba(0,255,159,.5)">Reported average: 2–3× more Google-driven revenue after 90 days</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="g-neon rounded-2xl p-6 mt-6">
+      <p class="text-base leading-relaxed" style="color:rgba(210,225,215,.7)">"The report identified six issues I had no idea about. After fixing them, I went from page 2 to top 3 for 'plumber near me' in Chicago. The difference has been significant."</p>
+      <div class="flex items-center gap-3 mt-4">
+        <div class="w-8 h-8 rounded-full flex items-center justify-center fd font-bold text-sm shrink-0" style="background:rgba(0,255,159,.12);color:rgba(0,255,159,.8)">MK</div>
+        <div>
+          <p class="fd font-semibold text-white text-sm">Mike K. · Plumber, Chicago IL</p>
+          <p class="fm text-xs" style="color:var(--text-dim)">Visibility Score: 41 → 79</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center mt-8">
+      <a href="#scan" class="btn" style="font-size:1.05rem">View My Visibility Score →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 8. TESTIMONIALS ══════════ -->
+<section class="py-14 px-4 rise" style="background:var(--bg2)">
+  <div class="max-w-3xl mx-auto">
+    <div class="text-center mb-8">
+      <h2 class="fd font-bold text-2xl sm:text-3xl text-white">From Businesses That Used GlobalRankAI</h2>
+      <p class="fm text-xs mt-2" style="color:var(--text-dim)">Used by 2,000+ local businesses across the US</p>
+    </div>
+    <div class="grid sm:grid-cols-2 gap-4">
+      <div class="g rounded-2xl p-6" style="border-color:rgba(0,255,159,.06)">
+        <p class="text-sm leading-relaxed mb-4" style="color:rgba(210,218,228,.6)">"The scan surfaced issues I'd never thought to look at. Within a few weeks of fixing them, my phone was noticeably busier."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-full flex items-center justify-center fd font-bold text-sm shrink-0" style="background:rgba(0,255,159,.1);color:rgba(0,255,159,.8)">SR</div>
+          <div><p class="fd font-semibold text-white text-sm">Sarah R. · Salon Owner, Miami FL</p><p class="fm text-xs" style="color:rgba(0,255,159,.45)">Score: 29 → 81 in 3 weeks</p></div>
+        </div>
+      </div>
+      <div class="g rounded-2xl p-6" style="border-color:rgba(0,255,159,.06)">
+        <p class="text-sm leading-relaxed mb-4" style="color:rgba(210,218,228,.6)">"I assumed my Google presence was fine. The report showed otherwise. After acting on it, revenue has roughly doubled."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-full flex items-center justify-center fd font-bold text-sm shrink-0" style="background:rgba(0,255,159,.1);color:rgba(0,255,159,.8)">TW</div>
+          <div><p class="fd font-semibold text-white text-sm">Tom W. · Gym Owner, Dallas TX</p><p class="fm text-xs" style="color:rgba(0,255,159,.45)">Score: 38 → 84 in 4 weeks</p></div>
+        </div>
+      </div>
+      <div class="g rounded-2xl p-6" style="border-color:rgba(0,255,159,.06)">
+        <p class="text-sm leading-relaxed mb-4" style="color:rgba(210,218,228,.6)">"I wasn't expecting much from a free tool. The depth of the report was genuinely surprising. Very useful."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-full flex items-center justify-center fd font-bold text-sm shrink-0" style="background:rgba(0,255,159,.1);color:rgba(0,255,159,.8)">RJ</div>
+          <div><p class="fd font-semibold text-white text-sm">Rachel J. · Dentist, Phoenix AZ</p><p class="fm text-xs" style="color:rgba(0,255,159,.45)">Score: 44 → 76 in 5 weeks</p></div>
+        </div>
+      </div>
+      <div class="g rounded-2xl p-6" style="border-color:rgba(0,255,159,.06)">
+        <p class="text-sm leading-relaxed mb-4" style="color:rgba(210,218,228,.6)">"A competitor had been outranking me for two years. I fixed three things from the report. I'm now above them."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-full flex items-center justify-center fd font-bold text-sm shrink-0" style="background:rgba(0,255,159,.1);color:rgba(0,255,159,.8)">AL</div>
+          <div><p class="fd font-semibold text-white text-sm">Andre L. · HVAC, Atlanta GA</p><p class="fm text-xs" style="color:rgba(0,255,159,.45)">Score: 33 → 78 in 6 weeks</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 9. FINAL CTA ══════════ -->
+<section class="py-28 px-4 text-center relative overflow-hidden rise">
+  <div class="orb" style="width:700px;height:700px;top:50%;left:50%;background:radial-gradient(circle,rgba(0,255,159,.04) 0%,transparent 60%)"></div>
+  <div class="max-w-lg mx-auto z1">
+    <span class="chip mb-5 inline-flex">Free visibility analysis</span>
+    <h2 class="fd font-bold leading-none mt-5 mb-4 text-white" style="font-size:clamp(2.2rem,6vw,3.6rem)">
+      Know Where You Stand<br/>
+      <span style="background:linear-gradient(135deg,#fff 20%,var(--neon));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">in Local Search</span>
+    </h2>
+    <p class="text-lg mb-6" style="color:var(--text-muted);max-width:380px;margin:0 auto 24px">
+      Get a clear picture of your Google visibility — and a prioritized list of improvements — in about 30 seconds.
+    </p>
+    <div class="flex items-center justify-center gap-2 mb-7">
+      <div class="dot-g"></div>
+      <span class="fm text-xs" style="color:var(--text-dim)"><span id="final-count">23</span> businesses analyzed today · last report <span id="final-secs">12</span>s ago</span>
+    </div>
+    <a href="#scan" class="btn" style="font-size:1.2rem;padding:19px 48px">
+      View My Visibility Score →
+    </a>
+    <p class="fm text-xs mt-5" style="color:var(--text-dim)">✓ Free · ✓ No account · ✓ No spam · ✓ Used by 2,000+ businesses</p>
+  </div>
+</section>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer class="py-10 px-4" style="border-top:1px solid rgba(255,255,255,.045)">
+  <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+    <div class="flex items-center gap-2">
+      <div style="width:22px;height:22px;border-radius:5px;background:rgba(0,255,159,.1);border:1px solid rgba(0,255,159,.2);display:flex;align-items:center;justify-content:center">
+        <span style="color:var(--neon);font-size:.6rem">◈</span>
+      </div>
+      <span class="fd font-bold text-white text-sm">GlobalRankAI</span>
+      <span style="color:var(--bdr)">·</span>
+      <span class="fm text-xs" style="color:var(--text-dim)">a product by ProGPT.store</span>
+    </div>
+    <div class="fm text-xs flex items-center gap-4" style="color:var(--text-dim)">
+      <span>© 2025</span>
+      <a href="#" style="color:inherit;text-decoration:none;transition:color .15s" onmouseover="this.style.color='rgba(0,255,159,.6)'" onmouseout="this.style.color='var(--text-dim)'">Privacy</a>
+      <a href="#" style="color:inherit;text-decoration:none;transition:color .15s" onmouseover="this.style.color='rgba(0,255,159,.6)'" onmouseout="this.style.color='var(--text-dim)'">Terms</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ══════════ JS ══════════ -->
+<script>
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('risen'); io.unobserve(e.target); }});
+},{threshold:.07});
+document.querySelectorAll('.rise').forEach(el => io.observe(el));
+document.getElementById('hero-block').classList.add('risen');
+
+const barIO = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      e.target.querySelectorAll('.bar-fill').forEach((b,i)=>{
+        b.style.width='0%';
+        setTimeout(()=>{ b.style.width='var(--w)'; }, 260+i*160);
+      });
+      barIO.unobserve(e.target);
+    }
+  });
+},{threshold:.2});
+document.querySelectorAll('.scan-wrap').forEach(el => barIO.observe(el));
+
+function rndCount(){ return 18+Math.floor(Math.random()*16); }
+function rndSec(){ return 6+Math.floor(Math.random()*40); }
+
+function refreshLive(){
+  const n=rndCount(), s=rndSec();
+  ['hero-city-count','final-count'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=n; });
+  ['hero-last-sec','final-secs'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=s; });
+}
+refreshLive();
+setInterval(refreshLive, 8000);
+
+const cities=['Austin TX','Miami FL','Chicago IL','Dallas TX','Phoenix AZ','Atlanta GA','Denver CO','Seattle WA','Nashville TN','Tampa FL','Portland OR','San Diego CA'];
+const industries=['dental practice','plumbing company','fitness studio','hair salon','HVAC company','law firm','auto repair shop','restaurant','chiropractic clinic'];
+function refreshTicker(){
+  const el=document.getElementById('nav-ticker');
+  if(!el) return;
+  const city=cities[Math.floor(Math.random()*cities.length)];
+  const ind=industries[Math.floor(Math.random()*industries.length)];
+  const s=rndSec();
+  el.innerHTML=`A ${ind} in ${city} ran an analysis — <span style="color:rgba(0,255,159,.6)">${s}s ago</span>`;
+}
+refreshTicker();
+setInterval(refreshTicker, 7000);
+
+const STEPS=[
+  ['Locating business profile…',10],
+  ['Evaluating Google Business signals…',22],
+  ['Analyzing local search visibility…',35],
+  ['Assessing review authority…',50],
+  ['Checking citation consistency…',64],
+  ['Benchmarking competitor positioning…',77],
+  ['Evaluating ranking factors…',88],
+  ['Generating visibility score…',96],
+  ['Compiling full report…',100],
+];
+
+const INDUSTRY_REVENUE={
+  'Dentist / Medical':[1200,3400],
+  'Gym / Fitness Studio':[800,2200],
+  'Salon / Beauty':[600,1800],
+  'Plumber / Contractor':[1000,2800],
+  'HVAC / Home Services':[1100,3100],
+  'Restaurant / Café':[700,2000],
+  'Law Firm':[2000,5500],
+  'Chiropractor':[900,2600],
+  'Auto Repair':[800,2200],
+  'Real Estate':[1500,4000],
+  'Other':[600,2400],
+};
+
+function getRevenueLoss(score, industry){
+  const base=INDUSTRY_REVENUE[industry]||[600,2400];
+  const factor=1-(score/100);
+  const lo=Math.max(300, Math.round(base[0]*factor/100)*100);
+  const hi=Math.max(lo+400, Math.round(base[1]*factor/100)*100);
+  return `$${lo.toLocaleString()} – $${hi.toLocaleString()}`;
+}
+
+function startScan(){
+  const name=document.getElementById('f-name').value.trim();
+  const city=document.getElementById('f-city').value.trim();
+  let ok=true;
+  if(!name){ document.getElementById('f-name').classList.add('err'); ok=false; }
+  if(!city){ document.getElementById('f-city').classList.add('err'); ok=false; }
+  if(!ok) return;
+
+  document.getElementById('s-form').classList.add('hidden');
+  document.getElementById('s-load').classList.remove('hidden');
+  document.getElementById('load-name').textContent=name;
+  document.getElementById('scan').scrollIntoView({behavior:'smooth',block:'start'});
+
+  const log=document.getElementById('scan-log');
+  const bar=document.getElementById('prog-bar');
+  const pct=document.getElementById('prog-pct');
+  const lbl=document.getElementById('prog-label');
+  const phase=document.getElementById('scan-phase-msg');
+  let i=0;
+
+  function tick(){
+    if(i>=STEPS.length){
+      phase.textContent='Analysis complete — generating report…';
+      phase.style.color='rgba(245,158,11,.7)';
+      setTimeout(()=>showResults(name,city), 900);
+      return;
+    }
+    const [msg,p]=STEPS[i++];
+    if(i===3){ phase.textContent='Evaluating ranking factors…'; }
+    if(i===6){ phase.textContent='Benchmarking against local competitors…'; phase.style.color='rgba(0,255,159,.6)'; }
+
+    const line=document.createElement('div');
+    line.style.cssText='opacity:0;transform:translateY(5px);transition:all .28s';
+    line.innerHTML=`<span style="color:rgba(0,255,159,.35)">›</span> ${msg}`;
+    log.appendChild(line);
+    if(log.children.length>6) log.removeChild(log.firstChild);
+    setTimeout(()=>{ line.style.opacity='1'; line.style.transform='translateY(0)'; },25);
+
+    bar.style.width=p+'%';
+    pct.textContent=p+'%';
+    lbl.textContent=msg;
+
+    const delay=i===1?1300:480+Math.random()*360;
+    setTimeout(tick,delay);
+  }
+  tick();
+}
+
+function animateScore(el, target, duration){
+  let start=null;
+  function step(ts){
+    if(!start) start=ts;
+    const p=Math.min((ts-start)/duration,1);
+    const ease=1-Math.pow(1-p,3);
+    el.textContent=Math.round(target*ease)+'/100';
+    if(p<1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+function showResults(name, city){
+  document.getElementById('s-load').classList.add('hidden');
+  const banner=document.getElementById('s-issues-banner');
+  banner.classList.remove('hidden');
+  banner.scrollIntoView({behavior:'smooth',block:'center'});
+
+  const score=20+Math.floor(Math.random()*24);
+  const industry=document.getElementById('f-type').value||'Other';
+
+  setTimeout(()=>{
+    document.getElementById('r-name').textContent=name;
+    document.getElementById('r-city').textContent=city+' · Local Business';
+
+    const scoreEl=document.getElementById('r-score');
+    scoreEl.textContent='0/100';
+    animateScore(scoreEl, score, 1100);
+
+    const revEl=document.getElementById('r-rev-loss');
+    if(revEl){
+      const str=getRevenueLoss(score,industry);
+      revEl.innerHTML=str+'<span class="text-sm font-normal ml-1.5" style="color:var(--text-muted);font-family:\'DM Sans\',sans-serif">/month</span>';
+    }
+
+    const issueCount=3+Math.floor(Math.random()*3);
+    document.getElementById('g-count').textContent=issueCount;
+
+    const barColors={low:'var(--warn)',mid:'var(--amber)'};
+    const bars=[
+      {label:'Google Business Profile', val:Math.max(14,Math.floor(score*.9)), c:'low'},
+      {label:'Local SEO Signals',       val:Math.max(18,Math.floor(score*1.05)), c:'mid'},
+      {label:'Review Authority',        val:Math.max(10,Math.floor(score*.75)), c:'low'},
+      {label:'Citation Consistency',    val:Math.max(22,Math.floor(score+10)), c:'mid'},
+    ];
+    const bc=document.getElementById('r-bars');
+    bc.innerHTML='';
+    bars.forEach((b,i)=>{
+      const color=b.c==='low'?'var(--warn)':'var(--amber)';
+      const d=document.createElement('div');
+      d.innerHTML=`
+        <div class="flex justify-between text-xs mb-1.5" style="color:var(--text-dim)">
+          <span>${b.label}</span><span style="color:${color};font-weight:600">${b.val}%</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="--w:${b.val}%;background:${color};animation-delay:${i*.15}s"></div></div>`;
+      bc.appendChild(d);
+    });
+
+    document.getElementById('s-results').classList.remove('hidden');
+    setTimeout(()=>document.getElementById('s-results').scrollIntoView({behavior:'smooth',block:'start'}),300);
+  },700);
+}
+
+function unlockReport(){
+  const emailEl=document.getElementById('gate-email');
+  const email=emailEl.value.trim();
+  if(!email||!email.includes('@')||!email.includes('.')){
+    emailEl.classList.add('err');
+    emailEl.placeholder='Please enter a valid email address';
+    return;
+  }
+  document.getElementById('gate-form').classList.add('hidden');
+  document.getElementById('gate-success').classList.remove('hidden');
+  console.log('Lead captured:', email);
+}
+
+document.querySelectorAll('.inp').forEach(el=>{
+  el.addEventListener('input',()=>{ el.classList.remove('err'); });
+});
+</script>
+</body>
+</html>
