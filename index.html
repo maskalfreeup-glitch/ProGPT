@@ -3,953 +3,1119 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>GlobalRankAI — Understand Your Google Visibility</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=DM+Sans:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+<title>ProGPT — AI Visibility & SEO for Serious Brands</title>
+<meta name="description" content="GEO audits, AI search optimization, and traditional SEO. Get found in ChatGPT, Perplexity, and Google AI Overviews."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Anybody:ital,wght@0,100..900;1,100..900&family=Epilogue:wght@300;400;500;600&family=Azeret+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+
 <style>
 :root {
-  --neon:#00ff9f; --neon-lo:rgba(0,255,159,.12); --neon-glow:rgba(0,255,159,.22);
-  --amber:#f59e0b; --amber-lo:rgba(245,158,11,.1); --amber-bdr:rgba(245,158,11,.22);
-  --warn:#e07b3a; --warn-lo:rgba(224,123,58,.1); --warn-bdr:rgba(224,123,58,.25);
-  --blue:#38bdf8; --blue-lo:rgba(56,189,248,.08);
-  --bg:#04070e; --bg2:#070c18; --bg3:#0a1020;
-  --glass:rgba(255,255,255,.028); --bdr:rgba(255,255,255,.065);
-  --text-muted:rgba(200,210,225,.45); --text-dim:rgba(200,210,225,.28);
+  --bg: #05080f;
+  --bg2: #080d18;
+  --bg3: #0c1220;
+  --surface: #101726;
+  --text: #eef1fa;
+  --muted: #6b7591;
+  --dim: #2a3349;
+  --acid: #00ff88;
+  --acid2: #00e676;
+  --orange: #ff6b35;
+  --border: rgba(238,241,250,0.06);
+  --border-acid: rgba(0,255,136,0.18);
 }
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:#cdd5e0;font-family:'DM Sans',sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 
-body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
-  background-image:linear-gradient(rgba(0,255,159,.016) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,159,.016) 1px,transparent 1px);
-  background-size:52px 52px}
-body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.22;
-  background:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E")}
-
-@keyframes glow-cta{0%,100%{box-shadow:0 0 18px var(--neon-glow),0 0 36px rgba(0,255,159,.07)}60%{box-shadow:0 0 32px var(--neon-glow),0 0 64px rgba(0,255,159,.12)}}
-@keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
-@keyframes pulse-dot{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.4);opacity:.7}}
-@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-@keyframes bar-in{from{width:0}to{width:var(--w)}}
-@keyframes scan-beam{0%{top:0;opacity:.8}80%{opacity:.3}100%{top:100%;opacity:0}}
-@keyframes orb-drift{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-52%) scale(1.05)}}
-@keyframes fade-in{from{opacity:0}to{opacity:1}}
-@keyframes amber-glow{0%,100%{box-shadow:0 0 14px rgba(245,158,11,.18)}50%{box-shadow:0 0 28px rgba(245,158,11,.3)}}
-@keyframes score-count{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:scale(1)}}
-
-.fd{font-family:'Rajdhani',sans-serif}
-.fm{font-family:'Share Tech Mono',monospace}
-
-.btn{display:inline-flex;align-items:center;gap:9px;background:var(--neon);color:#000;
-  font-family:'Rajdhani',sans-serif;font-weight:700;font-size:1.1rem;letter-spacing:.04em;
-  padding:15px 36px;border-radius:5px;border:none;cursor:pointer;text-decoration:none;
-  white-space:nowrap;transition:transform .15s,filter .15s,box-shadow .15s;
-  box-shadow:0 0 18px var(--neon-glow),0 2px 8px rgba(0,0,0,.4);
-  animation:glow-cta 4s ease-in-out infinite}
-.btn:hover{transform:translateY(-1px) scale(1.02);filter:brightness(1.06)}
-.btn:active{transform:scale(.98)}
-.btn.ghost{background:transparent;color:var(--neon);border:1px solid rgba(0,255,159,.28);
-  animation:none;box-shadow:none;font-size:1rem}
-.btn.ghost:hover{background:rgba(0,255,159,.06);box-shadow:0 0 12px var(--neon-glow)}
-
-.g{background:var(--glass);border:1px solid var(--bdr);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
-.g-amber{background:var(--amber-lo);border:1px solid var(--amber-bdr)}
-.g-warn{background:var(--warn-lo);border:1px solid var(--warn-bdr)}
-.g-neon{background:var(--neon-lo);border:1px solid rgba(0,255,159,.18)}
-.g-blue{background:var(--blue-lo);border:1px solid rgba(56,189,248,.18)}
-
-.scan-wrap{position:relative;overflow:hidden}
-.scan-wrap::after{content:'';position:absolute;left:0;right:0;height:1px;pointer-events:none;
-  background:linear-gradient(90deg,transparent,rgba(0,255,159,.6),transparent);
-  animation:scan-beam 3s linear infinite}
-
-.inp{width:100%;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);
-  color:#e8edf4;font-family:'DM Sans',sans-serif;font-size:.975rem;padding:13px 16px;
-  border-radius:5px;outline:none;transition:border-color .2s,box-shadow .2s}
-.inp:focus{border-color:rgba(0,255,159,.45);box-shadow:0 0 0 3px rgba(0,255,159,.08)}
-.inp::placeholder{color:rgba(255,255,255,.22)}
-.inp.err{border-color:rgba(224,123,58,.7)!important;box-shadow:0 0 0 3px rgba(224,123,58,.1)!important}
-
-select.inp option{background:#0a1020;color:#e8edf4}
-
-.dot-g{width:6px;height:6px;border-radius:50%;background:var(--neon);flex-shrink:0;animation:pulse-dot 2s ease-in-out infinite}
-.dot-a{width:6px;height:6px;border-radius:50%;background:var(--amber);flex-shrink:0;animation:pulse-dot 2s ease-in-out infinite}
-
-.chip{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:4px 12px;
-  font-family:'Share Tech Mono',monospace;font-size:.72rem;letter-spacing:.08em;font-weight:600;text-transform:uppercase;
-  background:rgba(0,255,159,.07);border:1px solid rgba(0,255,159,.2);color:rgba(0,255,159,.8)}
-
-.tag-warn{display:inline-flex;align-items:center;gap:4px;background:var(--amber-lo);
-  border:1px solid var(--amber-bdr);border-radius:4px;padding:3px 8px;
-  font-family:'Share Tech Mono',monospace;font-size:.68rem;letter-spacing:.07em;
-  font-weight:600;color:var(--amber);text-transform:uppercase}
-.tag-issue{display:inline-flex;align-items:center;gap:4px;background:var(--warn-lo);
-  border:1px solid var(--warn-bdr);border-radius:4px;padding:3px 8px;
-  font-family:'Share Tech Mono',monospace;font-size:.68rem;letter-spacing:.07em;
-  font-weight:600;color:var(--warn);text-transform:uppercase}
-
-.score-num{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:4.5rem;line-height:1;
-  color:var(--amber);text-shadow:0 0 30px rgba(245,158,11,.25)}
-
-.bar-track{height:5px;border-radius:99px;background:rgba(255,255,255,.06);overflow:hidden}
-.bar-fill{height:100%;border-radius:99px;width:0;animation:bar-in .9s cubic-bezier(.4,0,.2,1) forwards}
-
-.blurred{filter:blur(6px);user-select:none;pointer-events:none}
-
-.insight-row{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;
-  border-radius:6px;border-left:2px solid var(--warn);background:rgba(224,123,58,.04)}
-
-.stat-n{font-family:'Rajdhani',sans-serif;font-size:3rem;font-weight:700;line-height:1;
-  background:linear-gradient(135deg,var(--neon),#00d4ff);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-
-.outcome-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.25rem;flex-shrink:0}
-
-.rise{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease}
-.risen{opacity:1;transform:translateY(0)}
-
-nav,.z1{position:relative;z-index:1}
-nav{z-index:50}
-
-.rev-insight{border-radius:8px;padding:16px 20px;background:var(--amber-lo);border:1px solid var(--amber-bdr);animation:amber-glow 3s ease-in-out infinite}
-
-.divider{height:1px;background:linear-gradient(90deg,transparent,var(--bdr),transparent);margin:0}
-
-.term-bar{display:flex;align-items:center;gap:6px;padding-bottom:12px;margin-bottom:12px;border-bottom:1px solid rgba(255,255,255,.05)}
-.term-dot{width:9px;height:9px;border-radius:50%}
-
-.orb{position:absolute;border-radius:50%;pointer-events:none;animation:orb-drift 10s ease-in-out infinite}
-
-.step-line{width:1px;height:20px;margin:0 auto;background:linear-gradient(180deg,rgba(0,255,159,.3),transparent)}
-
-::-webkit-scrollbar{width:4px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:rgba(0,255,159,.2);border-radius:99px}
-
-@media(max-width:640px){
-  .hero-h{font-size:2.4rem!important}
-  .score-num{font-size:3.5rem}
-  .stat-n{font-size:2.4rem}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Epilogue',sans-serif;
+  font-weight:400;
+  line-height:1.6;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
 }
+
+/* GRAIN */
+body::after{
+  content:'';
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:9999;
+  opacity:.035;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:2px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:rgba(0,255,136,.3);}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(.75);}}
+@keyframes scanline{0%{transform:translateY(-100vh);}100%{transform:translateY(100vh);}}
+@keyframes glow{0%,100%{opacity:.4;}50%{opacity:1;}}
+@keyframes marquee{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+@keyframes borderPulse{0%,100%{border-color:rgba(0,255,136,.15);}50%{border-color:rgba(0,255,136,.45);}}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+
+.a1{animation:fadeUp .8s cubic-bezier(.16,1,.3,1) .1s both;}
+.a2{animation:fadeUp .8s cubic-bezier(.16,1,.3,1) .25s both;}
+.a3{animation:fadeUp .8s cubic-bezier(.16,1,.3,1) .4s both;}
+.a4{animation:fadeUp .8s cubic-bezier(.16,1,.3,1) .55s both;}
+.a5{animation:fadeUp .8s cubic-bezier(.16,1,.3,1) .7s both;}
+.a6{animation:fadeIn .8s ease .9s both;}
+
+.sr{opacity:0;transform:translateY(24px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1);}
+.sr.on{opacity:1;transform:translateY(0);}
+.sr-d1{transition-delay:.1s;}.sr-d2{transition-delay:.2s;}.sr-d3{transition-delay:.3s;}.sr-d4{transition-delay:.4s;}
+
+/* LAYOUT */
+.wrap{max-width:1160px;margin:0 auto;padding:0 36px;}
+@media(max-width:680px){.wrap{padding:0 20px;}}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  padding:16px 0;
+  border-bottom:1px solid var(--border);
+  background:rgba(5,8,15,.88);
+  backdrop-filter:blur(20px);
+  animation:fadeIn .5s ease both;
+}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;}
+.logo{
+  font-family:'Anybody',sans-serif;
+  font-weight:800;
+  font-size:1.5rem;
+  letter-spacing:-.03em;
+  color:var(--text);
+  text-decoration:none;
+  display:flex;align-items:center;gap:10px;
+}
+.logo-dot{width:8px;height:8px;border-radius:50%;background:var(--acid);animation:pulse 2.5s ease-in-out infinite;flex-shrink:0;}
+.logo em{color:var(--acid);font-style:normal;}
+.nav-links{display:flex;align-items:center;gap:28px;}
+.nav-link{
+  font-family:'Azeret Mono',monospace;
+  font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);text-decoration:none;transition:color .2s;
+}
+.nav-link:hover{color:var(--text);}
+.nav-cta{
+  font-family:'Azeret Mono',monospace;
+  font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;
+  background:var(--acid);color:#05080f;
+  padding:9px 20px;font-weight:500;
+  text-decoration:none;transition:all .2s;
+  display:inline-flex;align-items:center;gap:7px;
+}
+.nav-cta:hover{background:var(--acid2);box-shadow:0 0 24px rgba(0,255,136,.3);}
+@media(max-width:780px){.nav-links{display:none;}}
+
+/* HERO */
+.hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:140px 0 80px;
+  position:relative;overflow:hidden;
+}
+.hero-bg-grid{
+  position:absolute;inset:0;
+  background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);
+  background-size:64px 64px;
+  opacity:.5;
+  mask-image:radial-gradient(ellipse at 40% 50%,black 20%,transparent 65%);
+  pointer-events:none;
+}
+.hero-glow{
+  position:absolute;top:30%;right:10%;
+  width:600px;height:600px;
+  background:radial-gradient(ellipse,rgba(0,255,136,.07) 0%,transparent 60%);
+  pointer-events:none;
+  animation:glow 4s ease-in-out infinite;
+}
+.hero-glow2{
+  position:absolute;bottom:10%;left:5%;
+  width:400px;height:300px;
+  background:radial-gradient(ellipse,rgba(255,107,53,.05) 0%,transparent 60%);
+  pointer-events:none;
+}
+.hero-scan{
+  position:absolute;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(0,255,136,.15),transparent);
+  animation:scanline 12s linear infinite;
+  pointer-events:none;
+}
+
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:'Azeret Mono',monospace;
+  font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--acid);
+  border:1px solid var(--border-acid);
+  padding:6px 14px;
+  margin-bottom:2.2rem;
+  animation:borderPulse 3s ease-in-out infinite;
+}
+.eyebrow-dot{width:5px;height:5px;border-radius:50%;background:var(--acid);animation:pulse 2s infinite;}
+
+h1{
+  font-family:'Anybody',sans-serif;
+  font-weight:900;
+  font-size:clamp(3rem,7vw,6.5rem);
+  line-height:.95;
+  letter-spacing:-.04em;
+  margin-bottom:1.8rem;
+}
+h1 em{
+  font-style:italic;
+  color:var(--acid);
+}
+h1 .outline{
+  -webkit-text-stroke:1px rgba(238,241,250,.25);
+  color:transparent;
+}
+
+.hero-sub{
+  font-size:1.05rem;
+  color:var(--muted);
+  max-width:520px;
+  line-height:1.75;
+  margin-bottom:2.8rem;
+  font-weight:300;
+}
+.hero-sub strong{color:var(--text);font-weight:500;}
+
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center;}
+
+.btn-primary{
+  background:var(--acid);
+  color:#05080f;
+  padding:14px 32px;
+  font-family:'Anybody',sans-serif;
+  font-weight:700;font-size:.88rem;letter-spacing:.04em;
+  text-decoration:none;display:inline-flex;align-items:center;gap:8px;
+  transition:all .22s;
+  text-transform:uppercase;
+}
+.btn-primary:hover{background:var(--acid2);transform:translateY(-2px);box-shadow:0 12px 32px rgba(0,255,136,.25);}
+
+.btn-ghost{
+  border:1px solid var(--dim);
+  color:var(--muted);
+  padding:14px 28px;
+  font-family:'Azeret Mono',monospace;
+  font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;
+  text-decoration:none;display:inline-flex;align-items:center;gap:8px;
+  transition:all .22s;
+}
+.btn-ghost:hover{border-color:var(--muted);color:var(--text);}
+
+.btn-discord{
+  background:rgba(88,101,242,.15);
+  border:1px solid rgba(88,101,242,.3);
+  color:#8892f0;
+  padding:14px 28px;
+  font-family:'Azeret Mono',monospace;
+  font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;
+  text-decoration:none;display:inline-flex;align-items:center;gap:8px;
+  transition:all .22s;
+}
+.btn-discord:hover{background:rgba(88,101,242,.25);border-color:rgba(88,101,242,.5);color:#aab2f8;}
+
+.hero-stats{
+  display:flex;gap:0;margin-top:4rem;
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+}
+.stat{
+  flex:1;padding:1.4rem 2rem;
+  border-right:1px solid var(--border);
+}
+.stat:last-child{border-right:none;}
+.stat-n{
+  font-family:'Anybody',sans-serif;
+  font-weight:900;font-size:2rem;
+  letter-spacing:-.04em;color:var(--text);
+  line-height:1;margin-bottom:4px;
+}
+.stat-n span{color:var(--acid);}
+.stat-l{font-family:'Azeret Mono',monospace;font-size:.62rem;color:var(--muted);letter-spacing:.08em;line-height:1.5;text-transform:uppercase;}
+@media(max-width:600px){
+  .hero-stats{flex-wrap:wrap;}
+  .stat{flex:1 1 50%;border-right:1px solid var(--border);}
+  .stat:nth-child(2n){border-right:none;}
+  .stat:nth-child(3),.stat:nth-child(4){border-top:1px solid var(--border);}
+}
+
+/* MARQUEE */
+.marquee-wrap{
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  background:var(--bg2);
+  padding:.85rem 0;overflow:hidden;
+}
+.marquee-track{
+  display:flex;gap:2.5rem;
+  animation:marquee 28s linear infinite;
+  width:max-content;
+}
+.marquee-track span{
+  font-family:'Azeret Mono',monospace;
+  font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);white-space:nowrap;
+}
+.marquee-track span.ac{color:var(--acid);}
+
+/* SECTION BASE */
+section{padding:100px 0;}
+.divider{height:1px;background:var(--border);}
+.sec-tag{
+  font-family:'Azeret Mono',monospace;
+  font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--acid);margin-bottom:1.2rem;
+  display:flex;align-items:center;gap:8px;
+}
+.sec-tag::before{content:'';width:20px;height:1px;background:var(--acid);}
+h2{
+  font-family:'Anybody',sans-serif;
+  font-weight:900;
+  font-size:clamp(2.2rem,4.5vw,4rem);
+  letter-spacing:-.04em;line-height:.95;
+  margin-bottom:1.2rem;
+}
+h2 em{font-style:italic;color:var(--acid);}
+.sec-sub{font-size:.95rem;color:var(--muted);font-weight:300;line-height:1.75;max-width:520px;}
+
+/* WHAT WE DO */
+.services-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1px;
+  background:var(--border);
+  margin-top:56px;
+  border:1px solid var(--border);
+}
+@media(max-width:860px){.services-grid{grid-template-columns:1fr;}}
+.service-card{
+  background:var(--bg);
+  padding:44px 36px;
+  position:relative;
+  transition:background .3s;
+}
+.service-card:hover{background:var(--bg2);}
+.service-card.featured{background:rgba(0,255,136,.03);}
+.service-card.featured::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--acid),transparent);
+  animation:glow 3s ease-in-out infinite;
+}
+.service-num{
+  font-family:'Anybody',sans-serif;
+  font-weight:900;font-size:3.5rem;
+  color:var(--dim);letter-spacing:-.05em;
+  line-height:1;margin-bottom:1.5rem;
+}
+.service-title{
+  font-family:'Anybody',sans-serif;
+  font-weight:700;font-size:1.3rem;
+  letter-spacing:-.02em;margin-bottom:.8rem;
+  color:var(--text);
+}
+.service-desc{font-size:.85rem;color:var(--muted);line-height:1.75;font-weight:300;margin-bottom:1.2rem;}
+.service-list{display:flex;flex-direction:column;gap:7px;margin-bottom:1.4rem;}
+.service-list-item{display:flex;align-items:flex-start;gap:9px;font-size:.8rem;color:var(--muted);font-weight:300;line-height:1.5;}
+.sli-dash{color:var(--acid);font-family:'Azeret Mono',monospace;font-size:.68rem;flex-shrink:0;margin-top:2px;}
+.service-tags{display:flex;flex-wrap:wrap;gap:6px;}
+.tag{
+  font-family:'Azeret Mono',monospace;
+  font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:4px 10px;
+  background:var(--surface);
+  border:1px solid var(--dim);
+  color:var(--muted);
+}
+.tag.acid{background:rgba(0,255,136,.08);border-color:rgba(0,255,136,.2);color:var(--acid);}
+.service-link{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:'Azeret Mono',monospace;
+  font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--acid);text-decoration:none;
+  margin-top:1.5rem;
+  transition:gap .2s;
+}
+.service-link:hover{gap:10px;}
+
+/* FIVERR GIGS */
+.gigs-section{background:var(--bg2);}
+.gigs-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:16px;
+  margin-top:48px;
+}
+@media(max-width:760px){.gigs-grid{grid-template-columns:1fr;}}
+.gig-card{
+  background:var(--bg3);
+  border:1px solid var(--border);
+  padding:32px 28px;
+  position:relative;
+  transition:all .3s;
+  cursor:pointer;
+}
+.gig-card:hover{border-color:var(--border-acid);transform:translateY(-3px);box-shadow:0 20px 48px rgba(0,0,0,.5);}
+.gig-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:'Azeret Mono',monospace;
+  font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;
+  padding:4px 10px;margin-bottom:16px;
+}
+.gig-badge.geo{background:rgba(0,255,136,.1);border:1px solid rgba(0,255,136,.2);color:var(--acid);}
+.gig-badge.seo{background:rgba(255,107,53,.1);border:1px solid rgba(255,107,53,.2);color:var(--orange);}
+.gig-badge.pr{background:rgba(100,149,237,.1);border:1px solid rgba(100,149,237,.2);color:#6495ed;}
+.gig-title{
+  font-family:'Anybody',sans-serif;
+  font-weight:700;font-size:1.1rem;
+  letter-spacing:-.02em;margin-bottom:.6rem;
+  line-height:1.2;
+}
+.gig-desc{font-size:.82rem;color:var(--muted);line-height:1.7;font-weight:300;margin-bottom:1.2rem;}
+.gig-price{
+  font-family:'Anybody',sans-serif;
+  font-weight:900;font-size:1.4rem;
+  letter-spacing:-.03em;color:var(--text);
+}
+.gig-price span{font-size:.75rem;color:var(--muted);font-family:'Azeret Mono',monospace;font-weight:400;letter-spacing:.06em;}
+.gig-from{font-family:'Azeret Mono',monospace;font-size:.6rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;}
+.gig-arrow{
+  position:absolute;top:28px;right:28px;
+  width:32px;height:32px;
+  border:1px solid var(--dim);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--muted);font-size:.8rem;
+  transition:all .2s;
+}
+.gig-card:hover .gig-arrow{border-color:var(--acid);color:var(--acid);}
+
+/* HOW IT WORKS */
+.process-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:1px;
+  background:var(--border);
+  margin-top:56px;
+  border:1px solid var(--border);
+}
+@media(max-width:860px){.process-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:500px){.process-grid{grid-template-columns:1fr;}}
+.process-step{background:var(--bg);padding:36px 28px;}
+.step-num{
+  font-family:'Anybody',sans-serif;
+  font-weight:900;font-size:4rem;
+  color:var(--dim);letter-spacing:-.05em;
+  line-height:1;margin-bottom:1rem;
+}
+.step-title{
+  font-family:'Anybody',sans-serif;
+  font-weight:700;font-size:1rem;
+  letter-spacing:-.01em;margin-bottom:.6rem;
+}
+.step-desc{font-size:.8rem;color:var(--muted);line-height:1.7;font-weight:300;}
+
+/* AUDIT SCORE WIDGET */
+.audit-section{background:var(--bg2);}
+.audit-inner{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:64px;
+  align-items:center;
+}
+@media(max-width:860px){.audit-inner{grid-template-columns:1fr;gap:40px;}}
+.audit-card{
+  background:var(--bg3);
+  border:1px solid var(--border-acid);
+  padding:32px;
+  animation:borderPulse 3s ease-in-out infinite;
+}
+.audit-card-title{
+  font-family:'Azeret Mono',monospace;
+  font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:20px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.audit-live{display:flex;align-items:center;gap:6px;color:var(--acid);}
+.audit-live-dot{width:5px;height:5px;border-radius:50%;background:var(--acid);animation:pulse 2s infinite;}
+.audit-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:12px 0;border-bottom:1px solid var(--border);
+  font-family:'Azeret Mono',monospace;font-size:.72rem;
+}
+.audit-row:last-child{border-bottom:none;}
+.audit-label{color:var(--muted);letter-spacing:.06em;}
+.audit-val{font-weight:500;}
+.audit-val.red{color:#ff4455;}
+.audit-val.yellow{color:#ffcc00;}
+.audit-val.green{color:var(--acid);}
+.audit-bar-wrap{margin-top:20px;}
+.audit-bar-label{
+  display:flex;justify-content:space-between;
+  font-family:'Azeret Mono',monospace;font-size:.6rem;
+  color:var(--muted);letter-spacing:.08em;margin-bottom:6px;
+}
+.audit-bar{height:4px;background:var(--surface);position:relative;overflow:hidden;}
+.audit-bar-fill{
+  position:absolute;top:0;left:0;bottom:0;
+  background:var(--acid);
+  animation:progressFill 1.5s ease-out both;
+}
+@keyframes progressFill{from{width:0;}to{width:var(--w);}}
+
+/* DISCORD CTA */
+.discord-section{
+  position:relative;overflow:hidden;
+  text-align:center;
+  background:var(--bg);
+}
+.discord-glow{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:600px;height:400px;
+  background:radial-gradient(ellipse,rgba(0,255,136,.06) 0%,transparent 65%);
+  pointer-events:none;
+}
+.discord-inner{position:relative;z-index:1;max-width:640px;margin:0 auto;}
+.discord-icon{
+  width:64px;height:64px;
+  background:rgba(88,101,242,.15);
+  border:1px solid rgba(88,101,242,.3);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 2rem;
+  font-size:1.8rem;
+  animation:float 3s ease-in-out infinite;
+}
+.discord-section h2{margin-bottom:1rem;}
+.discord-section .sec-sub{margin:0 auto 2.5rem;text-align:center;}
+
+/* PRICING SIMPLE */
+.pricing-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1px;
+  background:var(--border);
+  margin-top:56px;
+  border:1px solid var(--border);
+}
+@media(max-width:860px){.pricing-grid{grid-template-columns:1fr;gap:16px;background:transparent;border:none;}}
+.price-card{
+  background:var(--bg);
+  padding:40px 32px;
+  position:relative;
+  transition:background .3s;
+}
+.price-card:hover{background:var(--bg2);}
+.price-card.featured{
+  background:rgba(0,255,136,.02);
+  border-top:2px solid var(--acid);
+}
+@media(max-width:860px){
+  .price-card{border:1px solid var(--border);}
+  .price-card.featured{border-color:rgba(0,255,136,.3);}
+}
+.pc-label{
+  font-family:'Azeret Mono',monospace;
+  font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:12px;
+}
+.pc-name{
+  font-family:'Anybody',sans-serif;
+  font-weight:900;font-size:1.5rem;
+  letter-spacing:-.03em;margin-bottom:6px;
+}
+.pc-desc{font-size:.8rem;color:var(--muted);font-weight:300;line-height:1.6;margin-bottom:24px;}
+.pc-price{
+  font-family:'Anybody',sans-serif;
+  font-weight:900;font-size:2.8rem;
+  letter-spacing:-.05em;color:var(--text);
+  line-height:1;margin-bottom:4px;
+}
+.pc-price .cur{font-size:1.4rem;vertical-align:super;}
+.pc-period{font-family:'Azeret Mono',monospace;font-size:.62rem;color:var(--muted);letter-spacing:.08em;margin-bottom:28px;}
+.pc-features{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:32px;}
+.pc-features li{
+  display:flex;align-items:flex-start;gap:10px;
+  font-size:.82rem;color:var(--muted);font-weight:300;line-height:1.5;
+}
+.pc-features li::before{
+  content:'—';color:var(--acid);
+  font-family:'Azeret Mono',monospace;
+  font-size:.7rem;flex-shrink:0;margin-top:2px;
+}
+.pc-cta{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:13px 18px;
+  background:var(--surface);
+  border:1px solid var(--dim);
+  font-family:'Azeret Mono',monospace;
+  font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--text);text-decoration:none;
+  transition:all .25s;margin-top:auto;
+}
+.pc-cta:hover{border-color:var(--muted);}
+.price-card.featured .pc-cta{
+  background:var(--acid);
+  border-color:var(--acid);
+  color:#05080f;font-weight:600;
+}
+.price-card.featured .pc-cta:hover{background:var(--acid2);box-shadow:0 0 24px rgba(0,255,136,.3);}
+
+/* TRUST */
+.trust-strip{
+  background:var(--bg2);
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  padding:16px 0;
+  overflow:hidden;
+}
+.trust-inner{
+  display:flex;align-items:center;justify-content:center;
+  gap:40px;flex-wrap:wrap;
+}
+.trust-item{
+  display:flex;align-items:center;gap:8px;
+  font-family:'Azeret Mono',monospace;
+  font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);
+}
+.trust-item .n{color:var(--acid);}
+.trust-sep{width:1px;height:14px;background:var(--dim);}
+@media(max-width:600px){.trust-sep{display:none;}.trust-inner{gap:18px;}}
+
+/* FOOTER */
+footer{
+  background:var(--bg);
+  border-top:1px solid var(--border);
+  padding:40px 0;
+}
+.footer-inner{
+  display:flex;align-items:flex-start;
+  justify-content:space-between;
+  flex-wrap:wrap;gap:32px;
+}
+.footer-logo{
+  font-family:'Anybody',sans-serif;
+  font-weight:900;font-size:1.3rem;
+  letter-spacing:-.03em;
+  display:flex;align-items:center;gap:8px;
+  margin-bottom:10px;
+}
+.footer-logo em{color:var(--acid);font-style:normal;}
+.footer-stack{
+  font-family:'Azeret Mono',monospace;
+  font-size:.6rem;color:var(--dim);
+  letter-spacing:.08em;line-height:2;
+}
+.footer-stack span{color:var(--muted);}
+.footer-right{text-align:right;}
+.footer-links{display:flex;gap:20px;justify-content:flex-end;margin-bottom:10px;}
+.footer-links a{
+  font-family:'Azeret Mono',monospace;
+  font-size:.62rem;color:var(--dim);
+  text-decoration:none;letter-spacing:.08em;
+  transition:color .2s;
+}
+.footer-links a:hover{color:var(--acid);}
+.footer-copy{font-family:'Azeret Mono',monospace;font-size:.6rem;color:var(--dim);letter-spacing:.07em;}
 </style>
 </head>
 <body>
 
-<!-- ══════════ NAV ══════════ -->
-<nav class="fixed top-0 left-0 right-0 z-50" style="background:rgba(4,7,14,.92);backdrop-filter:blur(28px);border-bottom:1px solid rgba(255,255,255,.045)">
-  <div class="max-w-5xl mx-auto px-5 py-3.5 flex items-center justify-between gap-4">
-    <div class="flex items-center gap-3 shrink-0">
-      <div class="flex items-center gap-2">
-        <div style="width:26px;height:26px;border-radius:6px;background:linear-gradient(135deg,rgba(0,255,159,.2),rgba(0,255,159,.05));border:1px solid rgba(0,255,159,.25);display:flex;align-items:center;justify-content:center">
-          <span style="color:var(--neon);font-size:.7rem">◈</span>
-        </div>
-        <span class="fd font-bold text-xl" style="color:#fff;letter-spacing:-.01em">GlobalRank<span style="color:var(--neon)">AI</span></span>
+<!-- NAV -->
+<nav>
+  <div class="wrap">
+    <div class="nav-inner">
+      <a href="#" class="logo">
+        <span class="logo-dot"></span>
+        Pro<em>GPT</em>
+      </a>
+      <div class="nav-links">
+        <a href="#services" class="nav-link">Services</a>
+        <a href="#gigs" class="nav-link">Gigs</a>
+        <a href="#pricing" class="nav-link">Pricing</a>
+        <a href="#audit" class="nav-link">Free Audit</a>
+        <a href="https://discord.gg/your-invite" target="_blank" class="nav-cta">
+          Join Discord ↗
+        </a>
       </div>
-      <span style="color:var(--bdr)">|</span>
-      <span class="fm text-xs hidden sm:inline" style="color:var(--text-dim);letter-spacing:.06em">by ProGPT.store</span>
     </div>
-    <div class="hidden md:flex items-center gap-2 fm text-xs" style="color:var(--text-dim)">
-      <div class="dot-g"></div>
-      <span id="nav-ticker">A dentist in Austin TX ran an analysis — <span style="color:rgba(0,255,159,.6)">12s ago</span></span>
-    </div>
-    <a href="#scan" class="btn shrink-0" style="padding:9px 20px;font-size:.88rem;animation:none;box-shadow:0 0 14px var(--neon-glow)">
-      View My Visibility Score →
-    </a>
   </div>
 </nav>
 
-<!-- ══════════ 1. HERO ══════════ -->
-<section class="min-h-screen flex flex-col justify-center px-4 pt-28 pb-16 relative overflow-hidden">
-  <div class="orb" style="width:600px;height:600px;top:50%;left:50%;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(0,255,159,.04) 0%,transparent 65%)"></div>
-  <div class="orb" style="width:300px;height:300px;top:20%;right:5%;transform:none;background:radial-gradient(circle,rgba(56,189,248,.03) 0%,transparent 65%);animation-delay:-4s"></div>
-
-  <div class="max-w-2xl mx-auto text-center z1 rise" id="hero-block">
-
-    <div class="flex items-center justify-center gap-2 mb-8">
-      <div class="dot-g"></div>
-      <span class="fm text-xs" style="color:var(--text-dim)">
-        <span id="hero-city-count">23</span> businesses analyzed today · last report <span style="color:rgba(0,255,159,.65)" id="hero-last-sec">12</span>s ago
-      </span>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <div class="hero-scan"></div>
+  <div class="wrap">
+    <div class="eyebrow a1">
+      <span class="eyebrow-dot"></span>
+      GEO · AI Search · Traditional SEO
     </div>
-
-    <div class="mb-4">
-      <span class="chip">Free Visibility Analysis</span>
-    </div>
-
-    <h1 class="hero-h fd font-bold leading-none mb-5" style="font-size:3.6rem;letter-spacing:-.02em">
-      <span style="color:#fff;display:block">Understand Your</span>
-      <span style="background:linear-gradient(135deg,var(--neon) 0%,#00d4ff 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block;margin-top:2px">Google Visibility Score</span>
+    <h1 class="a2">
+      Get Found<br/>
+      Where <em>AI</em><br/>
+      <span class="outline">Answers.</span>
     </h1>
-
-    <p class="text-base sm:text-lg mb-8 leading-relaxed" style="color:var(--text-muted);max-width:440px;margin-left:auto;margin-right:auto">
-      GlobalRankAI analyzes your local search presence and surfaces the gaps that may be limiting your reach — with a clear breakdown and actionable steps.
+    <p class="hero-sub a3">
+      ChatGPT, Perplexity, Google AI Overviews — they're answering your customers' questions <strong>right now.</strong> ProGPT makes sure your brand is in those answers.
     </p>
-
-    <a href="#scan" class="btn" style="font-size:1.15rem;padding:17px 42px">
-      View My Visibility Score →
-    </a>
-
-    <div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-6 fm text-xs" style="color:var(--text-dim)">
-      <span>✓ Free · No account required</span>
-      <span>✓ Results in ~30 seconds</span>
-      <span>✓ Used by 2,000+ businesses</span>
+    <div class="hero-actions a4">
+      <a href="#audit" class="btn-primary">Get Free AI Audit ↓</a>
+      <a href="https://discord.gg/your-invite" target="_blank" class="btn-discord">💬 Join Discord</a>
+      <a href="#gigs" class="btn-ghost">View Fiverr Gigs →</a>
     </div>
-
-    <!-- Insight callout -->
-    <div class="mt-10 inline-flex items-center gap-3 px-5 py-3 rounded-lg text-left" style="background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.18);max-width:440px">
-      <span style="font-size:1rem;flex-shrink:0">📊</span>
-      <span class="text-sm" style="color:rgba(220,210,180,.7)">Most businesses have 3–6 visibility gaps affecting their local search ranking. The average estimated impact is <strong style="color:var(--amber)">$800–$2,500/month</strong> in unreached customers.</span>
+    <div class="hero-stats a6">
+      <div class="stat">
+        <div class="stat-n">70<span>%</span></div>
+        <div class="stat-l">Search queries now<br/>via AI engines</div>
+      </div>
+      <div class="stat">
+        <div class="stat-n">48<span>h</span></div>
+        <div class="stat-l">Audit delivered<br/>via Discord</div>
+      </div>
+      <div class="stat">
+        <div class="stat-n">3<span>×</span></div>
+        <div class="stat-l">Avg citation lift<br/>after optimization</div>
+      </div>
+      <div class="stat">
+        <div class="stat-n">$0</div>
+        <div class="stat-l">To start — free<br/>audit available</div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ══════════ 2. SAMPLE REPORT ══════════ -->
-<section class="py-14 px-4" style="background:var(--bg2)">
-  <div class="max-w-xl mx-auto rise">
-    <div class="text-center mb-8">
-      <p class="fm text-xs mb-2" style="color:rgba(0,255,159,.5);letter-spacing:.1em">SAMPLE REPORT</p>
-      <h2 class="fd font-bold text-2xl sm:text-3xl text-white">What a Visibility Report Looks Like</h2>
-      <p class="text-sm mt-2" style="color:var(--text-muted)">Based on a real analysis of a local dental practice in Austin, TX.</p>
-    </div>
-
-    <div class="g rounded-2xl overflow-hidden scan-wrap" style="border-color:rgba(245,158,11,.15)">
-      <div class="term-bar px-5 pt-4">
-        <div class="term-dot" style="background:#ff5f57"></div>
-        <div class="term-dot" style="background:#febc2e"></div>
-        <div class="term-dot" style="background:rgba(0,255,159,.6)"></div>
-        <span class="fm text-xs ml-2" style="color:var(--text-dim)">globalrank.ai — analysis complete</span>
-        <span class="tag-warn ml-auto">Needs Attention</span>
-      </div>
-
-      <div class="px-5 pb-5">
-        <div class="flex items-start justify-between mb-5">
-          <div>
-            <p class="fd font-bold text-white text-lg">City Dental Studio</p>
-            <p class="fm text-xs mt-0.5" style="color:var(--text-dim)">Austin, TX · Dentist · Analyzed 4 min ago</p>
-          </div>
-          <div class="text-right">
-            <p class="fm text-xs mb-1" style="color:var(--text-dim)">VISIBILITY SCORE</p>
-            <p class="fd font-bold" style="font-size:2.8rem;line-height:1;color:var(--amber)">32<span class="text-sm" style="color:var(--text-dim)">/100</span></p>
-          </div>
-        </div>
-
-        <div class="space-y-3 mb-5">
-          <div>
-            <div class="flex justify-between text-xs mb-1.5" style="color:var(--text-dim)"><span>Google Business Profile</span><span style="color:var(--warn);font-weight:600">28%</span></div>
-            <div class="bar-track"><div class="bar-fill" style="--w:28%;background:var(--warn)"></div></div>
-          </div>
-          <div>
-            <div class="flex justify-between text-xs mb-1.5" style="color:var(--text-dim)"><span>Local SEO Signals</span><span style="color:var(--amber);font-weight:600">41%</span></div>
-            <div class="bar-track"><div class="bar-fill" style="--w:41%;background:var(--amber);animation-delay:.15s"></div></div>
-          </div>
-          <div>
-            <div class="flex justify-between text-xs mb-1.5" style="color:var(--text-dim)"><span>Review Authority</span><span style="color:var(--warn);font-weight:600">19%</span></div>
-            <div class="bar-track"><div class="bar-fill" style="--w:19%;background:var(--warn);animation-delay:.3s"></div></div>
-          </div>
-          <div>
-            <div class="flex justify-between text-xs mb-1.5" style="color:var(--text-dim)"><span>Citation Consistency</span><span style="color:var(--amber);font-weight:600">53%</span></div>
-            <div class="bar-track"><div class="bar-fill" style="--w:53%;background:var(--amber);animation-delay:.45s"></div></div>
-          </div>
-        </div>
-
-        <!-- Revenue insight — calm, analytical -->
-        <div class="rev-insight mb-4">
-          <div class="flex items-start gap-3">
-            <span style="color:var(--amber);font-size:1rem;flex-shrink:0;margin-top:1px">◈</span>
-            <div>
-              <p class="fd font-semibold text-white" style="font-size:.95rem">Estimated Missed Revenue</p>
-              <p class="fd font-bold mt-0.5" style="font-size:1.6rem;color:var(--amber)">$1,200 – $2,800<span class="text-sm ml-1.5 font-normal" style="color:var(--text-muted);font-family:'DM Sans',sans-serif">/month</span></p>
-              <p class="text-xs mt-1" style="color:rgba(200,185,140,.6)">Estimated based on local search volume, industry average customer value, and current visibility gaps.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="space-y-2 mb-3">
-          <div class="g-warn rounded-lg p-3 flex items-start gap-3">
-            <span class="tag-issue mt-0.5">Gap</span>
-            <div>
-              <p class="text-sm font-medium text-white">Google Business Profile incomplete</p>
-              <p class="text-xs mt-0.5" style="color:var(--text-muted)">Missing photos, service descriptions, and hours reduce visibility in local map results.</p>
-            </div>
-          </div>
-          <div class="g-warn rounded-lg p-3 flex items-start gap-3">
-            <span class="tag-issue mt-0.5">Gap</span>
-            <div>
-              <p class="text-sm font-medium text-white">Review velocity below local competitors</p>
-              <p class="text-xs mt-0.5" style="color:var(--text-muted)">Competing practices average 14 new reviews/month. This profile averages 2.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="relative">
-          <div class="blurred space-y-2 pointer-events-none select-none">
-            <div class="g-warn rounded-lg p-3"><p class="text-sm text-white">Citation inconsistencies across 14 directories</p></div>
-            <div class="g-warn rounded-lg p-3"><p class="text-sm text-white">Local backlink authority below competitor average</p></div>
-            <div class="g-warn rounded-lg p-3"><p class="text-sm text-white">23 high-intent keywords not ranking</p></div>
-          </div>
-          <div class="absolute inset-0 flex items-center justify-center" style="background:linear-gradient(180deg,transparent 0%,rgba(7,12,24,.97) 35%)">
-            <div class="text-center px-4 pt-8">
-              <p class="fd font-bold text-lg text-white">3 Additional Insights</p>
-              <p class="text-sm mt-1 mb-5" style="color:var(--text-muted)">Run an analysis for your business to see the full report.</p>
-              <a href="#scan" class="btn inline-flex" style="font-size:.9rem;padding:12px 26px">View My Visibility Score →</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <p class="fm text-xs text-center mt-4" style="color:var(--text-dim)">Sample based on publicly available local SEO signals from a real business.</p>
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="ac">● ChatGPT Visibility</span>
+    <span>GEO Audit</span>
+    <span class="ac">● AI Citation Building</span>
+    <span>Perplexity Ranking</span>
+    <span class="ac">● Google AI Overviews</span>
+    <span>Local SEO</span>
+    <span class="ac">● Press Release Writing</span>
+    <span>On-Page SEO</span>
+    <span class="ac">● Google Business Profile</span>
+    <span>Schema Markup</span>
+    <span class="ac">● Competitor Analysis</span>
+    <span>Keyword Research</span>
+    <span class="ac">● ChatGPT Visibility</span>
+    <span>GEO Audit</span>
+    <span class="ac">● AI Citation Building</span>
+    <span>Perplexity Ranking</span>
+    <span class="ac">● Google AI Overviews</span>
+    <span>Local SEO</span>
+    <span class="ac">● Press Release Writing</span>
+    <span>On-Page SEO</span>
+    <span class="ac">● Google Business Profile</span>
+    <span>Schema Markup</span>
+    <span class="ac">● Competitor Analysis</span>
+    <span>Keyword Research</span>
   </div>
-</section>
+</div>
 
-<!-- ══════════ 3. SCAN FORM ══════════ -->
-<section id="scan" class="py-16 px-4 relative">
-  <div class="orb" style="width:450px;height:450px;top:50%;left:50%;background:radial-gradient(circle,rgba(0,255,159,.035) 0%,transparent 65%)"></div>
-  <div class="max-w-lg mx-auto z1 rise">
-
-    <div class="text-center mb-8">
-      <span class="chip mb-4 inline-flex">Free · ~30 seconds · No account needed</span>
-      <h2 class="fd font-bold text-3xl sm:text-4xl mt-4 mb-2 text-white">Check Your Visibility Score</h2>
-      <p class="text-sm leading-relaxed" style="color:var(--text-muted)">Enter your business details below. GlobalRankAI will analyze your local search presence and generate a free visibility report.</p>
+<!-- TRUST STRIP -->
+<div class="trust-strip">
+  <div class="wrap">
+    <div class="trust-inner">
+      <div class="trust-item"><span class="n">Free</span> AI Visibility Audit</div>
+      <div class="trust-sep"></div>
+      <div class="trust-item">Results in <span class="n">48h</span></div>
+      <div class="trust-sep"></div>
+      <div class="trust-item">Delivered via <span class="n">Discord</span></div>
+      <div class="trust-sep"></div>
+      <div class="trust-item"><span class="n">No</span> credit card needed</div>
+      <div class="trust-sep"></div>
+      <div class="trust-item">Built with <span class="n">n8n + Claude</span></div>
     </div>
+  </div>
+</div>
 
-    <div id="s-form">
-      <div class="g rounded-2xl p-6 sm:p-8" style="border-color:rgba(0,255,159,.08)">
-        <div class="term-bar">
-          <div class="term-dot" style="background:#ff5f57"></div>
-          <div class="term-dot" style="background:#febc2e"></div>
-          <div class="term-dot" style="background:rgba(0,255,159,.6)"></div>
-          <span class="fm text-xs ml-2" style="color:var(--text-dim)">globalrank.ai — ready</span>
-          <div class="ml-auto flex items-center gap-1.5"><div class="dot-g"></div><span class="fm text-xs" style="color:rgba(0,255,159,.45)">LIVE</span></div>
+<!-- SERVICES -->
+<section id="services">
+  <div class="wrap">
+    <div class="sec-tag sr">What We Do</div>
+    <h2 class="sr sr-d1">Two Engines.<br/><em>One Goal.</em></h2>
+    <p class="sec-sub sr sr-d2">Traditional SEO gets you on Google. GEO gets you in AI answers. You need both — and we do both.</p>
+    <div class="services-grid">
+
+      <!-- 01 GEO -->
+      <div class="service-card featured sr sr-d1">
+        <div class="service-num">01</div>
+        <div class="service-title">GEO — AI Search Optimization</div>
+        <p class="service-desc">Most brands are invisible to ChatGPT, Perplexity, and Gemini. We audit exactly where you're missing and restructure your content and entity data so AI engines cite you — not your competitors.</p>
+        <div class="service-list">
+          <div class="service-list-item"><span class="sli-dash">—</span>Full citation audit across 3 AI engines</div>
+          <div class="service-list-item"><span class="sli-dash">—</span>Entity graph + schema restructure</div>
+          <div class="service-list-item"><span class="sli-dash">—</span>Semantic cluster mapping</div>
+          <div class="service-list-item"><span class="sli-dash">—</span>Competitor AI visibility gap report</div>
         </div>
-
-        <div class="space-y-4">
-          <div>
-            <label class="block text-xs font-medium mb-1.5" style="color:rgba(200,210,225,.5);letter-spacing:.04em;text-transform:uppercase">Business Name</label>
-            <input id="f-name" type="text" class="inp" placeholder="e.g. Riverside Dental Group"/>
-          </div>
-          <div>
-            <label class="block text-xs font-medium mb-1.5" style="color:rgba(200,210,225,.5);letter-spacing:.04em;text-transform:uppercase">City &amp; State</label>
-            <input id="f-city" type="text" class="inp" placeholder="e.g. Austin, TX"/>
-          </div>
-          <div>
-            <label class="block text-xs font-medium mb-1.5" style="color:rgba(200,210,225,.5);letter-spacing:.04em;text-transform:uppercase">Industry</label>
-            <select id="f-type" class="inp" style="cursor:pointer">
-              <option value="" disabled selected>Select your industry…</option>
-              <option>Dentist / Medical</option>
-              <option>Gym / Fitness Studio</option>
-              <option>Salon / Beauty</option>
-              <option>Plumber / Contractor</option>
-              <option>HVAC / Home Services</option>
-              <option>Restaurant / Café</option>
-              <option>Law Firm</option>
-              <option>Chiropractor</option>
-              <option>Auto Repair</option>
-              <option>Real Estate</option>
-              <option>Other</option>
-            </select>
-          </div>
-          <button onclick="startScan()" class="btn w-full justify-center" style="width:100%;margin-top:2px">
-            View My Visibility Score →
-          </button>
+        <div class="service-tags">
+          <span class="tag acid">ChatGPT</span>
+          <span class="tag acid">Perplexity</span>
+          <span class="tag acid">Gemini</span>
+          <span class="tag acid">AI Overviews</span>
+          <span class="tag">Citation Audit</span>
+          <span class="tag">Entity Optimization</span>
         </div>
-
-        <div class="mt-5 pt-4" style="border-top:1px solid var(--bdr)">
-          <div class="flex flex-wrap items-center justify-center gap-x-5 gap-y-1 fm text-xs" style="color:var(--text-dim)">
-            <span>✓ No spam</span><span>✓ No commitments</span><span>✓ Based on public SEO signals</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- LOADING STATE -->
-    <div id="s-load" class="hidden">
-      <div class="g rounded-2xl p-6 scan-wrap" style="border-color:rgba(0,255,159,.1)">
-        <div class="term-bar">
-          <div class="term-dot" style="background:#ff5f57"></div>
-          <div class="term-dot" style="background:#febc2e"></div>
-          <div class="term-dot" style="background:rgba(0,255,159,.6)"></div>
-          <span class="fm text-xs ml-2" style="color:var(--text-dim)">Analyzing <span id="load-name" style="color:rgba(0,255,159,.7)">…</span></span>
-        </div>
-
-        <div id="scan-phase-msg" class="text-center mb-4 fm text-sm" style="color:rgba(0,255,159,.6);min-height:22px">Analyzing local search signals…</div>
-
-        <div id="scan-log" class="fm text-xs space-y-1.5 mb-5" style="color:rgba(0,255,159,.5);min-height:96px"></div>
-
-        <div class="bar-track mb-2">
-          <div id="prog-bar" class="bar-fill" style="--w:0%;background:linear-gradient(90deg,var(--neon),#00d4ff);transition:width .4s ease"></div>
-        </div>
-        <div class="flex justify-between fm text-xs" style="color:var(--text-dim)">
-          <span id="prog-label">Initializing…</span>
-          <span id="prog-pct">0%</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- ANALYSIS COMPLETE BANNER -->
-    <div id="s-issues-banner" class="hidden text-center my-5">
-      <div class="inline-flex items-center gap-3 px-5 py-3 rounded-lg" style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25)">
-        <div class="dot-a"></div>
-        <span class="fd font-semibold" style="color:var(--amber);font-size:1.05rem">Analysis complete — visibility gaps identified</span>
-      </div>
-      <p class="fm text-xs mt-2" style="color:var(--text-dim)">Partial results below · Full report available via email</p>
-    </div>
-
-    <!-- RESULTS STATE -->
-    <div id="s-results" class="hidden space-y-4">
-
-      <!-- Score card -->
-      <div class="g rounded-2xl overflow-hidden" style="border-color:rgba(245,158,11,.14)">
-        <div class="px-5 py-4 flex items-start justify-between" style="background:rgba(245,158,11,.04);border-bottom:1px solid rgba(245,158,11,.1)">
-          <div>
-            <p class="fd font-bold text-white text-xl" id="r-name">—</p>
-            <p class="fm text-xs mt-1" style="color:var(--text-dim)" id="r-city">—</p>
-          </div>
-          <div class="text-right">
-            <p class="fm text-xs mb-1" style="color:var(--text-dim)">VISIBILITY SCORE</p>
-            <div class="score-num" id="r-score">—</div>
-          </div>
-        </div>
-        <div class="px-5 py-4">
-          <p class="fm text-xs mb-3" style="color:rgba(0,255,159,.4);letter-spacing:.08em">SIGNAL BREAKDOWN</p>
-          <div class="space-y-3" id="r-bars"></div>
-        </div>
+        <a href="#gigs" class="service-link">View Gigs →</a>
       </div>
 
-      <!-- Revenue insight -->
-      <div class="rev-insight">
-        <div class="flex items-start gap-3">
-          <span style="color:var(--amber);font-size:1rem;flex-shrink:0;margin-top:2px">◈</span>
-          <div>
-            <p class="text-xs font-medium mb-1" style="color:rgba(200,185,140,.6);text-transform:uppercase;letter-spacing:.06em">Estimated Missed Revenue</p>
-            <p class="fd font-bold" style="font-size:1.8rem;color:var(--amber)" id="r-rev-loss">$800 – $2,400<span class="text-sm font-normal ml-1.5" style="color:var(--text-muted);font-family:'DM Sans',sans-serif">/month</span></p>
-            <p class="text-xs mt-1.5" style="color:rgba(200,185,140,.55)">Estimated based on your visibility gap, industry search volume, and average customer value. Full breakdown in your email report.</p>
-          </div>
+      <!-- 02 Traditional SEO -->
+      <div class="service-card sr sr-d2">
+        <div class="service-num">02</div>
+        <div class="service-title">Traditional SEO</div>
+        <p class="service-desc">The foundation that feeds both Google rankings and AI search. On-page optimization, local citations, and technical fixes — done properly so every other service compounds on top of it.</p>
+        <div class="service-list">
+          <div class="service-list-item"><span class="sli-dash">—</span>On-page + technical SEO audit</div>
+          <div class="service-list-item"><span class="sli-dash">—</span>Google Business Profile optimization</div>
+          <div class="service-list-item"><span class="sli-dash">—</span>NAP citation cleanup (30+ directories)</div>
+          <div class="service-list-item"><span class="sli-dash">—</span>Keyword gap + competitor analysis</div>
         </div>
+        <div class="service-tags">
+          <span class="tag">On-Page SEO</span>
+          <span class="tag">Local Citations</span>
+          <span class="tag">GBP Optimization</span>
+          <span class="tag">Schema Markup</span>
+          <span class="tag">Keyword Research</span>
+        </div>
+        <a href="#gigs" class="service-link">View Gigs →</a>
       </div>
 
-      <p class="fm text-xs" style="color:var(--text-dim);letter-spacing:.06em">IDENTIFIED VISIBILITY GAPS</p>
-
-      <div class="g-warn rounded-xl p-4 flex items-start gap-3">
-        <span class="tag-issue shrink-0 mt-0.5">Gap</span>
-        <div>
-          <p class="font-semibold text-white" style="font-size:.95rem">Google Business Profile — Incomplete</p>
-          <p class="text-sm mt-0.5" style="color:var(--text-muted)">Missing photos, service details, and business hours reduce your visibility in local map searches.</p>
+      <!-- 03 Content Writing & PR -->
+      <div class="service-card sr sr-d3">
+        <div class="service-num">03</div>
+        <div class="service-title">Content Writing &amp; PR</div>
+        <p class="service-desc"><strong style="color:var(--text);font-weight:500;">100% human written</strong> — no AI filler. Project articles, thought leadership, and press releases crafted for your niche and voice. PR placements are <strong style="color:var(--text);font-weight:500;">fully custom</strong>, scoped 1-on-1 in Discord.</p>
+        <div class="service-list">
+          <div class="service-list-item"><span class="sli-dash">—</span>Project articles &amp; product deep-dives</div>
+          <div class="service-list-item"><span class="sli-dash">—</span>Thought leadership + founder bylines</div>
+          <div class="service-list-item"><span class="sli-dash">—</span>Press releases for journalist &amp; AI pickup</div>
+          <div class="service-list-item"><span class="sli-dash">—</span>Custom PR packages · pricing via Discord</div>
         </div>
-      </div>
-
-      <div class="g-warn rounded-xl p-4 flex items-start gap-3">
-        <span class="tag-issue shrink-0 mt-0.5">Gap</span>
-        <div>
-          <p class="font-semibold text-white" style="font-size:.95rem">Review Velocity — Below Local Average</p>
-          <p class="text-sm mt-0.5" style="color:var(--text-muted)">Top competitors in your area receive 3× more reviews monthly, which influences search ranking.</p>
+        <div class="service-tags">
+          <span class="tag acid">✍ Human Written</span>
+          <span class="tag">Project Articles</span>
+          <span class="tag">Thought Leadership</span>
+          <span class="tag">Press Releases</span>
+          <span class="tag">Crypto Media</span>
+          <span class="tag">Finance Media</span>
         </div>
-      </div>
-
-      <!-- GATE -->
-      <div class="g rounded-2xl overflow-hidden relative" style="border-color:rgba(245,158,11,.12)">
-        <div class="blurred p-5 space-y-3 pointer-events-none select-none">
-          <div class="g-warn rounded-xl p-4">
-            <p class="font-medium text-white">Citation inconsistencies across 14 directories</p>
-            <p class="text-sm mt-1" style="color:var(--text-muted)">Address/phone mismatches on Yelp, Apple Maps, and 12 other platforms may reduce trust signals.</p>
-          </div>
-          <div class="g-warn rounded-xl p-4">
-            <p class="font-medium text-white">Local backlink authority below competitor benchmark</p>
-            <p class="text-sm mt-1" style="color:var(--text-muted)">Competitors hold 4× more local authority signals, which affects ranking position.</p>
-          </div>
-          <div class="g-warn rounded-xl p-4">
-            <p class="font-medium text-white">23 high-intent search queries not captured</p>
-            <p class="text-sm mt-1" style="color:var(--text-muted)">These searches are currently directing customers to competitors.</p>
-          </div>
-        </div>
-
-        <div class="absolute inset-0 flex flex-col justify-end" style="background:linear-gradient(180deg,transparent 0%,rgba(4,7,14,.97) 30%)">
-          <div class="p-6" id="gate-form">
-            <p class="fd font-bold text-white text-lg mb-1">Your Full Report Is Ready</p>
-            <p class="fd font-semibold mb-1" style="color:var(--amber);font-size:1rem">
-              <span id="g-count">4</span> visibility gaps identified for your business
-            </p>
-            <p class="text-sm mb-5" style="color:var(--text-muted)">We'll send a detailed breakdown with actionable steps for each issue found.</p>
-            <div class="space-y-3 max-w-sm">
-              <input id="gate-email" type="email" class="inp" placeholder="Enter your email to receive full report"/>
-              <button onclick="unlockReport()" class="btn w-full justify-center" style="width:100%">
-                Send My Visibility Report →
-              </button>
-              <div class="flex items-center gap-2 fm text-xs" style="color:var(--text-dim)">
-                <span>✓ No spam</span><span style="color:var(--bdr)">·</span><span>✓ No commitments</span><span style="color:var(--bdr)">·</span><span>✓ Unsubscribe anytime</span>
-              </div>
-            </div>
-          </div>
-          <div class="p-6 hidden" id="gate-success">
-            <div class="g-neon rounded-xl p-5">
-              <div class="flex items-center gap-3 mb-2">
-                <span style="color:var(--neon);font-size:1.2rem">✓</span>
-                <p class="fd font-bold text-white text-xl">Report on its way</p>
-              </div>
-              <p class="text-sm mb-4" style="color:var(--text-muted)">Check your inbox — your full visibility breakdown and suggested fixes should arrive within a few minutes.</p>
-              <a href="#outcomes" class="btn ghost inline-flex" style="font-size:.88rem;padding:10px 20px">See What Improving Looks Like →</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Trust note -->
-      <div class="flex items-center gap-2 px-1">
-        <span style="color:rgba(0,255,159,.35);font-size:.85rem">🔒</span>
-        <p class="fm text-xs" style="color:var(--text-dim)">Analysis based on publicly available local SEO signals. Full report delivered via email.</p>
+        <a href="https://discord.gg/your-invite" target="_blank" class="service-link">Scope Your Package in Discord →</a>
       </div>
 
     </div>
   </div>
 </section>
 
-<!-- ══════════ 4. WHY IT MATTERS ══════════ -->
-<section class="py-16 px-4 rise" style="background:var(--bg2)">
-  <div class="max-w-xl mx-auto">
-    <div class="text-center mb-9">
-      <p class="fm text-xs mb-3" style="color:rgba(0,255,159,.45);letter-spacing:.1em">WHY IT MATTERS</p>
-      <h2 class="fd font-bold text-3xl sm:text-4xl text-white leading-tight">
-        Local Search Visibility<br/>Directly Affects Revenue
-      </h2>
-      <p class="text-sm mt-3" style="color:var(--text-muted)">Most business owners don't realize how much of their potential reach is limited by fixable issues.</p>
+<div class="divider"></div>
+
+<!-- FIVERR GIGS -->
+<section class="gigs-section" id="gigs">
+  <div class="wrap">
+    <div class="sec-tag sr">Fiverr Services</div>
+    <h2 class="sr sr-d1">Order <em>Directly.</em><br/>Delivered Fast.</h2>
+    <p class="sec-sub sr sr-d2">All gigs fulfilled personally. Results delivered within the stated timeframe. Find us on Fiverr or order custom packages via Discord.</p>
+    <div class="gigs-grid">
+
+      <div class="gig-card sr sr-d1">
+        <div class="gig-arrow">↗</div>
+        <div class="gig-badge geo">🔍 GEO / AI SEO</div>
+        <div class="gig-title">AI Visibility Audit — Are You in ChatGPT?</div>
+        <p class="gig-desc">Full audit of your brand's presence across ChatGPT, Perplexity, and Google AI Overviews. Competitor gap analysis + action plan included.</p>
+        <div class="gig-from">Starting from</div>
+        <div class="gig-price">$99 <span>/ audit</span></div>
+      </div>
+
+      <div class="gig-card sr sr-d2">
+        <div class="gig-arrow">↗</div>
+        <div class="gig-badge geo">🔍 GEO / AI SEO</div>
+        <div class="gig-title">Competitor AI Search Visibility Report</div>
+        <p class="gig-desc">See exactly how your top 3 competitors rank in AI-generated answers — and the exact gaps you can exploit to outrank them.</p>
+        <div class="gig-from">Starting from</div>
+        <div class="gig-price">$79 <span>/ report</span></div>
+      </div>
+
+      <div class="gig-card sr sr-d3">
+        <div class="gig-arrow">↗</div>
+        <div class="gig-badge seo">📈 Traditional SEO</div>
+        <div class="gig-title">Google Business Profile Full Optimization</div>
+        <p class="gig-desc">Complete GBP audit and optimization — categories, photos, posts, Q&A, citation consistency check. Dominate local search results.</p>
+        <div class="gig-from">Starting from</div>
+        <div class="gig-price">$49 <span>/ gig</span></div>
+      </div>
+
+      <div class="gig-card sr sr-d4">
+        <div class="gig-arrow">↗</div>
+        <div class="gig-badge seo">📈 Traditional SEO</div>
+        <div class="gig-title">On-Page SEO Audit & Action Plan</div>
+        <p class="gig-desc">Full technical and content SEO audit. Meta tags, schema, internal linking, keyword gaps, page speed — with a prioritized fix list.</p>
+        <div class="gig-from">Starting from</div>
+        <div class="gig-price">$59 <span>/ audit</span></div>
+      </div>
+
+      <div class="gig-card sr sr-d1">
+        <div class="gig-arrow">↗</div>
+        <div class="gig-badge seo">📈 Traditional SEO</div>
+        <div class="gig-title">Local Citation Building & NAP Cleanup</div>
+        <p class="gig-desc">Fix inconsistent business listings across 30+ directories. NAP consistency is the #1 factor for local AI search and Google Maps ranking.</p>
+        <div class="gig-from">Starting from</div>
+        <div class="gig-price">$69 <span>/ gig</span></div>
+      </div>
+
+      <div class="gig-card sr sr-d2">
+        <div class="gig-arrow">↗</div>
+        <div class="gig-badge pr">📰 PR Writing</div>
+        <div class="gig-title">Crypto / Tech Press Release Writing</div>
+        <p class="gig-desc">AI-drafted, human-reviewed press release written to media standards. SEO optimized, formatted for pickup. Placement available as add-on via Discord.</p>
+        <div class="gig-from">Starting from</div>
+        <div class="gig-price">$49 <span>/ release</span></div>
+      </div>
+
     </div>
-    <div class="space-y-3">
-      <div class="insight-row rounded-lg">
-        <span style="font-size:1.1rem;flex-shrink:0">🔍</span>
-        <div>
-          <p class="font-semibold text-white" style="font-size:.95rem">Local search happens constantly</p>
-          <p class="text-sm mt-0.5" style="color:var(--text-muted)">Customers search "near me" every minute. Businesses with optimized profiles capture the majority of these searches.</p>
-        </div>
-      </div>
-      <div class="insight-row rounded-lg">
-        <span style="font-size:1.1rem;flex-shrink:0">📊</span>
-        <div>
-          <p class="font-semibold text-white" style="font-size:.95rem">Position matters more than most realize</p>
-          <p class="text-sm mt-0.5" style="color:var(--text-muted)">91% of clicks go to page 1 results. The top 3 local listings receive the vast majority of engagement.</p>
-        </div>
-      </div>
-      <div class="insight-row rounded-lg">
-        <span style="font-size:1.1rem;flex-shrink:0">⭐</span>
-        <div>
-          <p class="font-semibold text-white" style="font-size:.95rem">Review presence influences decisions</p>
-          <p class="text-sm mt-0.5" style="color:var(--text-muted)">Businesses with stronger review profiles consistently outperform those with fewer, older reviews — in both rank and conversions.</p>
-        </div>
-      </div>
-      <div class="insight-row rounded-lg">
-        <span style="font-size:1.1rem;flex-shrink:0">📍</span>
-        <div>
-          <p class="font-semibold text-white" style="font-size:.95rem">Inconsistent data reduces trust</p>
-          <p class="text-sm mt-0.5" style="color:var(--text-muted)">When your business information differs across directories, search engines apply lower confidence to your listing.</p>
-        </div>
-      </div>
-    </div>
-    <div class="mt-8 g-amber rounded-xl p-5 text-center">
-      <p class="fd font-semibold text-lg" style="color:var(--amber)">These are addressable issues. The first step is knowing where you stand.</p>
-    </div>
-    <div class="text-center mt-7">
-      <a href="#scan" class="btn" style="font-size:1rem">View My Visibility Score →</a>
+
+    <div style="text-align:center;margin-top:36px;" class="sr">
+      <p style="font-family:'Azeret Mono',monospace;font-size:.72rem;color:var(--muted);letter-spacing:.08em;margin-bottom:16px;">Need something custom? Discuss in Discord for tailored packages.</p>
+      <a href="https://discord.gg/your-invite" target="_blank" class="btn-discord">💬 Custom Order via Discord</a>
     </div>
   </div>
 </section>
 
-<!-- ══════════ 5. DATA POINTS ══════════ -->
-<section class="py-16 px-4 rise">
-  <div class="max-w-4xl mx-auto">
-    <div class="text-center mb-10">
-      <p class="fm text-xs mb-3" style="color:rgba(0,255,159,.45);letter-spacing:.1em">INDUSTRY DATA</p>
-      <h2 class="fd font-bold text-3xl sm:text-4xl text-white">The Local Search Landscape</h2>
-    </div>
-    <div class="grid sm:grid-cols-3 gap-4">
-      <div class="g rounded-2xl p-6 text-center" style="border-color:rgba(0,255,159,.08)">
-        <p class="stat-n">46%</p>
-        <p class="text-sm mt-3" style="color:var(--text-muted)">of all Google searches have <strong style="color:#fff">local intent</strong></p>
-        <p class="fm text-xs mt-2" style="color:rgba(0,255,159,.25)">Google Search Data</p>
-      </div>
-      <div class="g rounded-2xl p-6 text-center" style="border-color:rgba(245,158,11,.1)">
-        <p class="stat-n" style="background:linear-gradient(135deg,var(--amber),#f97316);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">75%</p>
-        <p class="text-sm mt-3" style="color:var(--text-muted)">of clicks go to the <strong style="color:#fff">top 3 local results</strong></p>
-        <p class="fm text-xs mt-2" style="color:rgba(245,158,11,.3)">Search Engine Journal</p>
-      </div>
-      <div class="g rounded-2xl p-6 text-center" style="border-color:rgba(0,255,159,.08)">
-        <p class="stat-n">97%</p>
-        <p class="text-sm mt-3" style="color:var(--text-muted)">of consumers <strong style="color:#fff">research online</strong> before visiting a local business</p>
-        <p class="fm text-xs mt-2" style="color:rgba(0,255,159,.25)">BrightLocal 2024</p>
-      </div>
-    </div>
-    <div class="mt-5 g rounded-xl p-5 text-center" style="border-color:rgba(245,158,11,.12);background:rgba(245,158,11,.04)">
-      <p class="text-base" style="color:rgba(220,210,180,.7)">Businesses outside the top 3 are, on average, <strong style="color:var(--amber)">missed by 75% of nearby searchers</strong> — regardless of their quality.</p>
-    </div>
-  </div>
-</section>
+<div class="divider"></div>
 
-<!-- ══════════ 6. HOW IT WORKS ══════════ -->
-<section class="py-16 px-4 rise" style="background:var(--bg2)">
-  <div class="max-w-lg mx-auto text-center">
-    <p class="fm text-xs mb-3" style="color:rgba(0,255,159,.45);letter-spacing:.1em">HOW IT WORKS</p>
-    <h2 class="fd font-bold text-3xl sm:text-4xl text-white mb-2">Simple. Fast. Actionable.</h2>
-    <p class="text-sm mb-10" style="color:var(--text-muted)">No technical setup. No account required. Results in about 30 seconds.</p>
-    <div class="space-y-4 text-left">
-      <div class="g rounded-2xl p-5 flex items-start gap-4" style="border-color:rgba(0,255,159,.08)">
-        <div class="fd font-bold text-lg w-9 h-9 rounded-full flex items-center justify-center shrink-0" style="background:rgba(0,255,159,.08);border:1px solid rgba(0,255,159,.2);color:rgba(0,255,159,.8)">1</div>
-        <div><p class="fd font-bold text-white text-lg">Enter your business name and city</p><p class="text-sm mt-0.5" style="color:var(--text-muted)">We use publicly available data — no credentials needed.</p></div>
-      </div>
-      <div class="step-line"></div>
-      <div class="g rounded-2xl p-5 flex items-start gap-4" style="border-color:rgba(0,255,159,.08)">
-        <div class="fd font-bold text-lg w-9 h-9 rounded-full flex items-center justify-center shrink-0" style="background:rgba(0,255,159,.08);border:1px solid rgba(0,255,159,.2);color:rgba(0,255,159,.8)">2</div>
-        <div><p class="fd font-bold text-white text-lg">GlobalRankAI analyzes your presence</p><p class="text-sm mt-0.5" style="color:var(--text-muted)">We evaluate Google Business, reviews, citations, and competitor benchmarks.</p></div>
-      </div>
-      <div class="step-line"></div>
-      <div class="g rounded-2xl p-5 flex items-start gap-4" style="border-color:rgba(0,255,159,.08)">
-        <div class="fd font-bold text-lg w-9 h-9 rounded-full flex items-center justify-center shrink-0" style="background:rgba(0,255,159,.08);border:1px solid rgba(0,255,159,.2);color:rgba(0,255,159,.8)">3</div>
-        <div><p class="fd font-bold text-white text-lg">Receive your visibility score and report</p><p class="text-sm mt-0.5" style="color:var(--text-muted)">A prioritized breakdown of gaps with specific, actionable recommendations.</p></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════ 7. OUTCOMES ══════════ -->
-<section id="outcomes" class="py-16 px-4 rise">
-  <div class="max-w-xl mx-auto">
-    <div class="text-center mb-9">
-      <p class="fm text-xs mb-3" style="color:rgba(0,255,159,.45);letter-spacing:.1em">AFTER IMPROVEMENTS</p>
-      <h2 class="fd font-bold text-3xl sm:text-4xl text-white mt-1 leading-tight">
-        What Businesses See<br/><span style="color:var(--neon)">After Fixing Their Gaps</span>
-      </h2>
-      <p class="text-sm mt-3" style="color:var(--text-muted)">Businesses that act on their GlobalRankAI report typically see measurable changes within 4–8 weeks.</p>
-    </div>
-
-    <div class="space-y-4">
-      <div class="g rounded-2xl p-5 flex items-start gap-4" style="border-color:rgba(0,255,159,.08)">
-        <div class="outcome-icon" style="background:rgba(0,255,159,.07);border:1px solid rgba(0,255,159,.15)">📞</div>
-        <div>
-          <p class="fd font-bold text-white text-lg">Increased inbound inquiries</p>
-          <p class="text-sm mt-0.5" style="color:var(--text-muted)">Better visibility means more customers finding and contacting the business directly from search results.</p>
-          <p class="fm text-xs mt-2" style="color:rgba(0,255,159,.5)">Reported average: +40% inbound calls within 30 days</p>
+<!-- FREE AUDIT -->
+<section class="audit-section" id="audit">
+  <div class="wrap">
+    <div class="audit-inner">
+      <div>
+        <div class="sec-tag sr">Free Tool</div>
+        <h2 class="sr sr-d1">See Where<br/>You <em>Stand.</em></h2>
+        <p class="sec-sub sr sr-d2" style="margin-bottom:2rem;">Most brands score under 40% on AI visibility. In 48 hours we'll show you exactly where you're invisible — and what to fix first.</p>
+        <div class="sr sr-d3">
+          <a href="https://discord.gg/your-invite" target="_blank" class="btn-primary" style="margin-bottom:12px;display:inline-flex;">
+            Get Your Free Audit ↗
+          </a>
+          <p style="font-family:'Azeret Mono',monospace;font-size:.62rem;color:var(--muted);letter-spacing:.08em;margin-top:12px;">Join Discord → Drop your URL → Get report in 48h</p>
         </div>
       </div>
-      <div class="g rounded-2xl p-5 flex items-start gap-4" style="border-color:rgba(0,255,159,.08)">
-        <div class="outcome-icon" style="background:rgba(0,255,159,.07);border:1px solid rgba(0,255,159,.15)">📈</div>
-        <div>
-          <p class="fd font-bold text-white text-lg">Improved search ranking position</p>
-          <p class="text-sm mt-0.5" style="color:var(--text-muted)">Addressing the right signals moves businesses into the local map pack, where most engagement occurs.</p>
-          <p class="fm text-xs mt-2" style="color:rgba(0,255,159,.5)">Reported average: top 3 local placement in 60–90 days</p>
+      <div class="audit-card sr sr-d2">
+        <div class="audit-card-title">
+          <span>Sample Audit Scorecard</span>
+          <span class="audit-live"><span class="audit-live-dot"></span> Live</span>
         </div>
-      </div>
-      <div class="g rounded-2xl p-5 flex items-start gap-4" style="border-color:rgba(0,255,159,.08)">
-        <div class="outcome-icon" style="background:rgba(0,255,159,.07);border:1px solid rgba(0,255,159,.15)">🔄</div>
-        <div>
-          <p class="fd font-bold text-white text-lg">Compounding returns over time</p>
-          <p class="text-sm mt-0.5" style="color:var(--text-muted)">Search visibility improvements tend to build on themselves — each month of better ranking compounds.</p>
-          <p class="fm text-xs mt-2" style="color:rgba(0,255,159,.5)">Reported average: 2–3× more Google-driven revenue after 90 days</p>
+        <div class="audit-row">
+          <span class="audit-label">ChatGPT brand mentions</span>
+          <span class="audit-val red">Not found</span>
         </div>
-      </div>
-    </div>
-
-    <div class="g-neon rounded-2xl p-6 mt-6">
-      <p class="text-base leading-relaxed" style="color:rgba(210,225,215,.7)">"The report identified six issues I had no idea about. After fixing them, I went from page 2 to top 3 for 'plumber near me' in Chicago. The difference has been significant."</p>
-      <div class="flex items-center gap-3 mt-4">
-        <div class="w-8 h-8 rounded-full flex items-center justify-center fd font-bold text-sm shrink-0" style="background:rgba(0,255,159,.12);color:rgba(0,255,159,.8)">MK</div>
-        <div>
-          <p class="fd font-semibold text-white text-sm">Mike K. · Plumber, Chicago IL</p>
-          <p class="fm text-xs" style="color:var(--text-dim)">Visibility Score: 41 → 79</p>
+        <div class="audit-row">
+          <span class="audit-label">Perplexity citations</span>
+          <span class="audit-val red">0 / 10 queries</span>
         </div>
-      </div>
-    </div>
-
-    <div class="text-center mt-8">
-      <a href="#scan" class="btn" style="font-size:1.05rem">View My Visibility Score →</a>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════ 8. TESTIMONIALS ══════════ -->
-<section class="py-14 px-4 rise" style="background:var(--bg2)">
-  <div class="max-w-3xl mx-auto">
-    <div class="text-center mb-8">
-      <h2 class="fd font-bold text-2xl sm:text-3xl text-white">From Businesses That Used GlobalRankAI</h2>
-      <p class="fm text-xs mt-2" style="color:var(--text-dim)">Used by 2,000+ local businesses across the US</p>
-    </div>
-    <div class="grid sm:grid-cols-2 gap-4">
-      <div class="g rounded-2xl p-6" style="border-color:rgba(0,255,159,.06)">
-        <p class="text-sm leading-relaxed mb-4" style="color:rgba(210,218,228,.6)">"The scan surfaced issues I'd never thought to look at. Within a few weeks of fixing them, my phone was noticeably busier."</p>
-        <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-full flex items-center justify-center fd font-bold text-sm shrink-0" style="background:rgba(0,255,159,.1);color:rgba(0,255,159,.8)">SR</div>
-          <div><p class="fd font-semibold text-white text-sm">Sarah R. · Salon Owner, Miami FL</p><p class="fm text-xs" style="color:rgba(0,255,159,.45)">Score: 29 → 81 in 3 weeks</p></div>
+        <div class="audit-row">
+          <span class="audit-label">Google AI Overview presence</span>
+          <span class="audit-val yellow">2 / 10 queries</span>
         </div>
-      </div>
-      <div class="g rounded-2xl p-6" style="border-color:rgba(0,255,159,.06)">
-        <p class="text-sm leading-relaxed mb-4" style="color:rgba(210,218,228,.6)">"I assumed my Google presence was fine. The report showed otherwise. After acting on it, revenue has roughly doubled."</p>
-        <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-full flex items-center justify-center fd font-bold text-sm shrink-0" style="background:rgba(0,255,159,.1);color:rgba(0,255,159,.8)">TW</div>
-          <div><p class="fd font-semibold text-white text-sm">Tom W. · Gym Owner, Dallas TX</p><p class="fm text-xs" style="color:rgba(0,255,159,.45)">Score: 38 → 84 in 4 weeks</p></div>
+        <div class="audit-row">
+          <span class="audit-label">Local citations (NAP)</span>
+          <span class="audit-val red">14 inconsistent</span>
         </div>
-      </div>
-      <div class="g rounded-2xl p-6" style="border-color:rgba(0,255,159,.06)">
-        <p class="text-sm leading-relaxed mb-4" style="color:rgba(210,218,228,.6)">"I wasn't expecting much from a free tool. The depth of the report was genuinely surprising. Very useful."</p>
-        <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-full flex items-center justify-center fd font-bold text-sm shrink-0" style="background:rgba(0,255,159,.1);color:rgba(0,255,159,.8)">RJ</div>
-          <div><p class="fd font-semibold text-white text-sm">Rachel J. · Dentist, Phoenix AZ</p><p class="fm text-xs" style="color:rgba(0,255,159,.45)">Score: 44 → 76 in 5 weeks</p></div>
+        <div class="audit-row">
+          <span class="audit-label">Competitor AI visibility</span>
+          <span class="audit-val yellow">3 competitors ahead</span>
         </div>
-      </div>
-      <div class="g rounded-2xl p-6" style="border-color:rgba(0,255,159,.06)">
-        <p class="text-sm leading-relaxed mb-4" style="color:rgba(210,218,228,.6)">"A competitor had been outranking me for two years. I fixed three things from the report. I'm now above them."</p>
-        <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-full flex items-center justify-center fd font-bold text-sm shrink-0" style="background:rgba(0,255,159,.1);color:rgba(0,255,159,.8)">AL</div>
-          <div><p class="fd font-semibold text-white text-sm">Andre L. · HVAC, Atlanta GA</p><p class="fm text-xs" style="color:rgba(0,255,159,.45)">Score: 33 → 78 in 6 weeks</p></div>
+        <div class="audit-row">
+          <span class="audit-label">Google Business score</span>
+          <span class="audit-val yellow">61 / 100</span>
+        </div>
+        <div class="audit-bar-wrap">
+          <div class="audit-bar-label">
+            <span>Overall AI Visibility Score</span>
+            <span style="color:var(--acid)">24 / 100</span>
+          </div>
+          <div class="audit-bar">
+            <div class="audit-bar-fill" style="--w:24%"></div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ══════════ 9. FINAL CTA ══════════ -->
-<section class="py-28 px-4 text-center relative overflow-hidden rise">
-  <div class="orb" style="width:700px;height:700px;top:50%;left:50%;background:radial-gradient(circle,rgba(0,255,159,.04) 0%,transparent 60%)"></div>
-  <div class="max-w-lg mx-auto z1">
-    <span class="chip mb-5 inline-flex">Free visibility analysis</span>
-    <h2 class="fd font-bold leading-none mt-5 mb-4 text-white" style="font-size:clamp(2.2rem,6vw,3.6rem)">
-      Know Where You Stand<br/>
-      <span style="background:linear-gradient(135deg,#fff 20%,var(--neon));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">in Local Search</span>
-    </h2>
-    <p class="text-lg mb-6" style="color:var(--text-muted);max-width:380px;margin:0 auto 24px">
-      Get a clear picture of your Google visibility — and a prioritized list of improvements — in about 30 seconds.
-    </p>
-    <div class="flex items-center justify-center gap-2 mb-7">
-      <div class="dot-g"></div>
-      <span class="fm text-xs" style="color:var(--text-dim)"><span id="final-count">23</span> businesses analyzed today · last report <span id="final-secs">12</span>s ago</span>
+<div class="divider"></div>
+
+<!-- HOW IT WORKS -->
+<section id="process">
+  <div class="wrap">
+    <div class="sec-tag sr">Process</div>
+    <h2 class="sr sr-d1">Simple.<br/><em>Fast. Done.</em></h2>
+    <div class="process-grid">
+      <div class="process-step sr sr-d1">
+        <div class="step-num">01</div>
+        <div class="step-title">Join Discord</div>
+        <p class="step-desc">Free to join. Drop your website URL and what you're looking for. Takes 2 minutes.</p>
+      </div>
+      <div class="process-step sr sr-d2">
+        <div class="step-num">02</div>
+        <div class="step-title">We Audit</div>
+        <p class="step-desc">We run your brand through our GEO + SEO audit stack. Powered by n8n and Claude AI.</p>
+      </div>
+      <div class="process-step sr sr-d3">
+        <div class="step-num">03</div>
+        <div class="step-title">Get Report</div>
+        <p class="step-desc">Full scorecard delivered in your Discord DM within 48 hours. Free, no strings.</p>
+      </div>
+      <div class="process-step sr sr-d4">
+        <div class="step-num">04</div>
+        <div class="step-title">We Fix It</div>
+        <p class="step-desc">Order the specific gigs you need. Or let us build a custom package that covers everything.</p>
+      </div>
     </div>
-    <a href="#scan" class="btn" style="font-size:1.2rem;padding:19px 48px">
-      View My Visibility Score →
-    </a>
-    <p class="fm text-xs mt-5" style="color:var(--text-dim)">✓ Free · ✓ No account · ✓ No spam · ✓ Used by 2,000+ businesses</p>
   </div>
 </section>
 
-<!-- ══════════ FOOTER ══════════ -->
-<footer class="py-10 px-4" style="border-top:1px solid rgba(255,255,255,.045)">
-  <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-    <div class="flex items-center gap-2">
-      <div style="width:22px;height:22px;border-radius:5px;background:rgba(0,255,159,.1);border:1px solid rgba(0,255,159,.2);display:flex;align-items:center;justify-content:center">
-        <span style="color:var(--neon);font-size:.6rem">◈</span>
+<div class="divider"></div>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="wrap">
+    <div class="sec-tag sr">Pricing</div>
+    <h2 class="sr sr-d1">Clear Prices.<br/><em>No Surprises.</em></h2>
+    <p class="sec-sub sr sr-d2">Start with what you need. Scale when ready. All packages available via Fiverr or direct checkout.</p>
+    <div class="pricing-grid">
+
+      <div class="price-card sr sr-d1">
+        <div class="pc-label">Starter</div>
+        <div class="pc-name">Visibility Audit</div>
+        <p class="pc-desc">Find out exactly where your brand is invisible in AI search.</p>
+        <div class="pc-price"><span class="cur">$</span>99</div>
+        <div class="pc-period">one-time · delivered in 48h</div>
+        <ul class="pc-features">
+          <li>ChatGPT brand mention check</li>
+          <li>Perplexity & Gemini audit</li>
+          <li>Google AI Overview scan</li>
+          <li>Competitor gap report</li>
+          <li>Action plan with priorities</li>
+        </ul>
+        <a href="https://www.fiverr.com/your-profile" target="_blank" class="pc-cta">Order on Fiverr <span>↗</span></a>
       </div>
-      <span class="fd font-bold text-white text-sm">GlobalRankAI</span>
-      <span style="color:var(--bdr)">·</span>
-      <span class="fm text-xs" style="color:var(--text-dim)">a product by ProGPT.store</span>
+
+      <div class="price-card featured sr sr-d2">
+        <div class="pc-label">Most Popular</div>
+        <div class="pc-name">SEO + GEO Bundle</div>
+        <p class="pc-desc">Both audits combined — traditional SEO and AI visibility in one report.</p>
+        <div class="pc-price"><span class="cur">$</span>199</div>
+        <div class="pc-period">one-time · delivered in 48–72h</div>
+        <ul class="pc-features">
+          <li>Everything in Visibility Audit</li>
+          <li>Full on-page SEO audit</li>
+          <li>GBP optimization review</li>
+          <li>NAP citation check (30+ directories)</li>
+          <li>Keyword gap analysis</li>
+          <li>90-day roadmap</li>
+        </ul>
+        <a href="https://discord.gg/your-invite" target="_blank" class="pc-cta">Order via Discord <span>↗</span></a>
+      </div>
+
+      <div class="price-card sr sr-d3">
+        <div class="pc-label">Custom</div>
+        <div class="pc-name">PR + Placements</div>
+        <p class="pc-desc">Press release writing and media placement. Crypto, tech, finance outlets.</p>
+        <div class="pc-price"><span class="cur">$</span>49<span style="font-size:1rem;color:var(--muted);font-family:'Azeret Mono',monospace;font-weight:400;">+</span></div>
+        <div class="pc-period">writing from $49 · placement custom</div>
+        <ul class="pc-features">
+          <li>AI-drafted, human-reviewed PR</li>
+          <li>Optimized for media pickup</li>
+          <li>Placement packages via Discord</li>
+          <li>Crypto, tech & finance outlets</li>
+          <li>CoinGape, AMBCrypto & more</li>
+        </ul>
+        <a href="https://discord.gg/your-invite" target="_blank" class="pc-cta">Discuss in Discord <span>↗</span></a>
+      </div>
+
     </div>
-    <div class="fm text-xs flex items-center gap-4" style="color:var(--text-dim)">
-      <span>© 2025</span>
-      <a href="#" style="color:inherit;text-decoration:none;transition:color .15s" onmouseover="this.style.color='rgba(0,255,159,.6)'" onmouseout="this.style.color='var(--text-dim)'">Privacy</a>
-      <a href="#" style="color:inherit;text-decoration:none;transition:color .15s" onmouseover="this.style.color='rgba(0,255,159,.6)'" onmouseout="this.style.color='var(--text-dim)'">Terms</a>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- DISCORD CTA -->
+<section class="discord-section" id="community">
+  <div class="wrap">
+    <div class="discord-glow"></div>
+    <div class="discord-inner">
+      <div class="discord-icon sr">💬</div>
+      <div class="sec-tag sr" style="justify-content:center;">Community</div>
+      <h2 class="sr sr-d1">Everything<br/>Starts in <em>Discord.</em></h2>
+      <p class="sec-sub sr sr-d2">Free audit. Custom packages. Questions answered. Direct line to us — no tickets, no bots. Join and get your AI visibility report within 48 hours.</p>
+      <div class="sr sr-d3" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+        <a href="https://discord.gg/your-invite" target="_blank" class="btn-primary">Join Discord Free ↗</a>
+        <a href="https://www.fiverr.com/your-profile" target="_blank" class="btn-ghost">View Fiverr Profile →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-logo">Pro<em>GPT</em> <span style="width:6px;height:6px;border-radius:50%;background:var(--acid);display:inline-block;"></span></div>
+        <div class="footer-stack">
+          <span>progpt.store</span><br/>
+          AI Visibility & SEO for Serious Brands<br/>
+          Built with <span>n8n + Claude AI</span>
+        </div>
+      </div>
+      <div class="footer-right">
+        <div class="footer-links">
+          <a href="#services">Services</a>
+          <a href="#gigs">Gigs</a>
+          <a href="#audit">Free Audit</a>
+          <a href="https://discord.gg/your-invite" target="_blank">Discord</a>
+          <a href="https://www.fiverr.com/your-profile" target="_blank">Fiverr</a>
+        </div>
+        <div class="footer-copy">© 2025 ProGPT · progpt.store</div>
+      </div>
     </div>
   </div>
 </footer>
 
-<!-- ══════════ JS ══════════ -->
 <script>
-const io = new IntersectionObserver(entries => {
-  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('risen'); io.unobserve(e.target); }});
-},{threshold:.07});
-document.querySelectorAll('.rise').forEach(el => io.observe(el));
-document.getElementById('hero-block').classList.add('risen');
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('on'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.sr').forEach(el => observer.observe(el));
 
-const barIO = new IntersectionObserver(entries => {
+// Audit bar animation on scroll
+const barObserver = new IntersectionObserver((entries) => {
   entries.forEach(e => {
-    if(e.isIntersecting){
-      e.target.querySelectorAll('.bar-fill').forEach((b,i)=>{
-        b.style.width='0%';
-        setTimeout(()=>{ b.style.width='var(--w)'; }, 260+i*160);
+    if(e.isIntersecting) {
+      e.target.querySelectorAll('.audit-bar-fill').forEach(bar => {
+        bar.style.animation = 'none';
+        bar.offsetHeight;
+        bar.style.animation = 'progressFill 1.5s ease-out both';
       });
-      barIO.unobserve(e.target);
     }
   });
-},{threshold:.2});
-document.querySelectorAll('.scan-wrap').forEach(el => barIO.observe(el));
-
-function rndCount(){ return 18+Math.floor(Math.random()*16); }
-function rndSec(){ return 6+Math.floor(Math.random()*40); }
-
-function refreshLive(){
-  const n=rndCount(), s=rndSec();
-  ['hero-city-count','final-count'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=n; });
-  ['hero-last-sec','final-secs'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=s; });
-}
-refreshLive();
-setInterval(refreshLive, 8000);
-
-const cities=['Austin TX','Miami FL','Chicago IL','Dallas TX','Phoenix AZ','Atlanta GA','Denver CO','Seattle WA','Nashville TN','Tampa FL','Portland OR','San Diego CA'];
-const industries=['dental practice','plumbing company','fitness studio','hair salon','HVAC company','law firm','auto repair shop','restaurant','chiropractic clinic'];
-function refreshTicker(){
-  const el=document.getElementById('nav-ticker');
-  if(!el) return;
-  const city=cities[Math.floor(Math.random()*cities.length)];
-  const ind=industries[Math.floor(Math.random()*industries.length)];
-  const s=rndSec();
-  el.innerHTML=`A ${ind} in ${city} ran an analysis — <span style="color:rgba(0,255,159,.6)">${s}s ago</span>`;
-}
-refreshTicker();
-setInterval(refreshTicker, 7000);
-
-const STEPS=[
-  ['Locating business profile…',10],
-  ['Evaluating Google Business signals…',22],
-  ['Analyzing local search visibility…',35],
-  ['Assessing review authority…',50],
-  ['Checking citation consistency…',64],
-  ['Benchmarking competitor positioning…',77],
-  ['Evaluating ranking factors…',88],
-  ['Generating visibility score…',96],
-  ['Compiling full report…',100],
-];
-
-const INDUSTRY_REVENUE={
-  'Dentist / Medical':[1200,3400],
-  'Gym / Fitness Studio':[800,2200],
-  'Salon / Beauty':[600,1800],
-  'Plumber / Contractor':[1000,2800],
-  'HVAC / Home Services':[1100,3100],
-  'Restaurant / Café':[700,2000],
-  'Law Firm':[2000,5500],
-  'Chiropractor':[900,2600],
-  'Auto Repair':[800,2200],
-  'Real Estate':[1500,4000],
-  'Other':[600,2400],
-};
-
-function getRevenueLoss(score, industry){
-  const base=INDUSTRY_REVENUE[industry]||[600,2400];
-  const factor=1-(score/100);
-  const lo=Math.max(300, Math.round(base[0]*factor/100)*100);
-  const hi=Math.max(lo+400, Math.round(base[1]*factor/100)*100);
-  return `$${lo.toLocaleString()} – $${hi.toLocaleString()}`;
-}
-
-function startScan(){
-  const name=document.getElementById('f-name').value.trim();
-  const city=document.getElementById('f-city').value.trim();
-  let ok=true;
-  if(!name){ document.getElementById('f-name').classList.add('err'); ok=false; }
-  if(!city){ document.getElementById('f-city').classList.add('err'); ok=false; }
-  if(!ok) return;
-
-  document.getElementById('s-form').classList.add('hidden');
-  document.getElementById('s-load').classList.remove('hidden');
-  document.getElementById('load-name').textContent=name;
-  document.getElementById('scan').scrollIntoView({behavior:'smooth',block:'start'});
-
-  const log=document.getElementById('scan-log');
-  const bar=document.getElementById('prog-bar');
-  const pct=document.getElementById('prog-pct');
-  const lbl=document.getElementById('prog-label');
-  const phase=document.getElementById('scan-phase-msg');
-  let i=0;
-
-  function tick(){
-    if(i>=STEPS.length){
-      phase.textContent='Analysis complete — generating report…';
-      phase.style.color='rgba(245,158,11,.7)';
-      setTimeout(()=>showResults(name,city), 900);
-      return;
-    }
-    const [msg,p]=STEPS[i++];
-    if(i===3){ phase.textContent='Evaluating ranking factors…'; }
-    if(i===6){ phase.textContent='Benchmarking against local competitors…'; phase.style.color='rgba(0,255,159,.6)'; }
-
-    const line=document.createElement('div');
-    line.style.cssText='opacity:0;transform:translateY(5px);transition:all .28s';
-    line.innerHTML=`<span style="color:rgba(0,255,159,.35)">›</span> ${msg}`;
-    log.appendChild(line);
-    if(log.children.length>6) log.removeChild(log.firstChild);
-    setTimeout(()=>{ line.style.opacity='1'; line.style.transform='translateY(0)'; },25);
-
-    bar.style.width=p+'%';
-    pct.textContent=p+'%';
-    lbl.textContent=msg;
-
-    const delay=i===1?1300:480+Math.random()*360;
-    setTimeout(tick,delay);
-  }
-  tick();
-}
-
-function animateScore(el, target, duration){
-  let start=null;
-  function step(ts){
-    if(!start) start=ts;
-    const p=Math.min((ts-start)/duration,1);
-    const ease=1-Math.pow(1-p,3);
-    el.textContent=Math.round(target*ease)+'/100';
-    if(p<1) requestAnimationFrame(step);
-  }
-  requestAnimationFrame(step);
-}
-
-function showResults(name, city){
-  document.getElementById('s-load').classList.add('hidden');
-  const banner=document.getElementById('s-issues-banner');
-  banner.classList.remove('hidden');
-  banner.scrollIntoView({behavior:'smooth',block:'center'});
-
-  const score=20+Math.floor(Math.random()*24);
-  const industry=document.getElementById('f-type').value||'Other';
-
-  setTimeout(()=>{
-    document.getElementById('r-name').textContent=name;
-    document.getElementById('r-city').textContent=city+' · Local Business';
-
-    const scoreEl=document.getElementById('r-score');
-    scoreEl.textContent='0/100';
-    animateScore(scoreEl, score, 1100);
-
-    const revEl=document.getElementById('r-rev-loss');
-    if(revEl){
-      const str=getRevenueLoss(score,industry);
-      revEl.innerHTML=str+'<span class="text-sm font-normal ml-1.5" style="color:var(--text-muted);font-family:\'DM Sans\',sans-serif">/month</span>';
-    }
-
-    const issueCount=3+Math.floor(Math.random()*3);
-    document.getElementById('g-count').textContent=issueCount;
-
-    const barColors={low:'var(--warn)',mid:'var(--amber)'};
-    const bars=[
-      {label:'Google Business Profile', val:Math.max(14,Math.floor(score*.9)), c:'low'},
-      {label:'Local SEO Signals',       val:Math.max(18,Math.floor(score*1.05)), c:'mid'},
-      {label:'Review Authority',        val:Math.max(10,Math.floor(score*.75)), c:'low'},
-      {label:'Citation Consistency',    val:Math.max(22,Math.floor(score+10)), c:'mid'},
-    ];
-    const bc=document.getElementById('r-bars');
-    bc.innerHTML='';
-    bars.forEach((b,i)=>{
-      const color=b.c==='low'?'var(--warn)':'var(--amber)';
-      const d=document.createElement('div');
-      d.innerHTML=`
-        <div class="flex justify-between text-xs mb-1.5" style="color:var(--text-dim)">
-          <span>${b.label}</span><span style="color:${color};font-weight:600">${b.val}%</span>
-        </div>
-        <div class="bar-track"><div class="bar-fill" style="--w:${b.val}%;background:${color};animation-delay:${i*.15}s"></div></div>`;
-      bc.appendChild(d);
-    });
-
-    document.getElementById('s-results').classList.remove('hidden');
-    setTimeout(()=>document.getElementById('s-results').scrollIntoView({behavior:'smooth',block:'start'}),300);
-  },700);
-}
-
-function unlockReport(){
-  const emailEl=document.getElementById('gate-email');
-  const email=emailEl.value.trim();
-  if(!email||!email.includes('@')||!email.includes('.')){
-    emailEl.classList.add('err');
-    emailEl.placeholder='Please enter a valid email address';
-    return;
-  }
-  document.getElementById('gate-form').classList.add('hidden');
-  document.getElementById('gate-success').classList.remove('hidden');
-  console.log('Lead captured:', email);
-}
-
-document.querySelectorAll('.inp').forEach(el=>{
-  el.addEventListener('input',()=>{ el.classList.remove('err'); });
-});
+}, { threshold: 0.3 });
+document.querySelectorAll('.audit-card').forEach(el => barObserver.observe(el));
 </script>
 </body>
 </html>
