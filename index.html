@@ -3,121 +3,210 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>PROGPT // SOVEREIGN_SIGNAL_NODE</title>
+<title>PROGPT // SIGNAL ACCESS SYSTEM</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@300;400;700&family=Anybody:wght@900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@300;400;700&family=Orbitron:wght@700&display=swap" rel="stylesheet"/>
 
 <style>
 :root{
-  --bg:#050505; --card:#0a0a0a; --acid:#00ff88;
-  --text:#eef1fa; --dim:#555; --border:rgba(0,255,136,0.15);
+  --bg:#050505;
+  --card:#0a0a0a;
+  --acid:#00ff88;
+  --text:#eef1fa;
+  --dim:#666;
+  --border:rgba(0,255,136,0.2);
 }
 
-body{ margin:0; background:var(--bg); color:var(--text);
-  font-family:'Azeret Mono', monospace; overflow-x:hidden; }
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Azeret Mono', monospace;
+}
 
-.status-bar{
-  position:fixed; top:0; width:100%;
-  background:rgba(0,0,0,0.9);
+/* STATUS BAR */
+.status{
+  position:fixed;
+  top:0;
+  width:100%;
+  display:flex;
+  justify-content:space-between;
+  padding:12px 20px;
+  font-size:10px;
+  background:#000;
   border-bottom:1px solid var(--border);
-  display:flex; justify-content:space-between;
-  padding:12px 25px; font-size:10px; z-index:100;
+  z-index:100;
 }
 
-.active-node{ color:var(--acid); font-weight:bold; }
+.status a{
+  color:var(--acid);
+  text-decoration:none;
+}
 
+/* HERO */
 .hero{
-  min-height:100vh; display:flex; flex-direction:column;
-  justify-content:center; align-items:center;
-  text-align:center; padding:120px 20px 60px;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:140px 20px 80px;
 }
 
 h1{
-  font-family:'Anybody'; font-size:clamp(3rem,10vw,7rem);
-  line-height:0.85; margin:0; text-transform:uppercase;
+  font-family:'Orbitron', sans-serif;
+  font-size:clamp(3rem, 10vw, 6rem);
+  margin:0;
 }
 
 .highlight{ color:var(--acid); }
 
-.protocol-sub{ margin-top:20px; color:var(--dim); max-width:500px; }
+.sub{
+  margin-top:15px;
+  font-size:13px;
+  color:#aaa;
+}
 
-.ingestion-module{
-  margin-top:40px; background:var(--card);
+.desc{
+  margin-top:15px;
+  font-size:13px;
+  color:var(--dim);
+  max-width:500px;
+}
+
+/* CARD */
+.card{
+  margin-top:40px;
+  width:100%;
+  max-width:440px;
+  background:linear-gradient(180deg,#0a0a0a,#050505);
   border:1px solid var(--border);
-  padding:30px; width:100%; max-width:420px;
+  border-radius:12px;
+  padding:30px;
+  box-shadow:0 20px 60px rgba(0,0,0,0.6);
 }
 
+/* FORM */
 input, select{
-  width:100%; padding:14px; margin-bottom:12px;
-  background:#000; border:1px solid #1a1a1a;
+  width:100%;
+  padding:14px;
+  margin-bottom:14px;
+  background:#000;
+  border:1px solid #1a1a1a;
   color:var(--text);
+  font-size:12px;
 }
 
-input:focus{ border-color:var(--acid); outline:none; }
-
-.execute-btn{
-  width:100%; padding:16px;
-  background:var(--acid); color:#000;
-  border:none; font-weight:900; cursor:pointer;
+input:focus{
+  border-color:var(--acid);
+  outline:none;
 }
 
-.whop-bridge{
-  display:block; margin-top:12px;
-  padding:12px; text-decoration:none;
-  color:#8ea1ff; border:1px solid rgba(88,101,242,0.3);
+/* BUTTON */
+.btn{
+  width:100%;
+  padding:16px;
+  background:var(--acid);
+  color:#000;
+  border:none;
+  font-weight:bold;
+  cursor:pointer;
+  text-transform:uppercase;
 }
 
-footer{ text-align:center; font-size:9px; padding:30px; color:#222; }
+/* DISCORD CTA */
+.discord{
+  display:block;
+  margin-top:14px;
+  padding:16px;
+  text-align:center;
+  border:1px solid rgba(88,101,242,0.3);
+  background:rgba(88,101,242,0.08);
+  color:#aab4ff;
+  text-decoration:none;
+  font-size:12px;
+  font-weight:bold;
+}
+
+/* SMALL TEXT */
+.meta{
+  margin-top:15px;
+  font-size:11px;
+  color:#555;
+}
+
+footer{
+  text-align:center;
+  font-size:10px;
+  color:#222;
+  padding:30px;
+}
 </style>
 </head>
 
 <body>
 
-<div class="status-bar">
+<div class="status">
   <span>PROGPT_NODE</span>
-  <span class="active-node">187 BUILDERS ACTIVE</span>
-  <a href="https://whop.com/progpt" style="color:var(--acid)">ENTER</a>
+  <span style="color:var(--acid)">187 BUILDERS ACTIVE</span>
+  <a href="https://whop.com/progpt">ENTER ↗</a>
 </div>
 
 <section class="hero">
 
 <h1>RECLAIM<br><span class="highlight">SIGNAL</span></h1>
 
-<p class="protocol-sub">
-Free audit: traffic leaks, SEO gaps, monetization opportunities in 24h.
+<p class="sub">Free Audit → Discord Access → Growth System</p>
+
+<p class="desc">
+Get a 3-point audit: traffic leaks, SEO gaps, and monetization opportunities within 24 hours.
 </p>
 
-<div class="ingestion-module">
+<p class="meta">
+⚡ Delivered via Discord (Whop) • Instant access after submission
+</p>
+
+<div class="card">
 
 <form id="form">
 
-<!-- HONEYPOT -->
+<!-- honeypot -->
 <input type="text" id="company" style="display:none">
 
 <input type="text" id="name" placeholder="PROJECT NAME" required>
 <input type="url" id="url" placeholder="https://your-site.com" required>
-<input type="email" id="email" placeholder="EMAIL" required>
+<input type="email" id="email" placeholder="EMAIL FOR AUDIT" required>
 
 <select id="cat">
 <option value="">OPTIONAL: SECTOR</option>
 <option>SAAS</option>
 <option>ECOMMERCE</option>
+<option>LOCAL BUSINESS</option>
 </select>
 
-<button class="execute-btn">GET AUDIT</button>
+<button class="btn">GET FREE AUDIT → UNLOCK DISCORD</button>
 
 </form>
 
-<a href="https://whop.com/progpt" class="whop-bridge">
-JOIN DISCORD →
+<a href="https://whop.com/progpt" class="discord">
+ENTER BUILDER NETWORK ↗
 </a>
 
+<div class="meta">
+Powered by Whop • Secure access • No spam
 </div>
+
+</div>
+
 </section>
 
-<footer>CLOUDFLARE // N8N // SOLO ENGINE</footer>
+<footer>
+CLOUDFLARE • N8N • SOLO ENGINE
+</footer>
 
 <script>
+// Autofill email
 const savedEmail = localStorage.getItem('email');
 if(savedEmail){
   document.getElementById('email').value = savedEmail;
@@ -137,12 +226,13 @@ document.getElementById('form').addEventListener('submit', async function(e){
     url: url.value,
     email: email.value,
     cat: cat.value,
-    time: new Date().toISOString()
+    time: new Date().toISOString(),
+    ua: navigator.userAgent
   };
 
   localStorage.setItem('email', payload.email);
 
-  btn.textContent = "PROCESSING...";
+  btn.textContent = "AUDIT QUEUED...";
 
   try{
     await fetch("https://YOUR-N8N-WEBHOOK", {
@@ -152,11 +242,11 @@ document.getElementById('form').addEventListener('submit', async function(e){
     });
   }catch(err){}
 
-  btn.textContent = "REDIRECTING...";
+  btn.textContent = "REDIRECTING TO DISCORD...";
 
   setTimeout(()=>{
     window.location.href = "https://whop.com/progpt";
-  }, 900);
+  }, 1000);
 });
 </script>
 
