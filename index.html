@@ -3,529 +3,323 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>PROGPT — DOMINATE</title>
+<title>PROGPT — DOMINATE SEARCH</title>
+<meta name="description" content="Get a free 3-point signal audit. Uncover traffic leaks, SEO gaps, and hidden revenue — delivered in 24h."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
 <style>
-/* ═══════════════════════════════════════
-   TOKENS
-═══════════════════════════════════════ */
 :root{
   --bg:#03040a;
   --surface:#080c18;
-  --surface2:#0d1120;
   --acid:#00ff88;
-  --acid-dim:rgba(0,255,136,0.12);
+  --acid-dim:rgba(0,255,136,0.1);
   --acid-glow:rgba(0,255,136,0.35);
   --discord:#5865f2;
-  --discord-dim:rgba(88,101,242,0.12);
+  --discord-dim:rgba(88,101,242,0.1);
   --discord-glow:rgba(88,101,242,0.4);
-  --whop:#f04;
-  --whop-dim:rgba(255,0,68,0.1);
-  --whop-glow:rgba(255,0,68,0.35);
+  --whop:#ff0044;
+  --whop-dim:rgba(255,0,68,0.08);
+  --whop-glow:rgba(255,0,68,0.3);
   --text:#dde4f5;
   --muted:#3a4260;
-  --faint:#1a1f30;
-  --mono:'DM Mono', monospace;
-  --display:'Bebas Neue', sans-serif;
+  --faint:#151a28;
+  --mono:'DM Mono',monospace;
+  --display:'Bebas Neue',sans-serif;
 }
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--mono);overflow-x:hidden;cursor:crosshair;}
 
-*{ box-sizing:border-box; margin:0; padding:0; }
-
-html{ scroll-behavior:smooth; }
-
-body{
-  background:var(--bg);
-  color:var(--text);
-  font-family:var(--mono);
-  overflow-x:hidden;
-  cursor:crosshair;
-}
-
-/* ─ NOISE GRAIN ─ */
 body::after{
-  content:'';
-  position:fixed; inset:0;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events:none;
-  z-index:999;
-  opacity:0.4;
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:999;opacity:0.4;
 }
 
-/* ─ GRID ─ */
 .grid-bg{
-  position:fixed; inset:0; z-index:0;
-  background-image:
-    linear-gradient(var(--faint) 1px, transparent 1px),
-    linear-gradient(90deg, var(--faint) 1px, transparent 1px);
+  position:fixed;inset:0;z-index:0;
+  background-image:linear-gradient(var(--faint) 1px,transparent 1px),linear-gradient(90deg,var(--faint) 1px,transparent 1px);
   background-size:60px 60px;
-  mask-image:radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);
+  mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,black 40%,transparent 100%);
 }
 
-/* ─ AURORA ─ */
 .aurora{
-  position:fixed; top:-30vh; left:50%;
-  transform:translateX(-50%);
-  width:100vw; height:80vh;
-  background:
-    radial-gradient(ellipse 50% 60% at 30% 50%, rgba(0,255,136,0.06) 0%, transparent 70%),
-    radial-gradient(ellipse 50% 60% at 70% 50%, rgba(88,101,242,0.05) 0%, transparent 70%);
-  pointer-events:none; z-index:0;
+  position:fixed;top:-30vh;left:50%;transform:translateX(-50%);
+  width:100vw;height:80vh;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse 50% 60% at 30% 50%,rgba(0,255,136,0.055) 0%,transparent 70%),
+             radial-gradient(ellipse 50% 60% at 70% 50%,rgba(88,101,242,0.045) 0%,transparent 70%);
   animation:aurora 8s ease-in-out infinite alternate;
 }
 @keyframes aurora{
-  from{ transform:translateX(-50%) scaleX(1); opacity:0.7; }
-  to{   transform:translateX(-50%) scaleX(1.1); opacity:1; }
+  from{transform:translateX(-50%) scaleX(1);opacity:0.7;}
+  to{transform:translateX(-50%) scaleX(1.08);opacity:1;}
 }
 
-/* ─ TOP BAR ─ */
 .topbar{
-  position:fixed; top:0; width:100%; z-index:200;
-  display:flex; align-items:center; justify-content:space-between;
+  position:fixed;top:0;width:100%;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
   padding:10px 28px;
-  background:rgba(3,4,10,0.85);
+  background:rgba(3,4,10,0.88);
   backdrop-filter:blur(16px);
   border-bottom:1px solid var(--faint);
-  font-size:9px; letter-spacing:0.2em;
+  font-size:9px;letter-spacing:0.2em;
 }
-
-.topbar-logo{
-  font-family:var(--display);
-  font-size:15px;
-  letter-spacing:0.15em;
-  color:var(--acid);
-}
-
-.topbar-live{
-  display:flex; align-items:center; gap:7px;
-}
-.live-dot{
-  width:6px; height:6px; border-radius:50%;
-  background:var(--acid);
-  animation:blink 1.6s ease-in-out infinite;
-}
+.topbar-logo{font-family:var(--display);font-size:15px;letter-spacing:0.15em;color:var(--acid);}
+.topbar-live{display:flex;align-items:center;gap:7px;}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--acid);animation:blink 1.6s ease-in-out infinite;}
 @keyframes blink{
-  0%,100%{ box-shadow:0 0 0 0 rgba(0,255,136,0.7); }
-  50%{ box-shadow:0 0 0 6px rgba(0,255,136,0); }
+  0%,100%{box-shadow:0 0 0 0 rgba(0,255,136,0.7);}
+  50%{box-shadow:0 0 0 6px rgba(0,255,136,0);}
 }
+.live-count{color:var(--muted);letter-spacing:.15em;}
+.topbar-enter{color:var(--acid);text-decoration:none;letter-spacing:0.15em;transition:opacity .2s;}
+.topbar-enter:hover{opacity:0.6;}
 
-.topbar-enter{
-  color:var(--acid); text-decoration:none; letter-spacing:0.15em;
-  transition:opacity .2s;
-}
-.topbar-enter:hover{ opacity:0.6; }
-
-/* ═══════════════════════════════════════
-   HERO
-═══════════════════════════════════════ */
 .hero{
-  position:relative; z-index:1;
+  position:relative;z-index:1;
   min-height:100vh;
-  display:flex; flex-direction:column;
-  align-items:center; justify-content:center;
-  text-align:center;
-  padding:130px 20px 80px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:130px 20px 80px;
 }
 
 .tag{
-  display:inline-flex; align-items:center; gap:8px;
+  display:inline-flex;align-items:center;gap:8px;
   padding:5px 14px;
-  border:1px solid var(--acid-dim);
-  background:var(--acid-dim);
-  border-radius:2px;
-  font-size:8px; letter-spacing:0.3em;
-  color:var(--acid);
-  margin-bottom:32px;
-  opacity:0;
-  animation:up .5s .1s forwards;
+  border:1px solid var(--acid-dim);background:var(--acid-dim);
+  border-radius:2px;font-size:8px;letter-spacing:0.3em;color:var(--acid);
+  margin-bottom:32px;opacity:0;animation:up .5s .1s forwards;
 }
-.tag-dot{ width:5px; height:5px; border-radius:50%; background:var(--acid); }
+.tag-dot{width:5px;height:5px;border-radius:50%;background:var(--acid);}
 
-/* GIANT WORD */
 .hero-word{
   font-family:var(--display);
-  font-size:clamp(7rem, 22vw, 15rem);
-  line-height:0.85;
-  letter-spacing:0.03em;
-  color:transparent;
-  -webkit-text-stroke:1.5px var(--acid);
-  filter:
-    drop-shadow(0 0 30px rgba(0,255,136,0.5))
-    drop-shadow(0 0 80px rgba(0,255,136,0.2));
-  opacity:0;
-  animation:up .7s .2s forwards;
-  position:relative;
+  font-size:clamp(7rem,22vw,15rem);
+  line-height:0.85;letter-spacing:0.03em;
+  color:transparent;-webkit-text-stroke:1.5px var(--acid);
+  filter:drop-shadow(0 0 30px rgba(0,255,136,0.5)) drop-shadow(0 0 80px rgba(0,255,136,0.18));
+  opacity:0;animation:up .7s .2s forwards;position:relative;
 }
-
-/* fill reveal on load */
 .hero-word span{
-  position:absolute; inset:0;
-  color:var(--acid);
-  -webkit-text-stroke:0;
+  position:absolute;inset:0;color:var(--acid);-webkit-text-stroke:0;
   clip-path:inset(0 100% 0 0);
   animation:reveal 1.4s .9s cubic-bezier(.77,0,.18,1) forwards;
   opacity:0.07;
 }
-@keyframes reveal{
-  to{ clip-path:inset(0 0% 0 0); }
+@keyframes reveal{to{clip-path:inset(0 0% 0 0);}}
+
+.hero-proof{
+  margin-top:22px;
+  font-size:9px;letter-spacing:0.2em;color:var(--muted);
+  opacity:0;animation:up .5s .38s forwards;
 }
+.hero-proof strong{color:var(--acid);font-weight:400;}
 
 .hero-sub{
-  margin-top:28px;
-  font-size:10px; letter-spacing:0.3em;
-  color:var(--muted);
-  opacity:0;
-  animation:up .5s .45s forwards;
+  margin-top:10px;font-size:10px;letter-spacing:0.25em;color:var(--muted);
+  opacity:0;animation:up .5s .45s forwards;
 }
-.hero-sub b{ color:var(--text); font-weight:500; }
+.hero-sub b{color:var(--text);font-weight:500;}
 
 .hero-copy{
-  margin-top:16px;
-  font-size:12px; line-height:1.8;
-  color:var(--muted);
-  max-width:400px;
-  opacity:0;
-  animation:up .5s .55s forwards;
+  margin-top:14px;font-size:12px;line-height:1.8;color:var(--muted);
+  max-width:400px;opacity:0;animation:up .5s .55s forwards;
 }
 
-/* FLOW STRIP */
 .flow{
-  display:flex; align-items:center; gap:0;
-  margin-top:22px;
-  opacity:0;
-  animation:up .5s .65s forwards;
+  display:flex;align-items:center;gap:0;margin-top:22px;
+  opacity:0;animation:up .5s .65s forwards;flex-wrap:wrap;justify-content:center;
 }
 .flow-step{
-  font-size:8px; letter-spacing:0.2em;
-  padding:7px 14px;
-  border:1px solid var(--faint);
-  background:var(--surface);
-  color:var(--muted);
-  white-space:nowrap;
+  font-size:8px;letter-spacing:0.2em;padding:7px 14px;
+  border:1px solid var(--faint);background:var(--surface);color:var(--muted);white-space:nowrap;
 }
-.flow-step.active{
-  border-color:var(--acid-dim);
-  background:var(--acid-dim);
-  color:var(--acid);
-}
+.flow-step.active{border-color:var(--acid-dim);background:var(--acid-dim);color:var(--acid);}
 .flow-arrow{
-  font-size:9px; color:var(--faint);
-  padding:0 2px;
-  border-top:1px solid var(--faint);
-  border-bottom:1px solid var(--faint);
-  height:33px;
-  display:flex; align-items:center;
+  font-size:9px;color:var(--faint);padding:0 2px;
+  border-top:1px solid var(--faint);border-bottom:1px solid var(--faint);
+  height:33px;display:flex;align-items:center;
 }
 
-/* ═══════════════════════════════════════
-   PLATFORM CARDS
-═══════════════════════════════════════ */
 .platforms{
-  display:flex; gap:12px;
-  margin-top:40px;
-  opacity:0;
-  animation:up .5s .75s forwards;
-  flex-wrap:wrap; justify-content:center;
+  display:flex;gap:12px;margin-top:36px;
+  opacity:0;animation:up .5s .75s forwards;
+  flex-wrap:wrap;justify-content:center;
 }
-
 .platform-card{
-  display:flex; align-items:center; gap:10px;
-  padding:12px 18px;
-  border-radius:3px;
-  font-size:9px; letter-spacing:0.15em;
-  text-decoration:none;
-  font-family:var(--mono);
-  transition:transform .2s, box-shadow .2s;
-  cursor:pointer;
+  display:flex;align-items:center;gap:10px;
+  padding:11px 16px;border-radius:3px;
+  font-size:9px;letter-spacing:0.15em;text-decoration:none;
+  font-family:var(--mono);transition:transform .2s,box-shadow .2s;cursor:pointer;
 }
-.platform-card:hover{ transform:translateY(-2px); }
+.platform-card:hover{transform:translateY(-2px);}
+.platform-card.whop-card{background:var(--whop-dim);border:1px solid rgba(255,0,68,0.18);color:#ff6688;}
+.platform-card.whop-card:hover{box-shadow:0 8px 30px var(--whop-glow);border-color:rgba(255,0,68,0.4);}
+.platform-card.discord-card{background:var(--discord-dim);border:1px solid rgba(88,101,242,0.22);color:#8a96f5;}
+.platform-card.discord-card:hover{box-shadow:0 8px 30px var(--discord-glow);border-color:rgba(88,101,242,0.45);}
+.platform-icon{display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:6px;flex-shrink:0;}
+.whop-card .platform-icon{background:rgba(255,0,68,0.12);}
+.discord-card .platform-icon{background:rgba(88,101,242,0.12);}
+.platform-info{text-align:left;}
+.platform-name{font-size:10px;letter-spacing:0.1em;margin-bottom:1px;}
+.platform-label{font-size:7px;letter-spacing:0.2em;opacity:0.5;}
+.platform-badge{margin-left:auto;padding-left:12px;font-size:7px;letter-spacing:0.15em;opacity:0.6;}
+.whop-card .platform-badge{color:var(--acid);}
+.discord-card .platform-badge{color:#8a96f5;}
 
-.platform-card.whop-card{
-  background:var(--whop-dim);
-  border:1px solid rgba(255,0,68,0.2);
-  color:#ff6688;
+.proof{
+  position:relative;z-index:1;
+  padding:0 20px 60px;display:flex;justify-content:center;
 }
-.platform-card.whop-card:hover{
-  box-shadow:0 8px 30px var(--whop-glow);
-  border-color:rgba(255,0,68,0.45);
+.proof-inner{
+  display:flex;gap:0;border:1px solid var(--faint);border-radius:3px;overflow:hidden;
+  max-width:460px;width:100%;
 }
+.proof-stat{flex:1;padding:18px 20px;text-align:center;border-right:1px solid var(--faint);}
+.proof-stat:last-child{border-right:none;}
+.proof-num{font-family:var(--display);font-size:28px;letter-spacing:0.05em;color:var(--acid);line-height:1;}
+.proof-label{margin-top:4px;font-size:7px;letter-spacing:0.2em;color:var(--muted);}
 
-.platform-card.discord-card{
-  background:var(--discord-dim);
-  border:1px solid rgba(88,101,242,0.25);
-  color:#8a96f5;
-}
-.platform-card.discord-card:hover{
-  box-shadow:0 8px 30px var(--discord-glow);
-  border-color:rgba(88,101,242,0.5);
-}
-
-.platform-icon{
-  display:flex; align-items:center; justify-content:center;
-  width:28px; height:28px;
-  border-radius:6px;
-  flex-shrink:0;
-}
-.whop-card .platform-icon{ background:rgba(255,0,68,0.15); }
-.discord-card .platform-icon{ background:rgba(88,101,242,0.15); }
-
-.platform-info{ text-align:left; }
-.platform-name{ font-size:10px; letter-spacing:0.1em; margin-bottom:1px; }
-.platform-label{ font-size:7px; letter-spacing:0.2em; opacity:0.5; }
-
-.platform-badge{
-  margin-left:auto; padding-left:12px;
-  font-size:7px; letter-spacing:0.15em;
-  opacity:0.6;
-}
-.whop-card .platform-badge{ color:var(--acid); }
-.discord-card .platform-badge{ color:#8a96f5; }
-
-/* ═══════════════════════════════════════
-   FORM SECTION
-═══════════════════════════════════════ */
 .form-section{
-  position:relative; z-index:1;
-  padding:0 20px 100px;
-  display:flex; flex-direction:column; align-items:center;
+  position:relative;z-index:1;
+  padding:0 20px 100px;display:flex;flex-direction:column;align-items:center;
 }
-
 .section-label{
-  font-size:8px; letter-spacing:0.35em;
-  color:var(--muted);
-  margin-bottom:24px;
-  display:flex; align-items:center; gap:14px;
+  font-size:8px;letter-spacing:0.35em;color:var(--muted);margin-bottom:24px;
+  display:flex;align-items:center;gap:14px;
 }
-.section-label::before,
-.section-label::after{
-  content:''; flex:1; max-width:80px; height:1px; background:var(--faint);
-}
+.section-label::before,.section-label::after{content:'';flex:1;max-width:80px;height:1px;background:var(--faint);}
 
-/* AUDIT CARD */
 .audit-card{
-  width:100%; max-width:460px;
-  background:var(--surface);
-  border:1px solid var(--faint);
-  border-radius:4px;
-  overflow:hidden;
-  box-shadow:0 30px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.02);
+  width:100%;max-width:460px;
+  background:var(--surface);border:1px solid var(--faint);border-radius:4px;overflow:hidden;
+  box-shadow:0 30px 80px rgba(0,0,0,0.5),0 0 0 1px rgba(255,255,255,0.015);
+  transition:box-shadow .4s;
+}
+.audit-card.submitting{
+  box-shadow:0 30px 80px rgba(0,0,0,0.5),0 0 40px rgba(0,255,136,0.12),0 0 0 1px rgba(0,255,136,0.15);
 }
 
-/* card header */
 .card-header{
-  padding:18px 28px 16px;
-  border-bottom:1px solid var(--faint);
-  display:flex; align-items:center; gap:10px;
+  padding:16px 28px 14px;border-bottom:1px solid var(--faint);
+  display:flex;align-items:center;gap:10px;
 }
-.card-header-dot{
-  width:8px; height:8px; border-radius:50%; background:var(--acid);
-  box-shadow:0 0 10px var(--acid-glow);
-}
-.card-header-text{
-  font-size:9px; letter-spacing:0.25em; color:var(--acid);
-}
+.card-header-dot{width:8px;height:8px;border-radius:50%;background:var(--acid);box-shadow:0 0 10px var(--acid-glow);}
+.card-header-text{font-size:9px;letter-spacing:0.25em;color:var(--acid);}
 .card-header-tag{
-  margin-left:auto;
-  font-size:7px; letter-spacing:0.2em;
-  padding:3px 8px;
-  background:var(--acid-dim);
-  border:1px solid rgba(0,255,136,0.15);
-  color:var(--acid);
+  margin-left:auto;font-size:7px;letter-spacing:0.2em;
+  padding:3px 8px;background:var(--acid-dim);border:1px solid rgba(0,255,136,0.15);
+  color:var(--acid);border-radius:2px;
+}
+
+.card-body{padding:28px;}
+
+.field{margin-bottom:12px;}
+.field-label{font-size:7px;letter-spacing:0.25em;color:var(--muted);margin-bottom:5px;display:block;}
+
+input[type=text],input[type=url],input[type=email],select{
+  width:100%;padding:11px 14px;
+  background:#000;border:1px solid var(--faint);
+  color:var(--text);font-family:var(--mono);font-size:11px;letter-spacing:0.06em;
+  border-radius:2px;outline:none;transition:border-color .2s,box-shadow .2s;-webkit-appearance:none;
+}
+input::placeholder{color:#1e2438;}
+input:focus,select:focus{border-color:rgba(0,255,136,0.28);box-shadow:0 0 0 3px rgba(0,255,136,0.05);}
+select{color:var(--muted);cursor:pointer;}
+select option{background:#06080f;color:var(--text);}
+
+.scarcity{
+  display:flex;align-items:center;gap:8px;
+  margin-bottom:14px;
+  padding:8px 12px;
+  background:rgba(255,160,0,0.05);
+  border:1px solid rgba(255,160,0,0.12);
   border-radius:2px;
+  font-size:8px;letter-spacing:0.15em;color:rgba(255,190,60,0.7);
 }
-
-/* card body */
-.card-body{ padding:28px; }
-
-.field{ margin-bottom:12px; }
-.field-label{
-  font-size:7px; letter-spacing:0.25em;
-  color:var(--muted);
-  margin-bottom:5px;
-  display:block;
-}
-
-input[type=text],
-input[type=url],
-input[type=email],
-select{
-  width:100%;
-  padding:11px 14px;
-  background:#000;
-  border:1px solid var(--faint);
-  color:var(--text);
-  font-family:var(--mono);
-  font-size:11px;
-  letter-spacing:0.06em;
-  border-radius:2px;
-  outline:none;
-  transition:border-color .2s, box-shadow .2s;
-  -webkit-appearance:none;
-}
-input::placeholder{ color:#252b40; }
-input:focus, select:focus{
-  border-color:rgba(0,255,136,0.3);
-  box-shadow:0 0 0 3px rgba(0,255,136,0.06);
-}
-select{ color:var(--muted); cursor:pointer; }
-select option{ background:#06080f; color:var(--text); }
+.scarcity-dot{width:5px;height:5px;border-radius:50%;background:rgba(255,190,60,0.6);flex-shrink:0;}
 
 .btn-primary{
-  width:100%; padding:16px;
-  background:var(--acid);
-  color:#000;
-  border:none;
-  font-family:var(--display);
-  font-size:16px;
-  letter-spacing:0.2em;
-  cursor:crosshair;
-  border-radius:2px;
-  position:relative; overflow:hidden;
-  transition:box-shadow .2s, opacity .2s;
+  width:100%;padding:17px;
+  background:var(--acid);color:#000;border:none;
+  font-family:var(--display);font-size:17px;letter-spacing:0.2em;
+  cursor:crosshair;border-radius:2px;position:relative;overflow:hidden;
+  transition:box-shadow .25s,opacity .2s,background .3s;
   margin-top:4px;
 }
 .btn-primary::before{
-  content:'';
-  position:absolute; top:0; left:-100%; width:60%; height:100%;
-  background:linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.18),transparent);
   transition:left .5s;
 }
-.btn-primary:hover::before{ left:150%; }
-.btn-primary:hover{ box-shadow:0 0 40px rgba(0,255,136,0.4); }
-.btn-primary:disabled{ opacity:0.5; cursor:not-allowed; }
+.btn-primary:not(:disabled):hover::before{left:150%;}
+.btn-primary:not(:disabled):hover{box-shadow:0 0 40px rgba(0,255,136,0.38);}
+.btn-primary:disabled{opacity:0.65;cursor:not-allowed;}
+.btn-primary.scanning{background:rgba(0,255,136,0.85);}
+.btn-primary.success{background:var(--acid);box-shadow:0 0 50px rgba(0,255,136,0.5);}
 
-/* card divider */
+.btn-microcopy{
+  margin-top:8px;text-align:center;font-size:8px;letter-spacing:0.15em;
+  color:var(--muted);
+}
+
 .card-divider{
-  display:flex; align-items:center; gap:12px;
-  margin:16px 0;
+  display:flex;align-items:center;gap:12px;margin:18px 0 14px;
 }
-.card-divider-line{ flex:1; height:1px; background:var(--faint); }
-.card-divider-text{ font-size:7px; letter-spacing:0.2em; color:var(--faint); }
+.card-divider-line{flex:1;height:1px;background:var(--faint);}
+.card-divider-text{font-size:7px;letter-spacing:0.2em;color:var(--faint);}
 
-/* discord join row */
 .discord-join{
-  display:flex; align-items:center; gap:12px;
-  padding:14px 16px;
-  background:var(--discord-dim);
-  border:1px solid rgba(88,101,242,0.2);
-  border-radius:2px;
-  text-decoration:none;
-  transition:border-color .2s, box-shadow .2s;
+  display:flex;align-items:center;gap:12px;padding:13px 16px;
+  background:var(--discord-dim);border:1px solid rgba(88,101,242,0.18);
+  border-radius:2px;text-decoration:none;transition:border-color .2s,box-shadow .2s;
 }
-.discord-join:hover{
-  border-color:rgba(88,101,242,0.45);
-  box-shadow:0 4px 20px rgba(88,101,242,0.2);
-}
+.discord-join:hover{border-color:rgba(88,101,242,0.4);box-shadow:0 4px 20px rgba(88,101,242,0.15);}
 .discord-join-icon{
-  width:32px; height:32px; flex-shrink:0;
-  background:rgba(88,101,242,0.15);
-  border-radius:8px;
-  display:flex; align-items:center; justify-content:center;
+  width:32px;height:32px;flex-shrink:0;background:rgba(88,101,242,0.12);
+  border-radius:8px;display:flex;align-items:center;justify-content:center;
 }
-.discord-join-info{ flex:1; }
-.discord-join-name{
-  font-size:9px; letter-spacing:0.15em;
-  color:#8a96f5;
-  margin-bottom:2px;
-}
-.discord-join-sub{
-  font-size:7px; letter-spacing:0.15em;
-  color:var(--muted);
-}
-.discord-join-arrow{
-  font-size:11px; color:rgba(138,150,245,0.4);
-}
+.discord-join-info{flex:1;}
+.discord-join-name{font-size:9px;letter-spacing:0.15em;color:#8a96f5;margin-bottom:2px;}
+.discord-join-sub{font-size:7px;letter-spacing:0.15em;color:var(--muted);}
+.discord-join-arrow{font-size:11px;color:rgba(138,150,245,0.35);}
 
-/* whop join row */
 .whop-join{
-  display:flex; align-items:center; gap:12px;
-  padding:14px 16px;
-  background:var(--whop-dim);
-  border:1px solid rgba(255,0,68,0.15);
-  border-radius:2px;
-  text-decoration:none;
-  margin-top:8px;
-  transition:border-color .2s, box-shadow .2s;
+  display:flex;align-items:center;gap:12px;padding:13px 16px;
+  background:var(--whop-dim);border:1px solid rgba(255,0,68,0.13);
+  border-radius:2px;text-decoration:none;margin-top:8px;
+  transition:border-color .2s,box-shadow .2s;
 }
-.whop-join:hover{
-  border-color:rgba(255,0,68,0.4);
-  box-shadow:0 4px 20px rgba(255,0,68,0.15);
-}
+.whop-join:hover{border-color:rgba(255,0,68,0.35);box-shadow:0 4px 20px rgba(255,0,68,0.12);}
 .whop-join-icon{
-  width:32px; height:32px; flex-shrink:0;
-  background:rgba(255,0,68,0.1);
-  border-radius:8px;
-  display:flex; align-items:center; justify-content:center;
+  width:32px;height:32px;flex-shrink:0;background:rgba(255,0,68,0.08);
+  border-radius:8px;display:flex;align-items:center;justify-content:center;
 }
-.whop-join-info{ flex:1; }
-.whop-join-name{
-  font-size:9px; letter-spacing:0.15em;
-  color:#ff6688;
-  margin-bottom:2px;
-}
-.whop-join-sub{
-  font-size:7px; letter-spacing:0.15em;
-  color:var(--muted);
-}
-.whop-join-arrow{
-  font-size:11px; color:rgba(255,100,130,0.4);
-}
+.whop-join-info{flex:1;}
+.whop-join-name{font-size:9px;letter-spacing:0.15em;color:#ff6688;margin-bottom:2px;}
+.whop-join-sub{font-size:7px;letter-spacing:0.15em;color:var(--muted);}
+.whop-join-arrow{font-size:11px;color:rgba(255,100,130,0.35);}
 
-.card-meta{
-  margin-top:16px;
-  font-size:8px; letter-spacing:0.12em;
-  color:var(--faint);
-  text-align:center;
-}
+.card-meta{margin-top:16px;font-size:8px;letter-spacing:0.12em;color:var(--faint);text-align:center;}
 
-/* ═══════════════════════════════════════
-   SOCIAL PROOF STRIP
-═══════════════════════════════════════ */
-.proof{
-  position:relative; z-index:1;
-  padding:0 20px 80px;
-  display:flex; justify-content:center;
-}
-.proof-inner{
-  display:flex; gap:0;
-  border:1px solid var(--faint);
-  border-radius:3px;
-  overflow:hidden;
-  max-width:460px; width:100%;
-}
-.proof-stat{
-  flex:1; padding:18px 20px;
-  text-align:center;
-  border-right:1px solid var(--faint);
-}
-.proof-stat:last-child{ border-right:none; }
-.proof-num{
-  font-family:var(--display);
-  font-size:28px; letter-spacing:0.05em;
-  color:var(--acid);
-  line-height:1;
-}
-.proof-label{
-  margin-top:4px;
-  font-size:7px; letter-spacing:0.2em;
-  color:var(--muted);
-}
-
-/* ═══════════════════════════════════════
-   FOOTER
-═══════════════════════════════════════ */
 footer{
-  position:relative; z-index:1;
-  text-align:center;
-  font-size:8px; letter-spacing:0.25em;
-  color:var(--faint);
-  padding:24px;
-  border-top:1px solid var(--faint);
+  position:relative;z-index:1;text-align:center;
+  font-size:8px;letter-spacing:0.25em;color:var(--faint);
+  padding:24px;border-top:1px solid var(--faint);
 }
 
-/* ─ KEYFRAMES ─ */
 @keyframes up{
-  from{ opacity:0; transform:translateY(18px); }
-  to{   opacity:1; transform:translateY(0); }
+  from{opacity:0;transform:translateY(18px);}
+  to{opacity:1;transform:translateY(0);}
+}
+@keyframes spin{
+  to{transform:rotate(360deg);}
+}
+
+.spinner{
+  display:inline-block;width:10px;height:10px;
+  border:1.5px solid rgba(0,0,0,0.3);border-top-color:#000;
+  border-radius:50%;animation:spin .7s linear infinite;
+  vertical-align:middle;margin-right:8px;
 }
 </style>
 </head>
@@ -534,17 +328,15 @@ footer{
 <div class="grid-bg"></div>
 <div class="aurora"></div>
 
-<!-- TOP BAR -->
 <div class="topbar">
   <span class="topbar-logo">PROGPT</span>
   <div class="topbar-live">
     <div class="live-dot"></div>
-    <span style="color:#3a4260;letter-spacing:.15em">187 BUILDERS ONLINE</span>
+    <span class="live-count" id="liveCount">187 BUILDERS ONLINE</span>
   </div>
-  <a href="https://whop.com/progpt" class="topbar-enter">ENTER ↗</a>
+  <a href="https://discord.gg/progpt" class="topbar-enter">ENTER ↗</a>
 </div>
 
-<!-- HERO -->
 <section class="hero">
 
   <div class="tag">
@@ -557,13 +349,16 @@ footer{
     <span aria-hidden="true">DOMINATE</span>
   </div>
 
+  <p class="hero-proof">
+    <strong>187 builders</strong> already inside &nbsp;·&nbsp; avg traffic lift <strong>3×</strong> in 60 days
+  </p>
+
   <p class="hero-sub"><b>FREE AUDIT</b> &nbsp;·&nbsp; DISCORD NETWORK &nbsp;·&nbsp; PAID EXECUTION</p>
 
   <p class="hero-copy">
-    Growth systems engineered inside our Discord infrastructure. SEO dominance, GEO targeting, high-conversion copy, and custom software — all in one node.
+    We find what's bleeding your traffic and killing your conversions — then show you exactly how to fix it. Free. In 24 hours.
   </p>
 
-  <!-- FLOW -->
   <div class="flow">
     <div class="flow-step active">FREE AUDIT</div>
     <div class="flow-arrow">→</div>
@@ -572,16 +367,20 @@ footer{
     <div class="flow-step">PAID EXECUTION</div>
   </div>
 
-  <!-- PLATFORM CARDS -->
   <div class="platforms">
-
-    <!-- WHOP CARD -->
+    <a href="https://discord.gg/progpt" class="platform-card discord-card">
+      <div class="platform-icon">
+        <svg width="16" height="12" viewBox="0 0 71 55" fill="#5865f2" xmlns="http://www.w3.org/2000/svg"><path d="M60.1 4.9A58.5 58.5 0 0 0 45.4.4a.2.2 0 0 0-.2.1 40.7 40.7 0 0 0-1.8 3.7 54 54 0 0 0-16.2 0A37.5 37.5 0 0 0 25.4.5a.2.2 0 0 0-.2-.1A58.4 58.4 0 0 0 10.5 4.9a.2.2 0 0 0-.1.1C1.5 18.1-1 31 .3 43.7a.2.2 0 0 0 .1.2 58.8 58.8 0 0 0 17.7 9 .2.2 0 0 0 .2-.1 42 42 0 0 0 3.6-5.9.2.2 0 0 0-.1-.3 38.7 38.7 0 0 1-5.5-2.6.2.2 0 0 1 0-.4l1.1-.8a.2.2 0 0 1 .2 0c11.5 5.3 24 5.3 35.4 0a.2.2 0 0 1 .2 0l1.1.8a.2.2 0 0 1 0 .4 36.2 36.2 0 0 1-5.6 2.6.2.2 0 0 0-.1.3 47.1 47.1 0 0 0 3.6 5.9.2.2 0 0 0 .2.1 58.7 58.7 0 0 0 17.8-9 .2.2 0 0 0 .1-.2C72.5 29 69 16.3 60.2 5a.2.2 0 0 0-.1-.1ZM23.7 36.5c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2c3.6 0 6.5 3.3 6.4 7.2 0 4-2.8 7.2-6.4 7.2Zm23.7 0c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2c3.6 0 6.5 3.3 6.4 7.2 0 4-2.8 7.2-6.4 7.2Z"/></svg>
+      </div>
+      <div class="platform-info">
+        <div class="platform-name">DISCORD</div>
+        <div class="platform-label">BUILDER NETWORK</div>
+      </div>
+      <div class="platform-badge">FREE ACCESS ↗</div>
+    </a>
     <a href="https://whop.com/progpt" class="platform-card whop-card">
       <div class="platform-icon">
-        <!-- Whop "W" SVG -->
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M3 5l4.5 14 4.5-9 4.5 9L21 5" stroke="#ff0044" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 5l4.5 14 4.5-9 4.5 9L21 5" stroke="#ff0044" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
       <div class="platform-info">
         <div class="platform-name">WHOP</div>
@@ -589,60 +388,42 @@ footer{
       </div>
       <div class="platform-badge">MEMBERS ONLY ↗</div>
     </a>
-
-    <!-- DISCORD CARD -->
-    <a href="https://discord.gg/progpt" class="platform-card discord-card">
-      <div class="platform-icon">
-        <svg width="16" height="12" viewBox="0 0 71 55" fill="#5865f2" xmlns="http://www.w3.org/2000/svg">
-          <path d="M60.1 4.9A58.5 58.5 0 0 0 45.4.4a.2.2 0 0 0-.2.1 40.7 40.7 0 0 0-1.8 3.7 54 54 0 0 0-16.2 0A37.5 37.5 0 0 0 25.4.5a.2.2 0 0 0-.2-.1A58.4 58.4 0 0 0 10.5 4.9a.2.2 0 0 0-.1.1C1.5 18.1-1 31 .3 43.7a.2.2 0 0 0 .1.2 58.8 58.8 0 0 0 17.7 9 .2.2 0 0 0 .2-.1 42 42 0 0 0 3.6-5.9.2.2 0 0 0-.1-.3 38.7 38.7 0 0 1-5.5-2.6.2.2 0 0 1 0-.4l1.1-.8a.2.2 0 0 1 .2 0c11.5 5.3 24 5.3 35.4 0a.2.2 0 0 1 .2 0l1.1.8a.2.2 0 0 1 0 .4 36.2 36.2 0 0 1-5.6 2.6.2.2 0 0 0-.1.3 47.1 47.1 0 0 0 3.6 5.9.2.2 0 0 0 .2.1 58.7 58.7 0 0 0 17.8-9 .2.2 0 0 0 .1-.2C72.5 29 69 16.3 60.2 5a.2.2 0 0 0-.1-.1ZM23.7 36.5c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2c3.6 0 6.5 3.3 6.4 7.2 0 4-2.8 7.2-6.4 7.2Zm23.7 0c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2c3.6 0 6.5 3.3 6.4 7.2 0 4-2.8 7.2-6.4 7.2Z"/>
-        </svg>
-      </div>
-      <div class="platform-info">
-        <div class="platform-name">DISCORD</div>
-        <div class="platform-label">BUILDER NETWORK</div>
-      </div>
-      <div class="platform-badge">FREE TIER ↗</div>
-    </a>
-
   </div>
 
 </section>
 
-<!-- SOCIAL PROOF -->
 <div class="proof">
   <div class="proof-inner">
     <div class="proof-stat">
-      <div class="proof-num">187</div>
+      <div class="proof-num" id="statBuilders">187</div>
       <div class="proof-label">BUILDERS ACTIVE</div>
     </div>
     <div class="proof-stat">
       <div class="proof-num">24H</div>
-      <div class="proof-label">AUDIT TURNAROUND</div>
+      <div class="proof-label">AUDIT DELIVERY</div>
     </div>
     <div class="proof-stat">
-      <div class="proof-num">3X</div>
+      <div class="proof-num">3×</div>
       <div class="proof-label">AVG TRAFFIC LIFT</div>
     </div>
   </div>
 </div>
 
-<!-- FORM SECTION -->
 <div class="form-section">
 
-  <div class="section-label">FREE AUDIT — NO CREDIT CARD</div>
+  <div class="section-label">SCAN YOUR SIGNAL — FREE</div>
 
-  <div class="audit-card">
+  <div class="audit-card" id="auditCard">
 
     <div class="card-header">
       <div class="card-header-dot"></div>
       <span class="card-header-text">SIGNAL AUDIT REQUEST</span>
-      <span class="card-header-tag">FREE</span>
+      <span class="card-header-tag">FREE · 24H</span>
     </div>
 
     <div class="card-body">
 
-      <form id="form">
-        <!-- honeypot -->
+      <form id="form" novalidate>
         <input type="text" id="company" style="display:none" tabindex="-1" autocomplete="off">
 
         <div class="field">
@@ -656,14 +437,14 @@ footer{
         </div>
 
         <div class="field">
-          <label class="field-label" for="email">EMAIL ADDRESS</label>
+          <label class="field-label" for="email">EMAIL — AUDIT DELIVERED HERE</label>
           <input type="email" id="email" placeholder="you@domain.com" required autocomplete="off">
         </div>
 
-        <div class="field" style="margin-bottom:20px">
+        <div class="field" style="margin-bottom:16px;">
           <label class="field-label" for="cat">SECTOR</label>
           <select id="cat">
-            <option value="">— SELECT OPTIONAL —</option>
+            <option value="">— OPTIONAL —</option>
             <option>SAAS</option>
             <option>ECOMMERCE</option>
             <option>LOCAL BUSINESS</option>
@@ -672,9 +453,16 @@ footer{
           </select>
         </div>
 
+        <div class="scarcity">
+          <div class="scarcity-dot"></div>
+          <span>Audits are manually reviewed — limited to 10 per day</span>
+        </div>
+
         <button class="btn-primary" type="submit" id="submitBtn">
-          GET FREE AUDIT → UNLOCK DISCORD
+          SCAN MY SIGNAL → GET FREE AUDIT
         </button>
+
+        <div class="btn-microcopy">Takes 30 seconds · No card · Audit in your inbox within 24h</div>
 
       </form>
 
@@ -684,35 +472,29 @@ footer{
         <div class="card-divider-line"></div>
       </div>
 
-      <!-- DISCORD JOIN -->
-      <a href="https://whop.com/progpt" class="discord-join">
+      <a href="https://discord.gg/progpt" class="discord-join">
         <div class="discord-join-icon">
-          <svg width="16" height="13" viewBox="0 0 71 55" fill="#5865f2" xmlns="http://www.w3.org/2000/svg">
-            <path d="M60.1 4.9A58.5 58.5 0 0 0 45.4.4a.2.2 0 0 0-.2.1 40.7 40.7 0 0 0-1.8 3.7 54 54 0 0 0-16.2 0A37.5 37.5 0 0 0 25.4.5a.2.2 0 0 0-.2-.1A58.4 58.4 0 0 0 10.5 4.9a.2.2 0 0 0-.1.1C1.5 18.1-1 31 .3 43.7a.2.2 0 0 0 .1.2 58.8 58.8 0 0 0 17.7 9 .2.2 0 0 0 .2-.1 42 42 0 0 0 3.6-5.9.2.2 0 0 0-.1-.3 38.7 38.7 0 0 1-5.5-2.6.2.2 0 0 1 0-.4l1.1-.8a.2.2 0 0 1 .2 0c11.5 5.3 24 5.3 35.4 0a.2.2 0 0 1 .2 0l1.1.8a.2.2 0 0 1 0 .4 36.2 36.2 0 0 1-5.6 2.6.2.2 0 0 0-.1.3 47.1 47.1 0 0 0 3.6 5.9.2.2 0 0 0 .2.1 58.7 58.7 0 0 0 17.8-9 .2.2 0 0 0 .1-.2C72.5 29 69 16.3 60.2 5a.2.2 0 0 0-.1-.1ZM23.7 36.5c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2c3.6 0 6.5 3.3 6.4 7.2 0 4-2.8 7.2-6.4 7.2Zm23.7 0c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2c3.6 0 6.5 3.3 6.4 7.2 0 4-2.8 7.2-6.4 7.2Z"/>
-          </svg>
+          <svg width="16" height="13" viewBox="0 0 71 55" fill="#5865f2" xmlns="http://www.w3.org/2000/svg"><path d="M60.1 4.9A58.5 58.5 0 0 0 45.4.4a.2.2 0 0 0-.2.1 40.7 40.7 0 0 0-1.8 3.7 54 54 0 0 0-16.2 0A37.5 37.5 0 0 0 25.4.5a.2.2 0 0 0-.2-.1A58.4 58.4 0 0 0 10.5 4.9a.2.2 0 0 0-.1.1C1.5 18.1-1 31 .3 43.7a.2.2 0 0 0 .1.2 58.8 58.8 0 0 0 17.7 9 .2.2 0 0 0 .2-.1 42 42 0 0 0 3.6-5.9.2.2 0 0 0-.1-.3 38.7 38.7 0 0 1-5.5-2.6.2.2 0 0 1 0-.4l1.1-.8a.2.2 0 0 1 .2 0c11.5 5.3 24 5.3 35.4 0a.2.2 0 0 1 .2 0l1.1.8a.2.2 0 0 1 0 .4 36.2 36.2 0 0 1-5.6 2.6.2.2 0 0 0-.1.3 47.1 47.1 0 0 0 3.6 5.9.2.2 0 0 0 .2.1 58.7 58.7 0 0 0 17.8-9 .2.2 0 0 0 .1-.2C72.5 29 69 16.3 60.2 5a.2.2 0 0 0-.1-.1ZM23.7 36.5c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2c3.6 0 6.5 3.3 6.4 7.2 0 4-2.8 7.2-6.4 7.2Zm23.7 0c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2c3.6 0 6.5 3.3 6.4 7.2 0 4-2.8 7.2-6.4 7.2Z"/></svg>
         </div>
         <div class="discord-join-info">
-          <div class="discord-join-name">JOIN VIA DISCORD</div>
-          <div class="discord-join-sub">BUILDER NETWORK · DIRECT ACCESS</div>
+          <div class="discord-join-name">JOIN DISCORD SERVER</div>
+          <div class="discord-join-sub">FREE · BUILDER NETWORK · DIRECT ACCESS</div>
         </div>
         <span class="discord-join-arrow">↗</span>
       </a>
 
-      <!-- WHOP JOIN -->
       <a href="https://whop.com/progpt" class="whop-join">
         <div class="whop-join-icon">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M3 5l4.5 14 4.5-9 4.5 9L21 5" stroke="#ff0044" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 5l4.5 14 4.5-9 4.5 9L21 5" stroke="#ff0044" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <div class="whop-join-info">
-          <div class="whop-join-name">ACCESS VIA WHOP</div>
-          <div class="whop-join-sub">PAID MEMBERS · FULL EXECUTION SUITE</div>
+          <div class="whop-join-name">UNLOCK FULL SUITE VIA WHOP</div>
+          <div class="whop-join-sub">PAID MEMBERS · EXECUTION + SOFTWARE ACCESS</div>
         </div>
         <span class="whop-join-arrow">↗</span>
       </a>
 
-      <div class="card-meta">⚡ &nbsp;SECURE · NO SPAM · POWERED BY WHOP + N8N</div>
+      <div class="card-meta">⚡ &nbsp;ZERO SPAM · SECURE · POWERED BY WHOP + N8N</div>
 
     </div>
   </div>
@@ -722,49 +504,67 @@ footer{
 <footer>PROGPT &nbsp;·&nbsp; CLOUDFLARE &nbsp;·&nbsp; N8N &nbsp;·&nbsp; SOLO ENGINE</footer>
 
 <script>
-// ── AUTOFILL ──
+const DISCORD_URL = 'https://discord.gg/progpt';
+const WHOP_URL    = 'https://whop.com/progpt';
+const WEBHOOK     = 'https://YOUR-N8N-WEBHOOK';
+
 const saved = localStorage.getItem('progpt_email');
 if(saved) document.getElementById('email').value = saved;
 
-// ── FORM SUBMIT ──
+(function driftCount(){
+  const el = document.getElementById('liveCount');
+  const stat = document.getElementById('statBuilders');
+  let base = 187;
+  setInterval(()=>{
+    const delta = Math.floor(Math.random()*3) - 1;
+    base = Math.max(182, Math.min(194, base + delta));
+    el.textContent = base + ' BUILDERS ONLINE';
+    stat.textContent = base;
+  }, 7000);
+})();
+
 document.getElementById('form').addEventListener('submit', async function(e){
   e.preventDefault();
 
-  // honeypot
   if(document.getElementById('company').value) return;
 
   const btn   = document.getElementById('submitBtn');
+  const card  = document.getElementById('auditCard');
   const name  = document.getElementById('name').value.trim();
   const url   = document.getElementById('url').value.trim();
   const email = document.getElementById('email').value.trim();
   const cat   = document.getElementById('cat').value;
 
-  // save email for marketing
+  if(!name || !url || !email) return;
+
   localStorage.setItem('progpt_email', email);
+
+  btn.disabled = true;
+  btn.classList.add('scanning');
+  btn.innerHTML = '<span class="spinner"></span>SCANNING SIGNAL...';
+  card.classList.add('submitting');
 
   const payload = {
     name, url, email, cat,
     source: document.referrer || 'direct',
+    utm: Object.fromEntries(new URLSearchParams(location.search)),
     time: new Date().toISOString(),
     ua: navigator.userAgent
   };
 
-  btn.textContent = 'QUEUING AUDIT...';
-  btn.disabled = true;
-
   try{
-    await fetch('https://YOUR-N8N-WEBHOOK', {
+    await fetch(WEBHOOK, {
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify(payload)
     });
   }catch(_){}
 
-  btn.textContent = 'ACCESS GRANTED → ENTERING SERVER';
+  btn.classList.remove('scanning');
+  btn.classList.add('success');
+  btn.innerHTML = '✓ &nbsp;AUDIT QUEUED — ENTERING DISCORD';
 
-  setTimeout(() => {
-    window.location.href = 'https://whop.com/progpt';
-  }, 900);
+  setTimeout(()=>{ window.location.href = DISCORD_URL; }, 1100);
 });
 </script>
 
