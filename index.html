@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>PROGPT // SIGNAL ACCESS SYSTEM</title>
+<title>PROGPT // DOMINATE SIGNAL</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
 
@@ -11,12 +11,10 @@
 :root{
   --bg:#020305;
   --acid:#00ff88;
-  --acid2:#00e5ff;
   --text:#e8edf8;
   --dim:#4a5068;
   --card-bg:rgba(8,12,22,0.9);
   --border:rgba(0,255,136,0.15);
-  --glow:0 0 40px rgba(0,255,136,0.12);
 }
 
 *{ box-sizing:border-box; margin:0; padding:0; }
@@ -25,10 +23,9 @@ body{
   background:var(--bg);
   color:var(--text);
   font-family:'Space Mono', monospace;
-  overflow-x:hidden;
 }
 
-/* ── GRID NOISE BACKGROUND ── */
+/* GRID BACKGROUND */
 body::before{
   content:'';
   position:fixed;
@@ -37,73 +34,26 @@ body::before{
     linear-gradient(rgba(0,255,136,0.03) 1px, transparent 1px),
     linear-gradient(90deg, rgba(0,255,136,0.03) 1px, transparent 1px);
   background-size:40px 40px;
-  pointer-events:none;
-  z-index:0;
 }
 
-/* ── RADIAL BLOOM ── */
-body::after{
-  content:'';
-  position:fixed;
-  top:-20vh;
-  left:50%;
-  transform:translateX(-50%);
-  width:80vw;
-  height:60vh;
-  background:radial-gradient(ellipse at center, rgba(0,255,136,0.07) 0%, transparent 70%);
-  pointer-events:none;
-  z-index:0;
-  animation: breathe 6s ease-in-out infinite;
-}
-
-@keyframes breathe{
-  0%,100%{ opacity:0.6; transform:translateX(-50%) scaleY(1); }
-  50%{ opacity:1; transform:translateX(-50%) scaleY(1.1); }
-}
-
-/* ── STATUS BAR ── */
+/* STATUS BAR */
 .status{
   position:fixed;
   top:0;
   width:100%;
   display:flex;
   justify-content:space-between;
-  align-items:center;
-  padding:10px 24px;
+  padding:10px 20px;
   font-size:9px;
-  letter-spacing:0.15em;
-  background:rgba(2,3,5,0.92);
-  backdrop-filter:blur(12px);
+  background:#000;
   border-bottom:1px solid var(--border);
   z-index:100;
 }
 
-.status-dot{
-  display:inline-block;
-  width:6px; height:6px;
-  border-radius:50%;
-  background:var(--acid);
-  margin-right:7px;
-  animation:pulse 1.8s ease-in-out infinite;
-}
+.status a{ color:var(--acid); text-decoration:none; }
 
-@keyframes pulse{
-  0%,100%{ box-shadow:0 0 0 0 rgba(0,255,136,0.6); }
-  50%{ box-shadow:0 0 0 5px rgba(0,255,136,0); }
-}
-
-.status a{
-  color:var(--acid);
-  text-decoration:none;
-  letter-spacing:0.12em;
-  transition:opacity .2s;
-}
-.status a:hover{ opacity:0.7; }
-
-/* ── HERO ── */
+/* HERO */
 .hero{
-  position:relative;
-  z-index:1;
   min-height:100vh;
   display:flex;
   flex-direction:column;
@@ -113,349 +63,219 @@ body::after{
   padding:140px 20px 100px;
 }
 
-/* ── EYEBROW ── */
+/* EYEBROW */
 .eyebrow{
   font-size:9px;
-  letter-spacing:0.35em;
+  letter-spacing:0.3em;
   color:var(--acid);
-  margin-bottom:28px;
-  opacity:0;
-  animation:fadeUp .6s .2s forwards;
+  margin-bottom:25px;
 }
 
-/* ── HEADLINE ── */
+/* HEADLINE */
 h1{
   font-family:'Bebas Neue', sans-serif;
   font-size:clamp(5rem, 16vw, 10rem);
   line-height:0.9;
-  letter-spacing:0.02em;
-  opacity:0;
-  animation:fadeUp .7s .35s forwards;
 }
 
 .line2{
   display:block;
   -webkit-text-stroke:1px var(--acid);
   color:transparent;
-  filter:drop-shadow(0 0 20px rgba(0,255,136,0.4));
+  filter:
+    drop-shadow(0 0 10px rgba(0,255,136,0.6))
+    drop-shadow(0 0 25px rgba(0,255,136,0.3));
 }
 
-/* ── SUBHEADLINE ── */
+/* SUB */
 .sub{
-  margin-top:22px;
+  margin-top:20px;
   font-size:11px;
   letter-spacing:0.2em;
-  color:#788;
-  opacity:0;
-  animation:fadeUp .6s .5s forwards;
+  color:#889;
 }
 
-.sub span{ color:var(--text); }
-
-/* ── DESC ── */
+/* DESC */
 .desc{
   margin-top:14px;
   font-size:12px;
   color:var(--dim);
   max-width:420px;
   line-height:1.7;
-  opacity:0;
-  animation:fadeUp .6s .6s forwards;
 }
 
-/* ── CARD ── */
+/* FLOW STRIP */
+.flow{
+  margin-top:14px;
+  font-size:11px;
+  color:#889;
+  letter-spacing:0.12em;
+}
+
+/* CARD */
 .card{
-  position:relative;
-  margin-top:48px;
+  margin-top:50px;
   width:100%;
   max-width:420px;
   background:var(--card-bg);
   border:1px solid var(--border);
-  border-radius:2px;
-  padding:36px 32px;
-  box-shadow:
-    var(--glow),
-    inset 0 1px 0 rgba(255,255,255,0.03);
-  opacity:0;
-  animation:fadeUp .7s .75s forwards;
+  padding:30px;
 }
 
-/* corner accents */
-.card::before, .card::after{
-  content:'';
-  position:absolute;
-  width:16px; height:16px;
-  border-color:var(--acid);
-  border-style:solid;
-  opacity:0.5;
-}
-.card::before{ top:-1px; left:-1px; border-width:1px 0 0 1px; }
-.card::after{ bottom:-1px; right:-1px; border-width:0 1px 1px 0; }
-
-/* ── FORM ── */
-.field{
-  position:relative;
-  margin-bottom:12px;
-}
-
-.field-label{
-  position:absolute;
-  top:13px; left:14px;
-  font-size:8px;
-  letter-spacing:0.2em;
-  color:var(--dim);
-  pointer-events:none;
-  transition:all .2s;
-}
-
+/* FORM */
 input, select{
   width:100%;
-  padding:12px 14px;
-  background:rgba(0,0,0,0.5);
-  border:1px solid rgba(255,255,255,0.06);
-  border-bottom:1px solid rgba(0,255,136,0.1);
+  padding:12px;
+  margin-bottom:12px;
+  background:#000;
+  border:1px solid #222;
   color:var(--text);
-  font-family:'Space Mono', monospace;
   font-size:11px;
-  letter-spacing:0.08em;
-  border-radius:1px;
+}
+
+input:focus{
+  border-color:var(--acid);
   outline:none;
-  transition:border-color .2s, box-shadow .2s;
-  -webkit-appearance:none;
 }
 
-select{
-  cursor:pointer;
-  color:var(--dim);
-}
-
-select option{ background:#060a10; }
-
-input:focus, select:focus{
-  border-color:rgba(0,255,136,0.4);
-  box-shadow:0 0 0 1px rgba(0,255,136,0.08), inset 0 0 20px rgba(0,255,136,0.02);
-}
-
-input::placeholder{ color:#2a3040; letter-spacing:0.1em; }
-
-/* ── BUTTON ── */
+/* BUTTON */
 .btn{
   width:100%;
-  padding:17px;
+  padding:16px;
   background:var(--acid);
   color:#000;
   border:none;
-  font-family:'Bebas Neue', sans-serif;
-  font-size:15px;
-  letter-spacing:0.2em;
+  font-family:'Bebas Neue';
+  font-size:16px;
+  letter-spacing:0.15em;
   cursor:pointer;
-  border-radius:1px;
-  transition:opacity .15s, transform .1s, box-shadow .2s;
-  position:relative;
-  overflow:hidden;
 }
 
-.btn::after{
-  content:'';
-  position:absolute;
-  inset:0;
-  background:linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.15) 50%, transparent 100%);
-  transform:translateX(-100%);
-  transition:transform 0.5s;
-}
-
-.btn:hover::after{ transform:translateX(100%); }
-
-.btn:hover{
-  box-shadow:0 0 30px rgba(0,255,136,0.35);
-}
-
-.btn:active{ transform:scale(0.99); }
-
-/* ── DISCORD CTA ── */
+/* DISCORD */
 .discord{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:10px;
-  margin-top:10px;
-  padding:15px;
-  border:1px solid rgba(88,101,242,0.2);
-  background:rgba(88,101,242,0.05);
-  color:#8a96f0;
+  display:block;
+  margin-top:12px;
+  padding:14px;
+  text-align:center;
+  border:1px solid rgba(88,101,242,0.3);
+  color:#8ea1ff;
   text-decoration:none;
-  font-size:9px;
-  letter-spacing:0.2em;
-  border-radius:1px;
-  transition:border-color .2s, background .2s;
+  font-size:10px;
+  letter-spacing:0.15em;
 }
 
-.discord:hover{
-  border-color:rgba(88,101,242,0.4);
-  background:rgba(88,101,242,0.1);
-}
-
-.discord svg{ opacity:0.7; flex-shrink:0; }
-
-/* ── META ── */
+/* META */
 .meta{
-  margin-top:18px;
+  margin-top:15px;
   font-size:9px;
-  letter-spacing:0.12em;
-  color:#252a38;
+  color:#333;
   text-align:center;
 }
 
-/* ── FOOTER ── */
+/* FOOTER */
 footer{
-  position:relative;
-  z-index:1;
   text-align:center;
   font-size:9px;
-  letter-spacing:0.3em;
-  color:#1a1e2a;
   padding:30px;
-  border-top:1px solid rgba(255,255,255,0.03);
+  color:#222;
 }
-
-/* ── SCAN LINE ── */
-.scanline{
-  position:fixed;
-  top:0; left:0; right:0;
-  height:2px;
-  background:linear-gradient(90deg, transparent, var(--acid), transparent);
-  opacity:0.15;
-  animation:scan 4s linear infinite;
-  pointer-events:none;
-  z-index:200;
-}
-
-@keyframes scan{
-  0%{ top:-2px; }
-  100%{ top:100vh; }
-}
-
-/* ── ANIMATIONS ── */
-@keyframes fadeUp{
-  from{ opacity:0; transform:translateY(20px); }
-  to{ opacity:1; transform:translateY(0); }
-}
-
-/* ── DIVIDER ── */
-.divider{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  margin-bottom:24px;
-}
-.divider-line{ flex:1; height:1px; background:rgba(255,255,255,0.04); }
-.divider-text{ font-size:8px; letter-spacing:0.25em; color:#2a3040; }
-
 </style>
 </head>
 
 <body>
 
-<div class="scanline"></div>
-
 <div class="status">
-  <span>PROGPT_NODE // v2.4</span>
-  <span><span class="status-dot"></span>187 BUILDERS ACTIVE</span>
+  <span>PROGPT_NODE</span>
+  <span style="color:var(--acid)">187 BUILDERS ACTIVE</span>
   <a href="https://whop.com/progpt">ENTER ↗</a>
 </div>
 
 <section class="hero">
 
-  <div class="eyebrow">FREE SIGNAL AUDIT &nbsp;/&nbsp; DISCORD ACCESS &nbsp;/&nbsp; GROWTH STACK</div>
+<div class="eyebrow">
+DOMINATE SEARCH / CONTROL TRAFFIC / BUILD SYSTEMS
+</div>
 
-  <h1>RECLAIM<br><span class="line2">SIGNAL</span></h1>
+<h1>
+DOMINATE<br>
+<span class="line2">SIGNAL</span>
+</h1>
 
-  <p class="sub"><span>3-POINT AUDIT</span> &nbsp;·&nbsp; TRAFFIC LEAKS &nbsp;·&nbsp; SEO GAPS &nbsp;·&nbsp; MONETIZATION</p>
+<p class="sub">
+GEO · SEO · WRITING · SOFTWARE
+</p>
 
-  <p class="desc">
-    Submit your project. Get a surgical audit — traffic leaks, SEO gaps, and monetization opportunities — in under 24 hours.
-  </p>
+<p class="desc">
+We engineer growth systems. From GEO + SEO dominance to high-conversion writing and custom software — deployed inside our Discord infrastructure.
+</p>
 
-  <div class="card">
+<div class="flow">
+FREE AUDIT → DISCORD ACCESS → PAID EXECUTION
+</div>
 
-    <div class="divider">
-      <div class="divider-line"></div>
-      <div class="divider-text">ACCESS REQUEST</div>
-      <div class="divider-line"></div>
-    </div>
+<div class="card">
 
-    <form id="form">
+<form id="form">
 
-      <!-- honeypot -->
-      <input type="text" id="company" style="display:none">
+<input type="text" id="company" style="display:none">
 
-      <div class="field">
-        <input type="text" id="name" placeholder="PROJECT NAME" required autocomplete="off">
-      </div>
+<input type="text" id="name" placeholder="PROJECT NAME" required>
+<input type="url" id="url" placeholder="https://your-site.com" required>
+<input type="email" id="email" placeholder="EMAIL FOR AUDIT" required>
 
-      <div class="field">
-        <input type="url" id="url" placeholder="https://your-site.com" required autocomplete="off">
-      </div>
+<select id="cat">
+<option value="">SECTOR (OPTIONAL)</option>
+<option>SAAS</option>
+<option>ECOMMERCE</option>
+<option>LOCAL BUSINESS</option>
+</select>
 
-      <div class="field">
-        <input type="email" id="email" placeholder="EMAIL FOR AUDIT" required autocomplete="off">
-      </div>
+<button class="btn">GET FREE AUDIT → UNLOCK DISCORD</button>
 
-      <div class="field" style="margin-bottom:20px">
-        <select id="cat">
-          <option value="">SECTOR (OPTIONAL)</option>
-          <option>SAAS</option>
-          <option>ECOMMERCE</option>
-          <option>LOCAL BUSINESS</option>
-        </select>
-      </div>
+</form>
 
-      <button class="btn" type="submit">GET FREE AUDIT → UNLOCK DISCORD</button>
+<a href="https://whop.com/progpt" class="discord">
+ENTER BUILDER NETWORK ↗
+</a>
 
-    </form>
+<div class="meta">
+⚡ POWERED BY WHOP · SECURE ACCESS · NO SPAM
+</div>
 
-    <a href="https://whop.com/progpt" class="discord">
-      <svg width="14" height="11" viewBox="0 0 71 55" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M60.1 4.9A58.5 58.5 0 0 0 45.4.4a.2.2 0 0 0-.2.1 40.7 40.7 0 0 0-1.8 3.7 54 54 0 0 0-16.2 0A37.5 37.5 0 0 0 25.4.5a.2.2 0 0 0-.2-.1A58.4 58.4 0 0 0 10.5 4.9a.2.2 0 0 0-.1.1C1.5 18.1-1 31 .3 43.7a.2.2 0 0 0 .1.2 58.8 58.8 0 0 0 17.7 9 .2.2 0 0 0 .2-.1 42 42 0 0 0 3.6-5.9.2.2 0 0 0-.1-.3 38.7 38.7 0 0 1-5.5-2.6.2.2 0 0 1 0-.4l1.1-.8a.2.2 0 0 1 .2 0c11.5 5.3 24 5.3 35.4 0a.2.2 0 0 1 .2 0l1.1.8a.2.2 0 0 1 0 .4 36.2 36.2 0 0 1-5.6 2.6.2.2 0 0 0-.1.3 47.1 47.1 0 0 0 3.6 5.9.2.2 0 0 0 .2.1 58.7 58.7 0 0 0 17.8-9 .2.2 0 0 0 .1-.2C72.5 29 69 16.3 60.2 5a.2.2 0 0 0-.1-.1ZM23.7 36.5c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2c3.6 0 6.5 3.3 6.4 7.2 0 4-2.8 7.2-6.4 7.2Zm23.7 0c-3.5 0-6.4-3.2-6.4-7.2s2.8-7.2 6.4-7.2c3.6 0 6.5 3.3 6.4 7.2 0 4-2.8 7.2-6.4 7.2Z"/></svg>
-      ENTER BUILDER NETWORK ↗
-    </a>
-
-    <div class="meta">⚡ &nbsp;POWERED BY WHOP &nbsp;·&nbsp; SECURE ACCESS &nbsp;·&nbsp; NO SPAM</div>
-
-  </div>
+</div>
 
 </section>
 
-<footer>CLOUDFLARE &nbsp;·&nbsp; N8N &nbsp;·&nbsp; SOLO ENGINE</footer>
+<footer>
+CLOUDFLARE · N8N · SOLO ENGINE
+</footer>
 
 <script>
 const savedEmail = localStorage.getItem('progpt_email');
-if(savedEmail) document.getElementById('email').value = savedEmail;
+if(savedEmail){
+  document.getElementById('email').value = savedEmail;
+}
 
 document.getElementById('form').addEventListener('submit', async function(e){
   e.preventDefault();
 
-  if(document.getElementById('company').value) return;
+  if(document.getElementById('company').value){
+    return;
+  }
 
   const btn = this.querySelector('button');
-  const name = document.getElementById('name');
-  const url  = document.getElementById('url');
-  const email= document.getElementById('email');
-  const cat  = document.getElementById('cat');
 
   const payload = {
     name: name.value,
     url: url.value,
     email: email.value,
     cat: cat.value,
-    time: new Date().toISOString(),
-    ua: navigator.userAgent
+    time: new Date().toISOString()
   };
 
   localStorage.setItem('progpt_email', payload.email);
 
-  btn.textContent = "QUEUING AUDIT...";
-  btn.style.opacity = '0.7';
-  btn.disabled = true;
+  btn.textContent = "PROCESSING...";
 
   try{
     await fetch("https://YOUR-N8N-WEBHOOK", {
@@ -465,11 +285,11 @@ document.getElementById('form').addEventListener('submit', async function(e){
     });
   }catch(err){}
 
-  btn.textContent = "ACCESS GRANTED → REDIRECTING";
+  btn.textContent = "REDIRECTING...";
 
   setTimeout(()=>{
     window.location.href = "https://whop.com/progpt";
-  }, 900);
+  }, 1000);
 });
 </script>
 
