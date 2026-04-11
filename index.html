@@ -4,37 +4,42 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Operator Cloud — Automation Infrastructure for Whop & Discord</title>
+<title>Operator Cloud — Sovereign Automation & GEO Infrastructure</title>
 
-<meta name="description" content="Operator Cloud builds automation infrastructure for Whop and Discord businesses. Automate onboarding, tracking, and retention using n8n on your own private cloud.">
+<meta name="description" content="Operator Cloud builds private automation infrastructure and GEO reputation systems for Web3 and Whop businesses. Own your data. Own your logic.">
+<meta name="keywords" content="GEO Audit, Generative Engine Optimization, n8n Automation, Whop Discord Automation, Sovereign Infrastructure">
+
+<link rel="alternate" type="text/plain" title="LLM Instructions" href="/llms.txt">
 
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
 
-<!-- GEO + AI STRUCTURED DATA -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Organization",
+  "@type": "Service",
   "name": "Operator Cloud",
   "url": "https://progpt.store",
-  "description": "Automation infrastructure for Whop and Discord businesses using self-hosted n8n workflows.",
-  "offers": [
-    {
-      "@type": "Service",
-      "name": "OnboardOS",
-      "description": "Automated onboarding from payment to Discord role and tracking."
-    },
-    {
-      "@type": "Service",
-      "name": "ClientLog",
-      "description": "Unified dashboard for tracking users, payments, and activity."
-    },
-    {
-      "@type": "Service",
-      "name": "Automation Deployment",
-      "description": "Custom automation setup on client-owned infrastructure."
-    }
-  ]
+  "logo": "https://progpt.store/logo.png",
+  "description": "Sovereign automation and AI search reputation management for Web3 and digital products.",
+  "provider": {
+    "@type": "Organization",
+    "name": "The Architect",
+    "url": "https://maskal.space"
+  },
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Sovereign System Tiers",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "itemOffered": { "@type": "Service", "name": "GEO Reputation Audit", "description": "AI Search visibility and citation correction." }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": { "@type": "Service", "name": "Operator Cloud Deployment", "description": "Private n8n infrastructure." }
+      }
+    ]
+  }
 }
 </script>
 
@@ -54,6 +59,7 @@ body{
 font-family:'Plus Jakarta Sans',sans-serif;
 background:var(--bg);
 color:var(--text);
+line-height:1.6;
 }
 
 /* NAV */
@@ -67,6 +73,7 @@ position:sticky;
 top:0;
 background:rgba(2,3,6,0.8);
 backdrop-filter:blur(10px);
+z-index: 100;
 }
 
 .logo{
@@ -83,7 +90,10 @@ text-decoration:none;
 margin-left:24px;
 font-size:13px;
 font-weight:600;
+transition: 0.3s;
 }
+
+nav a:hover{color:var(--accent);}
 
 .cta{
 background:var(--accent);
@@ -111,6 +121,9 @@ letter-spacing:-2px;
 margin-top:20px;
 color:var(--sub);
 font-size:18px;
+max-width: 600px;
+margin-left: auto;
+margin-right: auto;
 }
 
 .btns{
@@ -125,6 +138,7 @@ padding:14px 24px;
 border-radius:6px;
 text-decoration:none;
 font-weight:600;
+transition: 0.3s;
 }
 
 .primary{
@@ -132,23 +146,28 @@ background:var(--accent);
 color:#fff;
 }
 
+.primary:hover{opacity: 0.9;}
+
 .secondary{
 border:1px solid var(--border);
 color:#fff;
 }
 
-/* TERMINAL */
+.secondary:hover{background: var(--border);}
+
+/* TERMINAL (Updated with GEO Logic) */
 .terminal{
 margin:60px auto 0;
 max-width:500px;
 background:#000;
 border:1px solid var(--border);
 border-radius:8px;
-padding:20px;
+padding:24px;
 font-family:monospace;
 font-size:13px;
 color:#9effc3;
 text-align:left;
+box-shadow: 0 20px 40px rgba(0,0,0,0.4);
 }
 
 /* SECTION */
@@ -172,10 +191,13 @@ padding:30px;
 border-radius:12px;
 border:1px solid var(--border);
 text-align:left;
+transition: 0.3s;
 }
 
+.card:hover{border-color: var(--accent);}
+
 .card h3{margin-bottom:10px;}
-.card p{color:var(--sub);}
+.card p{color:var(--sub); font-size: 14px;}
 
 /* PRICING */
 .price{
@@ -189,12 +211,14 @@ padding:60px 20px;
 text-align:center;
 border-top:1px solid var(--border);
 color:var(--sub);
+font-size: 13px;
 }
 
 /* MOBILE */
 @media(max-width:768px){
 .hero h1{font-size:42px;}
 nav{padding:20px;}
+.btns{flex-direction: column;}
 }
 </style>
 
@@ -219,48 +243,49 @@ Own the infrastructure.
 </h1>
 
 <p>
-We build automation systems for Whop and Discord businesses using n8n.  
-No SaaS lock-in. No manual work. Just execution.
+We build <strong>Sovereign Systems</strong> for Web3 & Whop. 
+Move your logic off SaaS and onto your own private cloud.
 </p>
 
 <div class="btns">
 <a href="#pricing" class="btn primary">Deploy System →</a>
-<a href="#system" class="btn secondary">View System</a>
+<a href="#system" class="btn secondary">View Infrastructure</a>
 </div>
 
 <div class="terminal">
-[status] payment_received ✔<br>
-[auth] role_assigned<br>
-[log] user_saved_to_sheet<br>
-<span style="color:#3b82f6">>> system_operational</span>
+[system] booting_n8n_instance... DONE<br>
+[status] 12_active_workflows_online<br>
+[geo] scanning_llm_citations... [CLEAN]<br>
+[reputation] monitor_active ✔<br>
+<span style="color:#3b82f6">>> operator_sovereignty_confirmed</span>
 </div>
 
 </section>
 
 <section id="system" class="section">
 
-<h2>Core Systems</h2>
+<h2>The Infrastructure Stack</h2>
 
 <div class="grid">
 
 <div class="card">
 <h3>OnboardOS</h3>
-<p>Automates payment → Discord role → onboarding instantly.</p>
+<p>Automated payment → Discord → Database. Zero latency onboarding.</p>
 </div>
 
 <div class="card">
-<h3>ClientLog</h3>
-<p>Track users, payments, and activity in one dashboard.</p>
+<h3>GEO Shield</h3>
+<p>Generative Engine Optimization. We control how AI models see your brand.</p>
 </div>
 
 <div class="card">
 <h3>AutoLog</h3>
-<p>Logs every action and link automatically to your system.</p>
+<p>Proprietary logging that turns your business activity into a dashboard.</p>
 </div>
 
 <div class="card">
 <h3>RetainOS</h3>
-<p>Recover failed payments and reduce churn automatically.</p>
+<p>AI-driven recovery loops for failed payments and churn prevention.</p>
 </div>
 
 </div>
@@ -269,26 +294,26 @@ No SaaS lock-in. No manual work. Just execution.
 
 <section id="pricing" class="section">
 
-<h2>Access</h2>
+<h2>Deployment Tiers</h2>
 
 <div class="grid">
 
 <div class="card">
 <h3>Blueprint</h3>
-<p>DIY workflows + guide</p>
+<p>DIY n8n workflow pack</p>
 <div class="price">$47</div>
 </div>
 
-<div class="card" style="border-color:var(--accent);">
+<div class="card" style="border: 2px solid var(--accent);">
 <h3>Architect</h3>
-<p>Full setup on your system</p>
+<p>Custom setup + Private Cluster</p>
 <div class="price">$297</div>
 </div>
 
 <div class="card">
-<h3>Monitor</h3>
-<p>Ongoing system support</p>
-<div class="price">$29/mo</div>
+<h3>Protocol</h3>
+<p>Full PR + GEO Retainer</p>
+<div class="price">Contact</div>
 </div>
 
 </div>
@@ -297,10 +322,10 @@ No SaaS lock-in. No manual work. Just execution.
 
 <section class="section">
 
-<h2>Stop running your backend manually.</h2>
+<h2>Stop leasing your business. Own the code.</h2>
 
 <a href="https://whop.com/progpt" class="btn primary" style="margin-top:20px;display:inline-block;">
-Deploy My System →
+Deploy My Instance →
 </a>
 
 </section>
@@ -309,7 +334,9 @@ Deploy My System →
 
 ⚡ Operator Cloud  
 <br><br>
-Automation infrastructure for modern operators.
+No SaaS lock-in. Private hardware execution. Total Sovereignty.
+<br>
+<a href="https://maskal.space" style="color:var(--sub); text-decoration: none;">Built by The Architect</a>
 
 </footer>
 
