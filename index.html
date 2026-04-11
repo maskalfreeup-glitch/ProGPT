@@ -1,57 +1,290 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>PROGPT — DOMINATE</title>
+
+<title>PROGPT — Systems That Print Revenue</title>
+<meta name="description" content="PROGPT builds automated revenue systems. SEO, GEO, automation, PR, and custom software — deployed, not explained."/>
+
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+
 <style>
 :root{
   --bg:#03040a;
   --surface:#080c18;
   --acid:#00ff88;
   --muted:#3a4260;
-  --faint:#151a28;
   --text:#dde4f5;
+  --faint:#151a28;
   --display:'Bebas Neue',sans-serif;
   --mono:'DM Mono',monospace;
 }
-body{background:var(--bg);color:var(--text);font-family:var(--mono);margin:0;}
-.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 20px;}
-.hero h1{font-family:var(--display);font-size:clamp(4rem,10vw,10rem);color:var(--acid);}
-.hero p{color:var(--muted);max-width:500px;}
-.btn{background:var(--acid);color:#000;padding:16px 32px;text-decoration:none;display:inline-block;margin-top:20px;font-family:var(--display);}
-.section{padding:100px 20px;border-top:1px solid var(--faint);text-align:center;}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;margin-top:40px;}
-.card{background:var(--surface);padding:20px;border:1px solid var(--faint);}
-footer{text-align:center;padding:40px;color:var(--muted);border-top:1px solid var(--faint);} 
+
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:var(--mono);}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;
+  height:60px;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:0 28px;
+  background:rgba(3,4,10,.92);
+  border-bottom:1px solid var(--faint);
+  z-index:100;
+}
+.logo{
+  font-family:var(--display);
+  font-size:1.6rem;
+  color:var(--acid);
+  letter-spacing:.08em;
+}
+.nav-links{
+  display:flex;
+  gap:28px;
+}
+.nav-links a{
+  color:var(--muted);
+  text-decoration:none;
+  font-size:.65rem;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+.nav-links a:hover{color:var(--text);}
+
+/* HERO */
+.hero{
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:120px 20px 60px;
+}
+.hero h1{
+  font-family:var(--display);
+  font-size:clamp(3.5rem,10vw,9rem);
+  color:var(--acid);
+  line-height:.9;
+}
+.hero h1 span{color:var(--text);display:block;}
+.hero p{
+  margin-top:18px;
+  max-width:420px;
+  color:var(--muted);
+  font-size:.85rem;
+  line-height:1.7;
+}
+.flow{
+  margin-top:18px;
+  font-size:.6rem;
+  letter-spacing:.2em;
+  color:#1f2d45;
+  text-transform:uppercase;
+}
+
+/* BUTTON */
+.btn{
+  margin-top:28px;
+  background:var(--acid);
+  color:#000;
+  padding:16px 30px;
+  text-decoration:none;
+  font-family:var(--display);
+  font-size:1.1rem;
+  transition:.2s;
+}
+.btn:hover{
+  box-shadow:0 0 30px rgba(0,255,136,.3);
+}
+
+/* AUTHORITY STRIP */
+.strip{
+  padding:48px 20px;
+  border-top:1px solid var(--faint);
+  text-align:center;
+}
+.strip-inner{
+  display:flex;
+  justify-content:center;
+  gap:40px;
+  flex-wrap:wrap;
+  font-size:.65rem;
+  letter-spacing:.14em;
+  color:var(--muted);
+  text-transform:uppercase;
+}
+
+/* SERVICES */
+.section{
+  padding:80px 20px;
+  border-top:1px solid var(--faint);
+  text-align:center;
+}
+.section h2{
+  font-family:var(--display);
+  font-size:2.6rem;
+}
+
+.cards{
+  margin-top:40px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:20px;
+}
+.card{
+  background:var(--surface);
+  border:1px solid var(--faint);
+  padding:24px;
+  text-align:left;
+}
+.card h3{
+  font-family:var(--display);
+  color:var(--acid);
+}
+.card p{
+  font-size:.8rem;
+  color:#5a6a8a;
+  margin-top:6px;
+}
+
+/* TIERS */
+.tiers{
+  margin-top:50px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:20px;
+}
+.tier{
+  background:var(--surface);
+  border:1px solid var(--faint);
+  padding:28px;
+  text-align:left;
+}
+.tier h3{
+  font-family:var(--display);
+  font-size:1.6rem;
+}
+.tier p{
+  font-size:.8rem;
+  color:#5a6a8a;
+  margin-top:8px;
+}
+
+/* CTA */
+.cta{
+  margin-top:50px;
+}
+
+/* FOOTER */
+footer{
+  padding:40px 20px;
+  text-align:center;
+  border-top:1px solid var(--faint);
+  font-size:.65rem;
+  color:var(--muted);
+}
 </style>
 </head>
-<body><section class="hero">
-<h1>DOMINATE</h1>
-<p>We build growth systems that turn traffic into revenue. SEO, GEO and automation — deployed, not taught.</p>
-<a href="#execution" class="btn">BUILD MY SYSTEM →</a>
-</section><section id="execution" class="section">
-<h2 style="font-family:var(--display);font-size:3rem;">DONE-FOR-YOU SYSTEMS</h2>
-<p style="color:var(--muted);max-width:600px;margin:20px auto;">
-Most sites don’t have a traffic problem — they have a system problem.
-We rebuild that system from the ground up.
-</p><div class="cards">
-<div class="card">
-<h3 style="color:var(--acid);">SEO DOMINANCE</h3>
-<p>Capture high-intent keywords and turn them into consistent traffic.</p>
-</div>
-<div class="card">
-<h3 style="color:var(--acid);">GEO TARGETING</h3>
-<p>Dominate local search and location-based traffic flows.</p>
-</div>
-<div class="card">
-<h3 style="color:var(--acid);">AUTOMATION</h3>
-<p>Replace manual work with scalable systems using n8n and AI.</p>
-</div>
-</div><p style="margin-top:30px;color:var(--muted);">LIMITED TO 2 PROJECTS PER MONTH</p>
-<p style="color:var(--faint);">PROJECTS START FROM ₹25K+</p><a href="#" class="btn">APPLY FOR SYSTEM BUILD →</a>
 
-</section><footer>
-PROGPT · SYSTEMS OVER CONTENT
-</footer></body>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">PROGPT</div>
+  <div class="nav-links">
+    <a href="/about.html">About</a>
+    <a href="/blog.html">Blog</a>
+    <a href="/store.html">Store</a>
+    <a href="https://discord.gg/yourlink" target="_blank">Discord</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <h1>SYSTEMS<span>THAT PRINT REVENUE</span></h1>
+
+  <p>
+    Built for operators. Not beginners.<br>
+    No fluff. No retainers. No explanations.
+  </p>
+
+  <div class="flow">
+    TRAFFIC → AUTOMATION → REVENUE
+  </div>
+
+  <a href="#cta" class="btn">ENTER THE SYSTEM →</a>
+</section>
+
+<!-- AUTHORITY STRIP -->
+<section class="strip">
+  <div class="strip-inner">
+    <span>Automation Systems</span>
+    <span>SEO + GEO Infrastructure</span>
+    <span>PR Authority Placement</span>
+    <span>Custom Software Engineering</span>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="section">
+  <h2>WHAT WE BUILD</h2>
+
+  <div class="cards">
+    <div class="card">
+      <h3>SEO + GEO</h3>
+      <p>High-intent traffic. Engineered capture.</p>
+    </div>
+
+    <div class="card">
+      <h3>AUTOMATION</h3>
+      <p>Lead pipelines. Automated conversion.</p>
+    </div>
+
+    <div class="card">
+      <h3>PR AUTHORITY</h3>
+      <p>Authority positioning. Real placements.</p>
+    </div>
+
+    <div class="card">
+      <h3>CUSTOM SYSTEMS</h3>
+      <p>Custom systems. Built for scale.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TIERS -->
+<section class="section">
+  <h2>SERVICE TIERS</h2>
+
+  <div class="tiers">
+    <div class="tier">
+      <h3>PR & AUTHORITY</h3>
+      <p>Editorial placements and positioning that build real credibility.</p>
+    </div>
+
+    <div class="tier">
+      <h3>AUTOMATION</h3>
+      <p>n8n systems that capture, qualify, and convert leads.</p>
+    </div>
+
+    <div class="tier">
+      <h3>CUSTOM DEVELOPMENT</h3>
+      <p>Apps, SaaS, and systems engineered for scale.</p>
+    </div>
+  </div>
+
+  <div class="cta" id="cta">
+    <a href="https://discord.gg/yourlink" class="btn">START HERE →</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  PROGPT © 2026 — Built for operators, not spectators.
+</footer>
+
+</body>
 </html>
