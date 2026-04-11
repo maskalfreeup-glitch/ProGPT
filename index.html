@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>ProGPT — Operator OS</title>
+<title>Operator Cloud — Infrastructure for Whop Businesses</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
 
@@ -52,7 +52,7 @@ nav a{
 }
 
 .hero h1{
-  font-size:60px;
+  font-size:64px;
   line-height:1.1;
 }
 
@@ -70,7 +70,7 @@ nav a{
 }
 
 .btn{
-  padding:14px 24px;
+  padding:14px 26px;
   border-radius:8px;
   text-decoration:none;
   font-weight:600;
@@ -96,17 +96,17 @@ nav a{
   color:var(--sub);
 }
 
-/* LIVE SYSTEM */
+/* LIVE LOG */
 .live{
   margin-top:40px;
   background:var(--card);
-  padding:20px;
+  padding:18px;
   border-radius:12px;
   border:1px solid #1f2a4a;
-  font-size:14px;
+  font-family:monospace;
+  font-size:13px;
   color:#9effc3;
-  text-align:left;
-  max-width:500px;
+  max-width:520px;
   margin-left:auto;
   margin-right:auto;
 }
@@ -131,14 +131,22 @@ nav a{
   border:1px solid #1f2a4a;
 }
 
-/* PRODUCT */
+/* STACK */
+.stack{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:20px;
+}
+
+/* PRICING */
 .price{
   font-size:40px;
   margin-top:20px;
 }
 
+/* FOOTER */
 footer{
-  padding:40px;
+  padding:60px;
   text-align:center;
   color:var(--sub);
 }
@@ -149,11 +157,11 @@ footer{
 
 <!-- NAV -->
 <nav>
-  <b>⚡ ProGPT</b>
+  <b>⚡ Operator Cloud</b>
   <div>
-    <a href="#product">Product</a>
     <a href="#system">System</a>
-    <a href="#" class="cta">Get Access</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#" class="cta">Connect System</a>
   </div>
 </nav>
 
@@ -161,88 +169,61 @@ footer{
 <section class="hero">
 
 <h1>
-Your Whop business.<br>
-<b>Running itself.</b>
+Your backend.<br>
+<b>Handled.</b>
 </h1>
 
 <p>
-Every member onboarded instantly.<br>
-No DMs. No spreadsheets. No manual work.
+Onboarding, tracking, and retention — running automatically.<br>
+No tools. No setup headaches. No manual work.
 </p>
 
 <div class="btns">
-  <a href="#product" class="btn primary">Automate My Onboarding →</a>
-  <a href="#system" class="btn secondary">See System</a>
+  <a href="#pricing" class="btn primary">Connect My System →</a>
+  <a href="#system" class="btn secondary">See How It Works</a>
 </div>
 
 <div class="proof">
   <div>✔ 0 manual onboarding</div>
-  <div>✔ Setup in 48h</div>
+  <div>✔ Live in 48 hours</div>
   <div>✔ Built for operators</div>
 </div>
 
 <div class="live">
-Member joined → role assigned → welcome DM sent → logged to system ✔
+[12:01] New payment received  
+[12:01] Role assigned  
+[12:01] Welcome DM sent  
+[12:01] User logged to system ✔
 </div>
 
 </section>
 
-<!-- BEFORE AFTER -->
+<!-- VALUE -->
 <section class="section">
 
-<h2>Manual vs Automated</h2>
+<h2>What this replaces</h2>
 
 <div class="grid">
 
 <div class="card">
-<b>Manual (Current)</b>
+<b>Without Operator Cloud</b>
 <ul style="color:var(--sub);margin-top:10px;">
-<li>Assign roles manually</li>
-<li>Send welcome messages</li>
-<li>Track users in sheets</li>
-<li>Forget onboarding steps</li>
+<li>Manual onboarding</li>
+<li>Discord chaos</li>
+<li>Tracking in spreadsheets</li>
+<li>Missed users & churn</li>
 </ul>
 </div>
 
 <div class="card">
-<b>With ProGPT</b>
+<b>With Operator Cloud</b>
 <ul style="color:var(--sub);margin-top:10px;">
 <li>Payment triggers everything</li>
 <li>Auto role + DM + email</li>
-<li>Auto logging system</li>
-<li>Zero manual effort</li>
+<li>System logs everything</li>
+<li>Zero manual work</li>
 </ul>
 </div>
-
-</div>
-
-</section>
-
-<!-- PRODUCT -->
-<section id="product" class="section">
-
-<h2>The Onboarding System</h2>
-
-<p style="color:var(--sub);margin-top:10px;">
-Set it up once. Every customer is handled automatically.
-</p>
-
-<div class="card" style="margin-top:30px;">
-
-<ul style="color:var(--sub);">
-<li>✔ Whop webhook integration</li>
-<li>✔ Discord role automation</li>
-<li>✔ Welcome DM + email</li>
-<li>✔ Google Sheets tracking</li>
-<li>✔ Plug & play n8n workflow</li>
-</ul>
-
-<div class="price">$47</div>
-<p style="color:var(--sub);">One-time. Yours forever.</p>
-
-<a href="#" class="btn primary" style="margin-top:20px;">
-Start Automating My Onboarding →
-</a>
 
 </div>
 
@@ -254,10 +235,10 @@ Start Automating My Onboarding →
 <h2>The Operator Stack</h2>
 
 <p style="color:var(--sub);margin-top:10px;">
-Each module removes one bottleneck.
+Each module runs inside your system.
 </p>
 
-<div class="grid" style="margin-top:30px;">
+<div class="stack" style="margin-top:30px;">
 
 <div class="card">
 <b>OnboardOS</b>
@@ -266,12 +247,12 @@ Each module removes one bottleneck.
 
 <div class="card">
 <b>AutoLog</b>
-<p style="color:var(--sub);">Tracks links & activity</p>
+<p style="color:var(--sub);">Tracks activity</p>
 </div>
 
 <div class="card">
 <b>ClientLog</b>
-<p style="color:var(--sub);">Central dashboard</p>
+<p style="color:var(--sub);">Unified dashboard</p>
 </div>
 
 <div class="card">
@@ -283,34 +264,48 @@ Each module removes one bottleneck.
 
 </section>
 
-<!-- PRICING EXPANSION -->
-<section class="section">
+<!-- PRICING -->
+<section id="pricing" class="section">
 
-<h2>Upgrade Path</h2>
+<h2>Access</h2>
 
 <div class="grid" style="margin-top:30px;">
 
 <div class="card">
 <b>Starter</b>
-<p style="color:var(--sub);">$47 — DIY system</p>
+<p style="color:var(--sub);">Self-hosted system</p>
+<div class="price">$47</div>
+</div>
+
+<div class="card">
+<b>Operator Cloud</b>
+<p style="color:var(--sub);">Hosted infrastructure</p>
+<div class="price">$29/mo</div>
 </div>
 
 <div class="card">
 <b>Operator Setup</b>
-<p style="color:var(--sub);">$297 — We build it for you</p>
-</div>
-
-<div class="card">
-<b>Managed System</b>
-<p style="color:var(--sub);">$29/mo — Hosting + support</p>
+<p style="color:var(--sub);">Done-for-you build</p>
+<div class="price">$297+</div>
 </div>
 
 </div>
 
 </section>
 
+<!-- FINAL -->
+<section class="section" style="text-align:center;">
+
+<h2>Stop running your backend manually.</h2>
+
+<a href="#" class="btn primary" style="margin-top:30px;">
+Connect My System →
+</a>
+
+</section>
+
 <footer>
-Built for operators who hate manual work.
+Infrastructure for operators who scale.
 </footer>
 
 </body>
