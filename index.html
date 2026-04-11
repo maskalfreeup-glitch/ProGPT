@@ -1,312 +1,283 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operator Cloud — The Infrastructure for Whop</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #02040a;
+            --card: #0a0c14;
+            --text: #ffffff;
+            --sub: #8892b0;
+            --accent: #3b82f6;
+            --glow: rgba(59, 130, 246, 0.15);
+        }
 
-<title>Operator Cloud — Infrastructure for Whop Businesses</title>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
 
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+        /* Ambient Background Glow */
+        body::before {
+            content: "";
+            position: fixed;
+            top: -10%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80vw;
+            height: 60vh;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, transparent 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
 
-<style>
-:root{
-  --bg:#03050f;
-  --card:#0a0f24;
-  --text:#f5f7ff;
-  --sub:#9aa4c7;
-  --accent:#6ea8ff;
-}
+        /* NAV */
+        nav {
+            padding: 30px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
 
-*{margin:0;padding:0;box-sizing:border-box;}
-body{
-  font-family:'Plus Jakarta Sans',sans-serif;
-  background:var(--bg);
-  color:var(--text);
-}
+        .logo { font-weight: 800; font-size: 20px; letter-spacing: -0.5px; }
+        .logo span { color: var(--accent); }
 
-/* NAV */
-nav{
-  padding:20px 40px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-nav a{
-  color:var(--sub);
-  text-decoration:none;
-  margin-left:20px;
-}
-.cta{
-  background:linear-gradient(90deg,#6ea8ff,#9b7cff);
-  padding:10px 18px;
-  border-radius:8px;
-  color:#fff;
-}
+        nav div a {
+            color: var(--sub);
+            text-decoration: none;
+            margin-left: 30px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: 0.3s;
+        }
 
-/* HERO */
-.hero{
-  text-align:center;
-  padding:120px 20px 60px;
-  max-width:900px;
-  margin:auto;
-}
+        nav div a:hover { color: var(--text); }
 
-.hero h1{
-  font-size:64px;
-  line-height:1.1;
-}
+        .cta-nav {
+            background: var(--text);
+            color: var(--bg) !important;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 700 !important;
+        }
 
-.hero p{
-  margin-top:20px;
-  color:var(--sub);
-  font-size:18px;
-}
+        /* HERO */
+        .hero {
+            text-align: center;
+            padding: 140px 20px 80px;
+            max-width: 1000px;
+            margin: auto;
+        }
 
-.btns{
-  margin-top:40px;
-  display:flex;
-  justify-content:center;
-  gap:12px;
-}
+        .badge {
+            display: inline-block;
+            padding: 6px 14px;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 100px;
+            color: var(--accent);
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
 
-.btn{
-  padding:14px 26px;
-  border-radius:8px;
-  text-decoration:none;
-  font-weight:600;
-}
+        .hero h1 {
+            font-size: 72px;
+            font-weight: 800;
+            line-height: 1;
+            letter-spacing: -2px;
+            margin-bottom: 24px;
+        }
 
-.primary{
-  background:linear-gradient(90deg,#6ea8ff,#9b7cff);
-  color:#fff;
-}
+        .hero h1 b {
+            background: linear-gradient(to bottom, #fff 40%, #555);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-.secondary{
-  border:1px solid #1f2a4a;
-  color:var(--sub);
-}
+        .hero p {
+            color: var(--sub);
+            font-size: 20px;
+            max-width: 600px;
+            margin: auto;
+        }
 
-/* PROOF */
-.proof{
-  margin-top:30px;
-  display:flex;
-  justify-content:center;
-  gap:30px;
-  font-size:13px;
-  color:var(--sub);
-}
+        .btns { margin-top: 48px; display: flex; justify-content: center; gap: 16px; }
 
-/* LIVE LOG */
-.live{
-  margin-top:40px;
-  background:var(--card);
-  padding:18px;
-  border-radius:12px;
-  border:1px solid #1f2a4a;
-  font-family:monospace;
-  font-size:13px;
-  color:#9effc3;
-  max-width:520px;
-  margin-left:auto;
-  margin-right:auto;
-}
+        .btn {
+            padding: 16px 32px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 16px;
+            transition: 0.3s;
+        }
 
-/* SECTION */
-.section{
-  padding:100px 20px;
-  max-width:1100px;
-  margin:auto;
-}
+        .primary { background: var(--accent); color: white; border: 1px solid var(--accent); }
+        .primary:hover { box-shadow: 0 0 30px rgba(59, 130, 246, 0.4); }
 
-.grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:20px;
-}
+        .secondary { border: 1px solid #222; color: white; background: rgba(255,255,255,0.03); }
+        .secondary:hover { border-color: #444; }
 
-.card{
-  background:var(--card);
-  padding:30px;
-  border-radius:12px;
-  border:1px solid #1f2a4a;
-}
+        /* TERMINAL LOG */
+        .terminal {
+            margin: 60px auto 0;
+            max-width: 540px;
+            background: #05070a;
+            border: 1px solid #1a1e2e;
+            border-radius: 12px;
+            padding: 24px;
+            text-align: left;
+            font-family: 'Courier New', monospace;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+        }
 
-/* STACK */
-.stack{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:20px;
-}
+        .terminal-header { display: flex; gap: 6px; margin-bottom: 16px; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
+        .r { background: #ff5f56; } .y { background: #ffbd2e; } .g { background: #27c93f; }
 
-/* PRICING */
-.price{
-  font-size:40px;
-  margin-top:20px;
-}
+        .terminal code { color: #9effc3; font-size: 13px; display: block; margin-bottom: 4px; }
+        .terminal code span { color: var(--sub); }
 
-/* FOOTER */
-footer{
-  padding:60px;
-  text-align:center;
-  color:var(--sub);
-}
-</style>
+        /* SECTIONS */
+        .section { padding: 100px 60px; max-width: 1200px; margin: auto; }
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-header h2 { font-size: 40px; font-weight: 800; letter-spacing: -1px; }
+
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+        .stack-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+
+        .card {
+            background: var(--card);
+            padding: 40px;
+            border-radius: 16px;
+            border: 1px solid #161b22;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover { border-color: var(--accent); transform: translateY(-5px); }
+
+        .card h3 { font-size: 20px; margin-bottom: 12px; }
+        .card p { color: var(--sub); font-size: 15px; }
+
+        /* PRICING */
+        .price-card { text-align: center; border-color: #222; }
+        .price-card.featured { border-color: var(--accent); background: linear-gradient(to bottom, #0a0f24, #05070a); }
+        .price-amount { font-size: 56px; font-weight: 800; margin: 20px 0 10px; }
+        .price-amount span { font-size: 16px; color: var(--sub); font-weight: 400; }
+
+        footer { padding: 80px 20px; text-align: center; border-top: 1px solid #111; color: var(--sub); font-size: 14px; }
+
+        @media (max-width: 768px) {
+            .grid, .stack-grid { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 48px; }
+            nav { padding: 20px; }
+        }
+    </style>
 </head>
-
 <body>
 
-<!-- NAV -->
-<nav>
-  <b>⚡ Operator Cloud</b>
-  <div>
-    <a href="#system">System</a>
-    <a href="#pricing">Pricing</a>
-    <a href="#" class="cta">Connect System</a>
-  </div>
-</nav>
+    <nav>
+        <div class="logo">⚡ OPERATOR<span>CLOUD</span></div>
+        <div>
+            <a href="#system">System</a>
+            <a href="#pricing">Pricing</a>
+            <a href="#" class="cta-nav">Connect Now</a>
+        </div>
+    </nav>
 
-<!-- HERO -->
-<section class="hero">
+    <section class="hero">
+        <div class="badge">Next-Gen Infrastructure</div>
+        <h1>Your backend.<br><b>Handled by Engineers.</b></h1>
+        <p>Zero manual onboarding. Zero tracking headaches. We deploy the logic, you scale the volume.</p>
+        
+        <div class="btns">
+            <a href="#pricing" class="btn primary">Start My Cloud →</a>
+            <a href="#system" class="btn secondary">Documentation</a>
+        </div>
 
-<h1>
-Your backend.<br>
-<b>Handled.</b>
-</h1>
+        <div class="terminal">
+            <div class="terminal-header">
+                <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+            </div>
+            <code><span>[system]</span> initializing operator.node...</code>
+            <code><span>[event]</span> new_whop_payment_detected</code>
+            <code><span>[auth]</span> discord_role_assigned: "Premium"</code>
+            <code><span>[comm]</span> welcome_dm_delivered</code>
+            <code><span>[data]</span> logged_to_client_log_v2 ✔</code>
+            <code><span style="color:var(--accent)">_ system running steady</span></code>
+        </div>
+    </section>
 
-<p>
-Onboarding, tracking, and retention — running automatically.<br>
-No tools. No setup headaches. No manual work.
-</p>
+    <section id="system" class="section">
+        <div class="section-header">
+            <h2>The Operator Stack</h2>
+            <p style="color:var(--sub)">Pre-built modules running 24/7 on high-performance cloud.</p>
+        </div>
+        
+        <div class="stack-grid">
+            <div class="card">
+                <h3>OnboardOS</h3>
+                <p>Instant role assignment and customer welcome sequences.</p>
+            </div>
+            <div class="card">
+                <h3>AutoLog</h3>
+                <p>Track every link and activity without lifting a finger.</p>
+            </div>
+            <div class="card">
+                <h3>ClientLog</h3>
+                <p>Unified dashboard for your entire business metrics.</p>
+            </div>
+            <div class="card">
+                <h3>RetainOS</h3>
+                <p>AI-driven re-engagement to stop churn before it starts.</p>
+            </div>
+        </div>
+    </section>
 
-<div class="btns">
-  <a href="#pricing" class="btn primary">Connect My System →</a>
-  <a href="#system" class="btn secondary">See How It Works</a>
-</div>
+    <section id="pricing" class="section">
+        <div class="section-header">
+            <h2>Scalable Access</h2>
+        </div>
+        
+        <div class="grid">
+            <div class="card price-card">
+                <div class="badge">Self-Hosted</div>
+                <h3>The Logic</h3>
+                <div class="price-amount">$47<span>/one-time</span></div>
+                <p>Download the JSON workflows and host them yourself on your own hardware.</p>
+                <a href="#" class="btn secondary" style="display:block;margin-top:30px;">Get Files</a>
+            </div>
 
-<div class="proof">
-  <div>✔ 0 manual onboarding</div>
-  <div>✔ Live in 48 hours</div>
-  <div>✔ Built for operators</div>
-</div>
+            <div class="card price-card featured">
+                <div class="badge">Managed</div>
+                <h3>Operator Cloud</h3>
+                <div class="price-amount">$29<span>/mo</span></div>
+                <p>We host, maintain, and secure your infrastructure. Zero setup required.</p>
+                <a href="#" class="btn primary" style="display:block;margin-top:30px;">Get Started</a>
+            </div>
+        </div>
+    </section>
 
-<div class="live">
-[12:01] New payment received  
-[12:01] Role assigned  
-[12:01] Welcome DM sent  
-[12:01] User logged to system ✔
-</div>
-
-</section>
-
-<!-- VALUE -->
-<section class="section">
-
-<h2>What this replaces</h2>
-
-<div class="grid">
-
-<div class="card">
-<b>Without Operator Cloud</b>
-<ul style="color:var(--sub);margin-top:10px;">
-<li>Manual onboarding</li>
-<li>Discord chaos</li>
-<li>Tracking in spreadsheets</li>
-<li>Missed users & churn</li>
-</ul>
-</div>
-
-<div class="card">
-<b>With Operator Cloud</b>
-<ul style="color:var(--sub);margin-top:10px;">
-<li>Payment triggers everything</li>
-<li>Auto role + DM + email</li>
-<li>System logs everything</li>
-<li>Zero manual work</li>
-</ul>
-</div>
-
-</div>
-
-</section>
-
-<!-- SYSTEM -->
-<section id="system" class="section">
-
-<h2>The Operator Stack</h2>
-
-<p style="color:var(--sub);margin-top:10px;">
-Each module runs inside your system.
-</p>
-
-<div class="stack" style="margin-top:30px;">
-
-<div class="card">
-<b>OnboardOS</b>
-<p style="color:var(--sub);">Automates onboarding</p>
-</div>
-
-<div class="card">
-<b>AutoLog</b>
-<p style="color:var(--sub);">Tracks activity</p>
-</div>
-
-<div class="card">
-<b>ClientLog</b>
-<p style="color:var(--sub);">Unified dashboard</p>
-</div>
-
-<div class="card">
-<b>RetainOS</b>
-<p style="color:var(--sub);">Prevents churn</p>
-</div>
-
-</div>
-
-</section>
-
-<!-- PRICING -->
-<section id="pricing" class="section">
-
-<h2>Access</h2>
-
-<div class="grid" style="margin-top:30px;">
-
-<div class="card">
-<b>Starter</b>
-<p style="color:var(--sub);">Self-hosted system</p>
-<div class="price">$47</div>
-</div>
-
-<div class="card">
-<b>Operator Cloud</b>
-<p style="color:var(--sub);">Hosted infrastructure</p>
-<div class="price">$29/mo</div>
-</div>
-
-<div class="card">
-<b>Operator Setup</b>
-<p style="color:var(--sub);">Done-for-you build</p>
-<div class="price">$297+</div>
-</div>
-
-</div>
-
-</section>
-
-<!-- FINAL -->
-<section class="section" style="text-align:center;">
-
-<h2>Stop running your backend manually.</h2>
-
-<a href="#" class="btn primary" style="margin-top:30px;">
-Connect My System →
-</a>
-
-</section>
-
-<footer>
-Infrastructure for operators who scale.
-</footer>
+    <footer>
+        <p>&copy; 2026 Operator Cloud. Built for operators who value leverage.</p>
+    </footer>
 
 </body>
 </html>
