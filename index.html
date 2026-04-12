@@ -3,541 +3,303 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Operator Cloud — Automation Infrastructure for Whop Operators</title>
-<meta name="description" content="Automate your Whop & Discord backend. Onboarding, tracking, retention — all handled on your own infrastructure.">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<title>ProGPT — From Invisible to Automated</title>
+
+<meta name="description" content="Get found in AI search. Automate your backend. Join free Discord, get audit, deploy system.">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <style>
-:root {
-  --bg: #02020a;
-  --card: rgba(255,255,255,0.03);
-  --card-border: rgba(255,255,255,0.07);
-  --text: #f0f0f8;
-  --sub: #6b6b80;
-  --muted: #3a3a4a;
-  --blue: #4f8cff;
-  --teal: #00e5c4;
-  --purple: #a259ff;
-  --success: #00e5a0;
+:root{
+--bg:#070707;
+--card:#0d0d0d;
+--text:#fff;
+--sub:#777;
+--accent:#3b82f6;
+--border:rgba(255,255,255,0.08);
 }
 
-*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-html { scroll-behavior: smooth; }
-body {
-  font-family: 'DM Sans', sans-serif;
-  background: var(--bg); color: var(--text);
-  overflow-x: hidden; -webkit-font-smoothing: antialiased;
-}
-body::before {
-  content: ''; position: fixed; inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-  background-size: 200px; pointer-events: none; z-index: 0; opacity: 0.5;
-}
+*{margin:0;padding:0;box-sizing:border-box;}
 
-/* AURORA */
-.aurora { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:0; overflow:hidden; }
-.aurora-blob { position:absolute; border-radius:50%; filter:blur(100px); opacity:0.12; animation:drift 20s ease-in-out infinite; }
-.aurora-blob:nth-child(1){width:700px;height:700px;background:#4f8cff;top:-200px;left:-100px;}
-.aurora-blob:nth-child(2){width:500px;height:500px;background:#a259ff;top:40%;right:-150px;animation-delay:-7s;animation-duration:25s;}
-.aurora-blob:nth-child(3){width:400px;height:400px;background:#00e5c4;bottom:10%;left:30%;animation-delay:-14s;animation-duration:18s;opacity:0.07;}
-@keyframes drift{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(40px,-60px) scale(1.05)}66%{transform:translate(-30px,40px) scale(0.95)}}
+body{
+font-family:'Inter',sans-serif;
+background:var(--bg);
+color:var(--text);
+line-height:1.6;
+}
 
 /* NAV */
-nav {
-  display:flex; justify-content:space-between; align-items:center;
-  padding:0 40px; height:64px; border-bottom:1px solid var(--card-border);
-  position:sticky; top:0; background:rgba(2,2,10,0.8);
-  backdrop-filter:blur(24px); z-index:100;
+nav{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 40px;
+border-bottom:1px solid var(--border);
 }
-.logo { font-family:'Syne',sans-serif; font-weight:800; font-size:15px; letter-spacing:-0.02em; display:flex; align-items:center; gap:8px; }
-.logo-icon { width:28px; height:28px; background:linear-gradient(135deg,#4f8cff,#a259ff); border-radius:7px; display:flex; align-items:center; justify-content:center; font-size:13px; }
-.logo-text span { color:var(--blue); }
-.nav-links { display:flex; align-items:center; gap:24px; }
-.nav-links a { color:var(--sub); text-decoration:none; font-size:13px; transition:color 0.2s; }
-.nav-links a:hover { color:var(--text); }
-.btn-primary {
-  display:inline-flex; align-items:center; gap:6px;
-  background:var(--blue); color:#fff; text-decoration:none;
-  padding:8px 16px; border-radius:8px; font-size:13px; font-weight:500;
-  transition:all 0.2s; box-shadow:0 0 20px rgba(79,140,255,0.3);
-}
-.btn-primary:hover { background:#6fa0ff; transform:translateY(-1px); box-shadow:0 0 30px rgba(79,140,255,0.5); }
 
-/* BADGE */
-.badge {
-  display:inline-flex; align-items:center; gap:6px;
-  border:1px solid rgba(79,140,255,0.25); background:rgba(79,140,255,0.08);
-  color:var(--blue); padding:5px 12px; border-radius:100px;
-  font-size:11px; font-family:'JetBrains Mono',monospace; font-weight:500;
-  letter-spacing:0.05em; text-transform:uppercase; margin-bottom:28px;
-  animation:fadeUp 0.6s ease both;
+.logo{
+font-weight:600;
+letter-spacing:2px;
+font-size:14px;
 }
-.badge-dot { width:6px; height:6px; background:var(--teal); border-radius:50%; box-shadow:0 0 6px var(--teal); animation:pulse 2s ease-in-out infinite; }
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
 
 /* HERO */
-.hero { position:relative; z-index:1; padding:100px 40px 80px; max-width:1080px; margin:0 auto; }
-.hero h1 {
-  font-family:'Syne',sans-serif; font-size:clamp(48px,6vw,80px);
-  font-weight:800; line-height:1.0; letter-spacing:-0.04em;
-  margin-bottom:24px; animation:fadeUp 0.6s 0.1s ease both;
+.hero{
+padding:120px 40px;
+max-width:900px;
+margin:auto;
 }
-.gradient-text {
-  background:linear-gradient(90deg,#4f8cff 0%,#a259ff 50%,#00e5c4 100%);
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
-}
-.hero-sub {
-  color:var(--sub); font-size:17px; font-weight:300; max-width:480px;
-  line-height:1.6; margin-bottom:16px; animation:fadeUp 0.6s 0.2s ease both;
-}
-.hero-filter {
-  color:var(--sub); font-size:12px; font-family:'JetBrains Mono',monospace;
-  margin-bottom:36px; opacity:0.65; animation:fadeUp 0.6s 0.25s ease both;
-}
-.hero-actions { display:flex; align-items:center; gap:16px; margin-bottom:56px; animation:fadeUp 0.6s 0.3s ease both; }
-.btn-hero {
-  display:inline-flex; align-items:center; gap:8px;
-  background:linear-gradient(135deg,#4f8cff,#a259ff); color:#fff; text-decoration:none;
-  padding:14px 28px; border-radius:10px; font-size:15px; font-weight:600; font-family:'Syne',sans-serif;
-  transition:all 0.2s; box-shadow:0 4px 40px rgba(79,140,255,0.35);
-}
-.btn-hero:hover { transform:translateY(-2px); box-shadow:0 8px 50px rgba(79,140,255,0.5); }
-.btn-hero svg { transition:transform 0.2s; }
-.btn-hero:hover svg { transform:translateX(3px); }
-.btn-outline {
-  display:inline-flex; align-items:center; gap:8px;
-  border:1px solid var(--card-border); color:var(--sub); text-decoration:none;
-  padding:13px 20px; border-radius:10px; font-size:14px; transition:all 0.2s;
-}
-.btn-outline:hover { border-color:var(--blue); color:var(--text); }
-.stats-bar {
-  display:flex; gap:48px; padding:24px 0;
-  border-top:1px solid var(--card-border); border-bottom:1px solid var(--card-border);
-  animation:fadeUp 0.6s 0.4s ease both;
-}
-.stat-number {
-  font-family:'Syne',sans-serif; font-size:28px; font-weight:800;
-  letter-spacing:-0.03em; line-height:1; margin-bottom:4px;
-  background:linear-gradient(135deg,#4f8cff,#a259ff);
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
-}
-.stat-label { font-size:12px; color:var(--sub); text-transform:uppercase; letter-spacing:0.08em; }
 
-/* SHARED SECTION */
-.wrap { position:relative; z-index:1; padding:80px 40px; max-width:1080px; margin:0 auto; }
-.section-label {
-  font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--blue);
-  text-transform:uppercase; letter-spacing:0.12em; margin-bottom:40px;
-  display:flex; align-items:center; gap:10px;
+.hero h1{
+font-size:64px;
+line-height:1;
+font-weight:300;
+margin-bottom:30px;
 }
-.section-label::after { content:''; height:1px; width:48px; background:var(--blue); opacity:0.4; }
+
+.hero p{
+color:var(--sub);
+max-width:500px;
+margin-bottom:20px;
+}
+
+.hero-benefit{
+font-size:13px;
+color:#999;
+margin-bottom:30px;
+font-family:'JetBrains Mono';
+}
+
+.btns{
+display:flex;
+gap:12px;
+margin-top:20px;
+}
+
+.btn{
+padding:14px 28px;
+text-decoration:none;
+font-size:13px;
+font-weight:600;
+}
+
+.primary{
+background:#fff;
+color:#000;
+}
+
+.secondary{
+border:1px solid var(--border);
+color:var(--sub);
+}
+
+/* FLOW */
+.flow{
+margin-top:60px;
+border:1px solid var(--border);
+display:grid;
+grid-template-columns:1fr 1fr 1fr;
+}
+
+.step{
+padding:20px;
+border-right:1px solid var(--border);
+}
+
+.step:last-child{border-right:none;}
+
+.step small{
+color:#666;
+font-family:'JetBrains Mono';
+}
+
+.step h3{
+margin:6px 0;
+font-size:14px;
+}
 
 /* PRODUCT */
-.product-card {
-  background:var(--card); border:1px solid var(--card-border); border-radius:20px;
-  overflow:hidden; position:relative; transition:border-color 0.3s;
+.section{
+padding:100px 40px;
+max-width:900px;
+margin:auto;
 }
-.product-card::before {
-  content:''; position:absolute; inset:0;
-  background:linear-gradient(135deg,rgba(79,140,255,0.05),rgba(162,89,255,0.05));
-  pointer-events:none;
-}
-.product-card:hover { border-color:rgba(79,140,255,0.2); }
-.product-inner { display:grid; grid-template-columns:1fr 320px; }
-.product-left { padding:48px; border-right:1px solid var(--card-border); }
-.product-tag {
-  display:inline-flex; align-items:center; gap:6px;
-  background:rgba(0,229,160,0.1); border:1px solid rgba(0,229,160,0.2);
-  color:var(--success); padding:4px 10px; border-radius:6px;
-  font-size:11px; font-family:'JetBrains Mono',monospace; margin-bottom:20px;
-}
-.product-name { font-family:'Syne',sans-serif; font-size:32px; font-weight:800; letter-spacing:-0.03em; margin-bottom:10px; }
-.product-desc { color:var(--sub); font-size:15px; line-height:1.6; margin-bottom:32px; }
-.feature-list { list-style:none; display:flex; flex-direction:column; gap:12px; }
-.feature-list li { display:flex; align-items:center; gap:12px; font-size:14px; }
-.feature-check {
-  width:20px; height:20px; background:rgba(0,229,160,0.1);
-  border:1px solid rgba(0,229,160,0.25); border-radius:50%;
-  display:flex; align-items:center; justify-content:center;
-  flex-shrink:0; color:var(--success); font-size:10px;
-}
-.product-right { padding:48px; display:flex; flex-direction:column; justify-content:space-between; }
-.price-label { font-size:12px; color:var(--sub); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:8px; }
-.price-amount {
-  font-family:'Syne',sans-serif; font-size:56px; font-weight:800;
-  letter-spacing:-0.04em; line-height:1;
-  background:linear-gradient(135deg,#f0f0f8,#8888aa);
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
-}
-.price-note { font-size:12px; color:var(--sub); margin-top:6px; margin-bottom:32px; }
-.btn-buy {
-  display:flex; align-items:center; justify-content:center; gap:8px; width:100%;
-  background:linear-gradient(135deg,#4f8cff,#a259ff); color:#fff; text-decoration:none;
-  padding:16px 24px; border-radius:10px; font-size:15px; font-weight:600; font-family:'Syne',sans-serif;
-  margin-bottom:12px; transition:all 0.2s; box-shadow:0 4px 30px rgba(79,140,255,0.3);
-}
-.btn-buy:hover { transform:translateY(-1px); box-shadow:0 8px 40px rgba(79,140,255,0.45); }
-.trust-note { text-align:center; font-size:12px; color:var(--muted); display:flex; align-items:center; justify-content:center; gap:6px; margin-bottom:6px; }
 
-/* INTEGRATIONS */
-.integration-strip {
-  position:relative; z-index:1; padding:20px 40px; max-width:1080px; margin:0 auto;
-  border-top:1px solid var(--card-border); display:flex; align-items:center; gap:24px;
+.card{
+border:1px solid var(--border);
+padding:40px;
+background:var(--card);
 }
-.integration-label { font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:0.1em; white-space:nowrap; font-family:'JetBrains Mono',monospace; }
-.integrations { display:flex; gap:10px; flex-wrap:wrap; }
-.integration-pill {
-  padding:5px 12px; border:1px solid var(--card-border); border-radius:100px;
-  font-size:11px; font-family:'JetBrains Mono',monospace; color:var(--sub);
-  letter-spacing:0.06em; transition:all 0.2s;
-}
-.integration-pill:hover { border-color:var(--blue); color:var(--blue); }
 
-/* SERVICES */
-.services-grid {
-  display:grid; grid-template-columns:repeat(2,1fr); gap:1px;
-  background:var(--card-border); border-radius:16px; overflow:hidden;
-  border:1px solid var(--card-border); margin-top:40px;
+.price{
+font-size:48px;
+margin:20px 0;
 }
-.service-card { background:var(--bg); padding:32px; transition:background 0.2s; position:relative; overflow:hidden; }
-.service-card::before { content:''; position:absolute; top:0; left:0; width:100%; height:2px; background:linear-gradient(90deg,var(--blue),var(--purple)); opacity:0; transition:opacity 0.3s; }
-.service-card:hover::before { opacity:1; }
-.service-card:hover { background:rgba(79,140,255,0.03); }
-.service-icon { width:36px; height:36px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:16px; margin-bottom:16px; }
-.icon-blue{background:rgba(79,140,255,0.1);} .icon-purple{background:rgba(162,89,255,0.1);} .icon-teal{background:rgba(0,229,196,0.1);} .icon-orange{background:rgba(255,165,50,0.1);}
-.service-name { font-family:'Syne',sans-serif; font-size:16px; font-weight:700; margin-bottom:6px; }
-.service-desc { font-size:13px; color:var(--sub); line-height:1.6; }
 
-/* AUDIT FORM */
-.audit-card {
-  background:var(--card); border:1px solid var(--card-border); border-radius:20px;
-  padding:56px; position:relative; overflow:hidden;
+/* CTA */
+.cta{
+text-align:center;
+margin-top:40px;
 }
-.audit-card::before {
-  content:''; position:absolute; top:-1px; left:50%; transform:translateX(-50%);
-  width:40%; height:1px; background:linear-gradient(90deg,transparent,#00e5c4,transparent);
-}
-.audit-grid { display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; }
-.audit-eyebrow { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--teal); text-transform:uppercase; letter-spacing:0.12em; margin-bottom:16px; }
-.audit-title { font-family:'Syne',sans-serif; font-size:32px; font-weight:800; letter-spacing:-0.03em; line-height:1.1; margin-bottom:12px; }
-.audit-sub { font-size:14px; color:var(--sub); line-height:1.6; margin-bottom:24px; }
-.audit-points { list-style:none; display:flex; flex-direction:column; gap:10px; }
-.audit-points li { display:flex; align-items:center; gap:10px; font-size:13px; color:var(--sub); }
-.audit-points li .chk { color:var(--teal); font-size:11px; }
-.audit-form-wrap { display:flex; flex-direction:column; gap:12px; }
-.audit-form-wrap input {
-  background:rgba(255,255,255,0.04); border:1px solid var(--card-border);
-  color:var(--text); padding:14px 16px; border-radius:10px;
-  font-size:14px; font-family:'DM Sans',sans-serif; outline:none; transition:border-color 0.2s; width:100%;
-}
-.audit-form-wrap input::placeholder { color:var(--muted); }
-.audit-form-wrap input:focus { border-color:rgba(0,229,196,0.4); }
-.btn-audit {
-  display:flex; align-items:center; justify-content:center; gap:8px;
-  background:linear-gradient(135deg,#00e5c4,#4f8cff); color:#02020a;
-  padding:15px 24px; border-radius:10px; font-size:15px; font-weight:700;
-  font-family:'Syne',sans-serif; border:none; cursor:pointer;
-  transition:all 0.2s; box-shadow:0 4px 30px rgba(0,229,196,0.25); width:100%;
-}
-.btn-audit:hover { transform:translateY(-1px); box-shadow:0 8px 40px rgba(0,229,196,0.4); }
-.audit-privacy { text-align:center; font-size:11px; color:var(--muted); font-family:'JetBrains Mono',monospace; margin-top:4px; }
-.audit-success { display:none; text-align:center; padding:40px 20px; }
-.audit-success-icon { font-size:32px; margin-bottom:12px; }
-.audit-success-title { font-family:'Syne',sans-serif; font-size:22px; font-weight:800; color:var(--success); margin-bottom:8px; }
-.audit-success-sub { font-size:14px; color:var(--sub); line-height:1.6; }
 
-/* BOTTOM CTA */
-.bottom-cta-card {
-  background:linear-gradient(135deg,rgba(79,140,255,0.08),rgba(162,89,255,0.08));
-  border:1px solid rgba(79,140,255,0.15); border-radius:24px;
-  padding:56px; text-align:center; position:relative; overflow:hidden;
+footer{
+padding:60px;
+text-align:center;
+font-size:12px;
+color:#666;
+border-top:1px solid var(--border);
 }
-.bottom-cta-card::before {
-  content:''; position:absolute; top:-1px; left:50%; transform:translateX(-50%);
-  width:40%; height:1px; background:linear-gradient(90deg,transparent,#4f8cff,transparent);
-}
-.cta-title { font-family:'Syne',sans-serif; font-size:40px; font-weight:800; letter-spacing:-0.03em; line-height:1.1; margin-bottom:12px; }
-.cta-sub { font-size:15px; color:var(--sub); margin-bottom:36px; font-weight:300; }
-.cta-actions { display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap; }
-.btn-discord {
-  display:inline-flex; align-items:center; gap:8px;
-  background:rgba(88,101,242,0.15); border:1px solid rgba(88,101,242,0.3);
-  color:#8b9cf4; text-decoration:none; padding:13px 22px; border-radius:10px;
-  font-size:14px; font-weight:500; transition:all 0.2s;
-}
-.btn-discord:hover { background:rgba(88,101,242,0.25); border-color:rgba(88,101,242,0.5); color:#fff; }
-.btn-whop {
-  display:inline-flex; align-items:center; gap:8px;
-  background:rgba(255,255,255,0.05); border:1px solid var(--card-border);
-  color:var(--sub); text-decoration:none; padding:13px 22px; border-radius:10px;
-  font-size:14px; font-weight:500; transition:all 0.2s;
-}
-.btn-whop:hover { border-color:var(--sub); color:var(--text); }
-.cta-urgency { margin-top:20px; font-size:12px; color:var(--muted); font-family:'JetBrains Mono',monospace; }
 
-/* FOOTER */
-footer {
-  position:relative; z-index:1; border-top:1px solid var(--card-border);
-  padding:32px 40px; max-width:1080px; margin:0 auto;
-  display:flex; justify-content:space-between; align-items:center;
-}
-.footer-logo { font-family:'Syne',sans-serif; font-size:13px; font-weight:800; display:flex; align-items:center; gap:8px; }
-.footer-copy { font-size:12px; color:var(--muted); font-family:'JetBrains Mono',monospace; }
-
-/* ANIMATIONS */
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.fade-in { opacity:0; transform:translateY(24px); transition:opacity 0.7s ease,transform 0.7s ease; }
-.fade-in.visible { opacity:1; transform:translateY(0); }
-
-/* RESPONSIVE */
 @media(max-width:768px){
-  nav{padding:0 20px;}
-  .nav-links{display:none;}
-  .hero,.wrap,.bottom-cta{padding-left:20px;padding-right:20px;}
-  .audit-card{padding:28px 20px;}
-  .integration-strip{padding:20px;}
-  footer{padding:24px 20px;}
-  .hero{padding-top:60px;padding-bottom:48px;}
-  .hero h1{font-size:40px;}
-  .stats-bar{flex-wrap:wrap;gap:24px;}
-  .product-inner{grid-template-columns:1fr;}
-  .product-left{border-right:none;border-bottom:1px solid var(--card-border);}
-  .product-left,.product-right{padding:32px 24px;}
-  .services-grid{grid-template-columns:1fr;}
-  .audit-grid{grid-template-columns:1fr;gap:36px;}
-  .bottom-cta-card{padding:36px 24px;}
-  .cta-title{font-size:28px;}
-  .cta-actions{flex-direction:column;align-items:stretch;}
-  .cta-actions a{justify-content:center;}
-  footer{flex-direction:column;gap:16px;text-align:center;}
+.hero h1{font-size:40px;}
+.flow{grid-template-columns:1fr;}
 }
 </style>
+
 </head>
+
 <body>
 
-<div class="aurora">
-  <div class="aurora-blob"></div>
-  <div class="aurora-blob"></div>
-  <div class="aurora-blob"></div>
-</div>
-
-<!-- NAV -->
 <nav>
-  <div class="logo">
-    <div class="logo-icon">⚡</div>
-    <div class="logo-text">OPERATOR<span>CLOUD</span></div>
-  </div>
-  <div class="nav-links">
-    <a href="#services">Services</a>
-    <a href="#audit">Free Audit</a>
-    <a href="https://discord.gg/YOUR_INVITE" target="_blank">Discord</a>
-  </div>
-  <a href="https://whop.com/progpt" class="btn-primary" target="_blank">Get Operator OS →</a>
+<div class="logo">PROGPT</div>
+<a href="https://discord.gg/YOUR_INVITE" class="secondary btn">Join Free Discord</a>
 </nav>
 
-<!-- HERO -->
 <section class="hero">
-  <div class="badge"><span class="badge-dot"></span>Saves operators 10–20 hrs/week</div>
 
-  <h1>Your backend is<br>costing you<br><span class="gradient-text">10–20 hrs a week.</span></h1>
+<h1>
+From invisible<br>
+to automated.
+</h1>
 
-  <p class="hero-sub">Manual onboarding. Broken role sync. Spreadsheets you update by hand. Failed payments you catch late.</p>
-  <p class="hero-filter">→ Built for operators managing 50–500+ members.</p>
+<p>
+AI search ignores most businesses. We fix that — then automate everything after a customer finds you.
+</p>
 
-  <div class="hero-actions">
-    <a href="https://whop.com/progpt" class="btn-hero" target="_blank">
-      Fix My Backend — $47
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8m-4-4 4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </a>
-    <a href="#audit" class="btn-outline">
-      Get Free Audit
-      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2.5v7m-3-3 3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </a>
-  </div>
+<p class="hero-benefit">
+Save 10–20 hours per week after setup.
+</p>
 
-  <div class="stats-bar">
-    <div><div class="stat-number">10–20h</div><div class="stat-label">Saved per week</div></div>
-    <div><div class="stat-number">1–2h</div><div class="stat-label">Setup time</div></div>
-    <div><div class="stat-number">$47</div><div class="stat-label">One-time. Yours forever.</div></div>
-  </div>
-</section>
-
-<!-- PRODUCT -->
-<section class="wrap fade-in">
-  <div class="section-label">Core Product</div>
-  <div class="product-card">
-    <div class="product-inner">
-      <div class="product-left">
-        <div class="product-tag"><span>●</span> Limited installs per week</div>
-        <div class="product-name">Operator OS</div>
-        <p class="product-desc">Install once. Your backend runs itself after that.</p>
-        <ul class="feature-list">
-          <li><span class="feature-check">✓</span>New member joins → onboarded, messaged, logged. You do nothing.</li>
-          <li><span class="feature-check">✓</span>Roles sync automatically. No more manual assignment.</li>
-          <li><span class="feature-check">✓</span>Google Sheet dashboard updates itself. Always accurate.</li>
-          <li><span class="feature-check">✓</span>Failed payment? Access revoked instantly, no gaps.</li>
-          <li><span class="feature-check">✓</span>Runs on your infra via n8n. No recurring fees. No lock-in.</li>
-        </ul>
-      </div>
-      <div class="product-right">
-        <div>
-          <div class="price-label">One-time payment</div>
-          <div class="price-amount">$47</div>
-          <div class="price-note">No subscription. No monthly fees. Yours forever.</div>
-        </div>
-        <div>
-          <a href="https://whop.com/progpt" class="btn-buy" target="_blank">
-            Fix My Backend — $47
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8m-4-4 4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
-          <div class="trust-note">⚡ Instant delivery via Whop</div>
-          <div class="trust-note">⏱ Setup takes ~1–2 hours</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- INTEGRATIONS -->
-<div class="integration-strip fade-in">
-  <span class="integration-label">Works with</span>
-  <div class="integrations">
-    <span class="integration-pill">WHOP</span>
-    <span class="integration-pill">DISCORD</span>
-    <span class="integration-pill">N8N</span>
-    <span class="integration-pill">GOOGLE SHEETS</span>
-    <span class="integration-pill">GUMROAD</span>
-  </div>
+<div class="btns">
+<a href="#audit" class="btn primary">Get Free Audit</a>
+<a href="https://discord.gg/YOUR_INVITE" class="btn secondary">Join Free Discord</a>
 </div>
 
-<!-- SERVICES -->
-<section id="services" class="wrap fade-in">
-  <div class="section-label">Services</div>
-  <div class="services-grid">
-    <div class="service-card">
-      <div class="service-icon icon-blue">⚙️</div>
-      <div class="service-name">Automation</div>
-      <p class="service-desc">Whop + Discord backend — onboarding, tracking, retention. Running 24/7.</p>
-    </div>
-    <div class="service-card">
-      <div class="service-icon icon-purple">🧠</div>
-      <div class="service-name">GEO / AI Visibility</div>
-      <p class="service-desc">Control how AI tools represent your brand. Own your narrative.</p>
-    </div>
-    <div class="service-card">
-      <div class="service-icon icon-teal">🛠</div>
-      <div class="service-name">Software Dev</div>
-      <p class="service-desc">Custom bots, workflows, integrations. Built for your stack.</p>
-    </div>
-    <div class="service-card">
-      <div class="service-icon icon-orange">📣</div>
-      <div class="service-name">Content & PR</div>
-      <p class="service-desc">Real distribution and authority for your digital products.</p>
-    </div>
-  </div>
+<div class="flow">
+<div class="step">
+<small>STEP 01</small>
+<h3>Get Found</h3>
+<p>Free audit shows where you're invisible</p>
+</div>
+
+<div class="step">
+<small>STEP 02</small>
+<h3>Automate</h3>
+<p>$47 system runs your backend</p>
+</div>
+
+<div class="step">
+<small>STEP 03</small>
+<h3>Scale</h3>
+<p>$297 done-for-you setup</p>
+</div>
+</div>
+
 </section>
 
-<!-- FREE AUDIT -->
-<section id="audit" class="wrap fade-in">
-  <div class="audit-card">
-    <div class="audit-grid">
-      <div>
-        <div class="audit-eyebrow">Free · No pitch · 24–48hr turnaround</div>
-        <div class="audit-title">Get a free backend audit.</div>
-        <p class="audit-sub">We'll review your Whop + Discord setup and tell you exactly where you're bleeding time. No call needed.</p>
-        <ul class="audit-points">
-          <li><span class="chk">✓</span> Where your onboarding breaks</li>
-          <li><span class="chk">✓</span> Which roles are out of sync</li>
-          <li><span class="chk">✓</span> Failed payment gaps you're missing</li>
-          <li><span class="chk">✓</span> What to fix first for max time saved</li>
-        </ul>
-      </div>
-      <div>
-        <div class="audit-form-wrap" id="auditForm">
-          <input type="text" id="auditName" placeholder="Your name" autocomplete="name" />
-          <input type="email" id="auditEmail" placeholder="Your email" autocomplete="email" />
-          <input type="url" id="auditWhop" placeholder="Whop store URL (optional)" />
-          <button class="btn-audit" onclick="submitAudit()">
-            Send Me the Audit
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8m-4-4 4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-          <div class="audit-privacy">No spam. Just the audit. Unsubscribe anytime.</div>
-        </div>
-        <div class="audit-success" id="auditSuccess">
-          <div class="audit-success-icon">✓</div>
-          <div class="audit-success-title">You're in.</div>
-          <div class="audit-success-sub">We'll review your setup and send your audit within 24–48 hours.</div>
-        </div>
-      </div>
-    </div>
-  </div>
+<section id="audit" class="section">
+
+<div class="card">
+<h2>Free AI Visibility Audit</h2>
+
+<p style="margin-top:10px;color:#777;">
+Find out where AI search is sending your customers instead of you.
+</p>
+
+<form style="margin-top:20px;">
+<input type="text" placeholder="Name" style="width:100%;padding:12px;margin-bottom:10px;background:none;border:1px solid #222;color:#fff;">
+<input type="email" placeholder="Email" style="width:100%;padding:12px;margin-bottom:10px;background:none;border:1px solid #222;color:#fff;">
+<input type="text" placeholder="Website" style="width:100%;padding:12px;margin-bottom:20px;background:none;border:1px solid #222;color:#fff;">
+
+<button class="btn primary" style="width:100%;">Run Audit</button>
+</form>
+
+</div>
+
 </section>
 
-<!-- BOTTOM CTA -->
-<section class="wrap fade-in">
-  <div class="bottom-cta-card">
-    <div class="cta-title">Stop losing hours<br>to manual work.</div>
-    <p class="cta-sub">Buy the system. Join the community. Browse the store.</p>
-    <div class="cta-actions">
-      <a href="https://whop.com/progpt" class="btn-hero" target="_blank">
-        Fix My Backend — $47
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8m-4-4 4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
-      <a href="https://discord.gg/YOUR_INVITE" class="btn-discord" target="_blank">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
-        Join Discord
-      </a>
-      <a href="https://whop.com/progpt" class="btn-whop" target="_blank">Browse Whop Store →</a>
-    </div>
-    <div class="cta-urgency">Limited installs per week.</div>
-  </div>
+<section class="section">
+
+<div class="card">
+
+<h2>The Automation System</h2>
+
+<p style="margin-top:10px;color:#777;">
+Runs everything after a customer finds you. No manual work.
+</p>
+
+<div class="price">$47</div>
+
+<ul style="color:#888;font-size:13px;">
+<li>✔ Auto onboarding</li>
+<li>✔ Payment tracking</li>
+<li>✔ Role access</li>
+<li>✔ No subscriptions</li>
+</ul>
+
+<div class="cta">
+<a href="https://discord.gg/YOUR_INVITE" class="btn primary">
+Get Access →
+</a>
+</div>
+
+<hr style="margin:30px 0;border-color:#222;">
+
+<p style="font-size:13px;color:#888;">
+Don’t want to set it up?
+</p>
+
+<h3>$297 Done-for-you</h3>
+
+<p style="color:#777;">
+We build everything for you. Live in 1–2 hours.
+</p>
+
+</div>
+
 </section>
 
-<!-- FOOTER -->
+<section class="section">
+
+<div class="card">
+
+<h2>How it works</h2>
+
+<p style="margin-top:10px;color:#777;">
+Visibility → Automation → Growth
+</p>
+
+<ul style="margin-top:20px;color:#888;font-size:13px;">
+<li>AI visibility (GEO)</li>
+<li>Backend automation</li>
+<li>Content & authority</li>
+<li>Custom infrastructure</li>
+</ul>
+
+</div>
+
+</section>
+
 <footer>
-  <div class="footer-logo">
-    <div class="logo-icon" style="width:22px;height:22px;font-size:10px;border-radius:5px;">⚡</div>
-    OPERATOR CLOUD
-  </div>
-  <div class="footer-copy">© 2025 · Built for Whop Operators</div>
+
+PROGPT — OWN YOUR BACKEND — NO SAAS LOCK-IN<br><br>
+
+<a href="https://discord.gg/YOUR_INVITE" style="color:#fff;text-decoration:none;">
+Join Free Discord
+</a>
+
 </footer>
 
-<script>
-// Scroll reveal
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(el => { if (el.isIntersecting) el.target.classList.add('visible'); });
-}, { threshold: 0.1 });
-document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
-// Service stagger
-document.querySelectorAll('.service-card').forEach((c, i) => { c.style.transitionDelay = `${i * 0.07}s`; });
-
-// Audit submit
-function submitAudit() {
-  const name = document.getElementById('auditName').value.trim();
-  const email = document.getElementById('auditEmail').value.trim();
-  const whop = document.getElementById('auditWhop').value.trim();
-  const emailInput = document.getElementById('auditEmail');
-
-  if (!name || !email || !email.includes('@')) {
-    emailInput.style.borderColor = 'rgba(255,80,80,0.5)';
-    emailInput.focus();
-    return;
-  }
-  emailInput.style.borderColor = '';
-
-  // ─── Wire your email provider here ───
-  // Mailchimp, ConvertKit, Loops, etc.
-  // fetch('/api/audit', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({name, email, whop}) })
-  console.log('Audit lead:', { name, email, whop });
-
-  document.getElementById('auditForm').style.display = 'none';
-  document.getElementById('auditSuccess').style.display = 'block';
-}
-
-document.querySelectorAll('.audit-form-wrap input').forEach(input => {
-  input.addEventListener('keydown', e => { if (e.key === 'Enter') submitAudit(); });
-});
-</script>
 </body>
 </html>
