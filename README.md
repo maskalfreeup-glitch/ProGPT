@@ -1,2 +1,0 @@
-# ProGPT
-First landing page 
